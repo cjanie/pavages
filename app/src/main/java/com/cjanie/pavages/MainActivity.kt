@@ -13,6 +13,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -36,7 +37,7 @@ class MainActivity : ComponentActivity() {
                             Greeting(name = "Penrose Pavage")
                         }
                         Row {
-                            PenrosePavage(modifier = Modifier)
+                            PenrosePavage(modifier = Modifier.scale(0.5F))
                         }
 
 

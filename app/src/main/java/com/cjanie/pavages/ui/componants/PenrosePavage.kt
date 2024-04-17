@@ -3,6 +3,7 @@ package com.cjanie.pavages.ui.componants
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -19,7 +20,7 @@ fun PenrosePavage(modifier: Modifier) {
 
         val losangeSideLength = 500.0
         val angleDAB = 72.0
-        val angleCDE = angleDAB / 2.0
+        val angleCDE = 36.0
         val pointA = Offset(0F, startY + TrigonometryTools.oppositeSideLengthFromHypotenuseAndAngle(losangeSideLength, angleDAB).toFloat())
         val pointB = Offset(losangeSideLength.toFloat(), startY + TrigonometryTools.oppositeSideLengthFromHypotenuseAndAngle(losangeSideLength, angleDAB).toFloat())
         val pointC = Offset(losangeSideLength.toFloat() + TrigonometryTools.adjacentSideLength(losangeSideLength, angleDAB).toFloat(), startY + 0F)
@@ -50,6 +51,17 @@ fun PenrosePavage(modifier: Modifier) {
         val pointBSym = Offset(pointB.x, startY - pointB.y + startY)
         val pointESym = Offset(pointE.x, pointD.y - pointE.y + startY)
 
+        // Right
+        val D = Offset(pointC.x + TrigonometryTools.adjacentSideLength(losangeSideLength, 36.0).toFloat(), pointC.y - TrigonometryTools.oppositeSideLengthFromHypotenuseAndAngle(losangeSideLength, 36.0).toFloat())
+        val B = Offset(pointC.x + TrigonometryTools.adjacentSideLength(losangeSideLength, 36.0).toFloat(), pointC.y + TrigonometryTools.oppositeSideLengthFromHypotenuseAndAngle(losangeSideLength, 36.0).toFloat())
+        val A = Offset(D.x + D.x - pointC.x, pointC.y)
+        val E = Offset(A.x - TrigonometryTools.hypotenuseLength(pointE.x.toDouble() - pointA.x.toDouble(), 36.0).toFloat(), pointC.y)
+
+        // Top
+
+        val ATop = Offset(pointBSym.x + D.x - pointC.x, D.y - pointC.y + pointBSym.y)
+        val ETop = Offset(pointBSym.x + TrigonometryTools.hypotenuseLength(pointB.x.toDouble() - pointE.x.toDouble(), 36.0).toFloat(), pointBSym.y)
+
         val dartSym = Path()
         dartSym.moveTo(pointD.x, pointD.y)
         dartSym.lineTo(pointASym.x, pointASym.y)
@@ -68,6 +80,42 @@ fun PenrosePavage(modifier: Modifier) {
         kiteSym.close()
         drawPath(kiteSym, Color.Yellow)
 
+        val dartRight = Path()
+        dartRight.moveTo(E.x, E.y)
+        dartRight.lineTo(D.x, D.y)
+        dartRight.lineTo(A.x, A.y)
+        dartRight.lineTo(B.x, B.y)
+        dartRight.lineTo(E.x, E.y)
+        dartRight.close()
+        drawPath(dartRight, Color.Green)
+
+        val kiteRight = Path()
+        kiteRight.moveTo(pointC.x, pointC.y)
+        kiteRight.lineTo(D.x, D.y)
+        kiteRight.lineTo(E.x, E.y)
+        kiteRight.lineTo(B.x, B.y)
+        kiteRight.lineTo(pointC.x, pointC.y)
+        kiteRight.close()
+        drawPath(kiteRight, Color.Yellow)
+
+        val dartTop = Path()
+        dartTop.moveTo(pointBSym.x, pointBSym.y)
+        dartTop.lineTo(ATop.x, ATop.y)
+        dartTop.lineTo(D.x, D.y)
+        dartTop.lineTo(ETop.x, ETop.y)
+        dartTop.close()
+        drawPath(dartTop, Color.Green)
+
+        val kiteTop = Path()
+        kiteTop.moveTo(pointBSym.x, pointBSym.y)
+        kiteTop.lineTo(pointC.x, pointC.y)
+        kiteTop.lineTo(D.x, D.y)
+        kiteTop.lineTo(ETop.x, ETop.y)
+        kiteTop.lineTo(pointBSym.x, pointBSym.y)
+        kiteTop.close()
+        drawPath(kiteTop, Color.Yellow)
+
+
         drawLine(Color.Black, pointA, pointB, strokeWidth)
         drawLine(Color.Black, pointB, pointC, strokeWidth)
         drawLine(Color.Black, pointC, pointD, strokeWidth)
@@ -83,5 +131,18 @@ fun PenrosePavage(modifier: Modifier) {
         drawLine(Color.Black, pointD, pointESym, strokeWidth)
         drawLine(Color.Black, pointESym, pointBSym, strokeWidth)
 
+        // Right
+        drawLine(Color.Black, pointC, D, strokeWidth)
+        drawLine(Color.Black, pointC, B, strokeWidth)
+        drawLine(Color.Black, D, A, strokeWidth)
+        drawLine(Color.Black, A, B, strokeWidth)
+        drawLine(Color.Black, D, E, strokeWidth)
+        drawLine(Color.Black, E, B, strokeWidth)
+
+        // Top
+        drawLine(Color.Black, pointBSym, ATop)
+        drawLine(Color.Black, D, ATop)
+        drawLine(Color.Black, pointBSym, ETop)
+        drawLine(Color.Black, D, ETop)
     }
 }
