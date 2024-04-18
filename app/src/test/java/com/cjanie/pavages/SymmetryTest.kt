@@ -11,7 +11,7 @@ class SymmetryTest {
         val axisY = 0.0
         val points = arrayOf(Point(1.0, 1.0), Point(-1.0, -1.0))
         assertEquals(Point(1.0, -1.0),
-            SymmetryTools.symmetryByHorizontalAxis(axisY, points as Array<Point?>)[0]
+            SymmetryTools.symmetryByHorizontalAxis(axisY, points)[0]
         )
         assertEquals(Point(-1.0, 1.0), SymmetryTools.symmetryByHorizontalAxis(axisY, points)[1])
     }

@@ -1,6 +1,7 @@
 package com.cjanie.pavages.tools
 
 import com.cjanie.pavages.Point
+import com.cjanie.pavages.exceptions.NullPointException
 
 class SymmetryTools {
 
@@ -9,14 +10,12 @@ class SymmetryTools {
             return Point(point.x, axisY - point.y)
         }
 
-        fun symmetryByHorizontalAxis(axisY: Double, points: Array<Point?>): Array<Point?> {
-            val symetricPoints = arrayOfNulls<Point>(points.size)
-            if(points.isNotEmpty()) {
-                for (i in points.indices) {
-                    symetricPoints[i] = symmetryByHorizontalAxis(axisY, points[i]!!)
-                }
+        fun symmetryByHorizontalAxis(axisY: Double, points: Array<Point>): Array<Point> {
+            val symmetricPoints = Array(points.size) {
+                symmetryByHorizontalAxis(axisY, points[it])
             }
-            return symetricPoints
+            return symmetricPoints
         }
+
     }
 }

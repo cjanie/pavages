@@ -1,10 +1,18 @@
 package com.cjanie.pavages.ui.componants
 
+import android.graphics.Paint.Style
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.PaintingStyle
+import androidx.compose.ui.graphics.drawscope.DrawStyle
+import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.unit.dp
 import com.cjanie.pavages.tools.SymmetryTools
 import com.cjanie.pavages.tools.TrigonometryTools
 import com.cjanie.pavages.ui.tools.DrawTools
@@ -15,7 +23,7 @@ import com.cjanie.pavages.ui.tools.DrawTools
 @Composable
 fun PenrosePavage(modifier: Modifier) {
     Canvas(modifier = modifier) {
-        val strokeWidth = 2F
+        val strokeWidth = 1F
         val startY = 800F
 
         val losangeSideLength = 500.0
@@ -48,7 +56,8 @@ fun PenrosePavage(modifier: Modifier) {
 
         // Darts
         val dartPoints = arrayOf(pointA, pointB, pointE, pointD)
-        val dartSymPoints = arrayOf(pointD, pointASym, pointBSym, pointESym)
+        //val dartSymPoints = arrayOf(pointD, pointASym, pointBSym, pointESym)
+        val dartSymPoints = DrawTools.pointsToOffsets(SymmetryTools.symmetryByHorizontalAxis(startY + pointD.y.toDouble(), DrawTools.offsetsToPoints(dartPoints)))
         val dartRightPoints = arrayOf(E, D, A, B)
         val dartTopPoints = arrayOf(pointBSym, ATop, D, ETop)
 
@@ -63,46 +72,15 @@ fun PenrosePavage(modifier: Modifier) {
         for(dart in darts) {
             val path = DrawTools.createPath(dart)
             drawPath(path, Color.Green)
+            drawPath(path, Color.Black, 1F, Stroke(width = strokeWidth))
         }
 
         val kites = listOf(kitePoints, kiteSymPoints, kiteRightPoints, kiteTopPoints, kiteBottomPoints)
         for(kite in kites) {
             val path = DrawTools.createPath(kite)
             drawPath(path, Color.Yellow)
+            drawPath(path, Color.Black, 1F, Stroke(width = strokeWidth))
         }
 
-
-        drawLine(Color.Black, pointA, pointB, strokeWidth)
-        drawLine(Color.Black, pointB, pointC, strokeWidth)
-        drawLine(Color.Black, pointC, pointD, strokeWidth)
-        drawLine(Color.Black, pointD, pointA, strokeWidth)
-        drawLine(Color.Black, pointD, pointE, strokeWidth)
-        drawLine(Color.Black, pointE, pointB, strokeWidth)
-
-        // Sym
-
-        drawLine(Color.Black, pointASym, pointBSym, strokeWidth)
-        drawLine(Color.Black, pointBSym, pointC, strokeWidth)
-        drawLine(Color.Black, pointD, pointASym, strokeWidth)
-        drawLine(Color.Black, pointD, pointESym, strokeWidth)
-        drawLine(Color.Black, pointESym, pointBSym, strokeWidth)
-
-        // Right
-        drawLine(Color.Black, pointC, D, strokeWidth)
-        drawLine(Color.Black, pointC, B, strokeWidth)
-        drawLine(Color.Black, D, A, strokeWidth)
-        drawLine(Color.Black, A, B, strokeWidth)
-        drawLine(Color.Black, D, E, strokeWidth)
-        drawLine(Color.Black, E, B, strokeWidth)
-
-        // Top
-        drawLine(Color.Black, pointBSym, ATop)
-        drawLine(Color.Black, D, ATop)
-        drawLine(Color.Black, pointBSym, ETop)
-        drawLine(Color.Black, D, ETop)
-
-        // Bottom
-        drawLine(Color.Black, pointB, EBottom)
-        drawLine(Color.Black, B, EBottom)
     }
 }

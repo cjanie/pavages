@@ -22,14 +22,22 @@ class DrawTools {
             return Point(offset.x.toDouble(), offset.y.toDouble())
         }
 
-        fun offsetsToPoints(offsets: Array<Offset>): Array<Point?> {
-            val points = arrayOfNulls<Point>(offsets.size)
-            if(offsets.isNotEmpty()) {
-                for(i in offsets.indices) {
-                    points[i] = offsetToPoint(offsets[i])
-                }
+        fun offsetsToPoints(offsets: Array<Offset>): Array<Point> {
+            val points = Array<Point>(offsets.size) {
+                offsetToPoint(offsets[it])
             }
             return points
+        }
+
+        fun pointToOffset(point: Point): Offset {
+            return Offset(point.x.toFloat(), point.y.toFloat())
+        }
+
+        fun pointsToOffsets(points: Array<Point>): Array<Offset> {
+            val offsets = Array(points.size) {
+                pointToOffset(points[it])
+            }
+            return offsets
         }
     }
 }
