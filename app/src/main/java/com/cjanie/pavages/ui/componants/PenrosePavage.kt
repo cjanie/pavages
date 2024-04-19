@@ -1,21 +1,16 @@
 package com.cjanie.pavages.ui.componants
 
-import android.graphics.Paint.Style
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.PaintingStyle
-import androidx.compose.ui.graphics.drawscope.DrawStyle
-import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.unit.dp
+import com.cjanie.pavages.Point
 import com.cjanie.pavages.tools.SymmetryTools
 import com.cjanie.pavages.tools.TrigonometryTools
 import com.cjanie.pavages.ui.tools.DrawTools
+import com.cjanie.pavages.ui.tools.Graph2D
 
 // Losange ABCD
 // AB = 5cm
@@ -23,22 +18,53 @@ import com.cjanie.pavages.ui.tools.DrawTools
 @Composable
 fun PenrosePavage(modifier: Modifier) {
     Canvas(modifier = modifier) {
+        
         val strokeWidth = 1F
-        val startY = 800F
+        val horizontalAxisY = 800.0
+        val verticalAxixX = 0.0
+        val graph2D = Graph2D(verticalAxixX, horizontalAxisY)
 
+        // Losange ABCD
+        // sides (AB, BC, CD, DA) length = 5cm
+        // angle DAB = 72°
+        // angle ABC = 72° + 36°
+        // angle ABE = 36°
         val losangeSideLength = 500.0
         val angleDAB = 72.0
         val angleCDE = 36.0
-        val pointA = Offset(0F, startY + TrigonometryTools.oppositeSideLengthFromHypotenuseAndAngle(losangeSideLength, angleDAB).toFloat())
-        val pointB = Offset(losangeSideLength.toFloat(), startY + TrigonometryTools.oppositeSideLengthFromHypotenuseAndAngle(losangeSideLength, angleDAB).toFloat())
-        val pointC = Offset(losangeSideLength.toFloat() + TrigonometryTools.adjacentSideLength(losangeSideLength, angleDAB).toFloat(), startY + 0F)
-        val pointD = Offset(TrigonometryTools.adjacentSideLength(losangeSideLength, angleDAB).toFloat(), startY + 0F)
-        val pointE = Offset(pointB.x - (losangeSideLength/2.0).toFloat(), pointB.y - TrigonometryTools.oppositeSideLengthFromAdjacentSideAndAngle(losangeSideLength/2.0, angleCDE).toFloat())
+
+        val a = Point(
+            0.0,
+            TrigonometryTools.oppositeSideLengthFromHypotenuseAndAngle(losangeSideLength, angleDAB)
+        )
+        val pointA = Offset(verticalAxixX.toFloat() + a.x.toFloat(), horizontalAxisY.toFloat() + a.y.toFloat())
+
+        val b = Point(
+            losangeSideLength,
+            TrigonometryTools.oppositeSideLengthFromHypotenuseAndAngle(losangeSideLength, angleDAB)
+        )
+        val pointB = Offset(verticalAxixX.toFloat() + b.x.toFloat(), horizontalAxisY.toFloat() + b.y.toFloat())
+
+        val c = Point(
+            losangeSideLength + TrigonometryTools.adjacentSideLength(losangeSideLength, angleDAB),
+            0.0
+        )
+        val pointC = Offset(verticalAxixX.toFloat() + c.x.toFloat(), horizontalAxisY.toFloat() + c.y.toFloat())
+
+        val d = Point(
+            TrigonometryTools.adjacentSideLength(losangeSideLength, angleDAB),
+            0.0
+        )
+
+        val e = Point(
+            b.x - losangeSideLength/2.0,
+            b.y - TrigonometryTools.oppositeSideLengthFromAdjacentSideAndAngle(losangeSideLength/2.0, angleCDE)
+        )
+
+        val pointE = Offset(verticalAxixX.toFloat() + e.x.toFloat(), horizontalAxisY.toFloat() + e.y.toFloat())
 
         // Symmetry axe CD
-        val pointASym = Offset(pointA.x, pointD.y - pointA.y + startY)
-        val pointBSym = Offset(pointB.x, startY - pointB.y + startY)
-        val pointESym = Offset(pointE.x, pointD.y - pointE.y + startY)
+        val pointBSym = Offset(pointB.x, horizontalAxisY.toFloat() - pointB.y + horizontalAxisY.toFloat())
 
         // Right
         val D = Offset(pointC.x + TrigonometryTools.adjacentSideLength(losangeSideLength, 36.0).toFloat(), pointC.y - TrigonometryTools.oppositeSideLengthFromHypotenuseAndAngle(losangeSideLength, 36.0).toFloat())
@@ -55,27 +81,32 @@ fun PenrosePavage(modifier: Modifier) {
         val EBottom = Offset(ETop.x, pointC.y + pointC.y - ETop.y)
 
         // Darts
-        val dartPoints = arrayOf(pointA, pointB, pointE, pointD)
-        //val dartSymPoints = arrayOf(pointD, pointASym, pointBSym, pointESym)
-        val dartSymPoints = DrawTools.pointsToOffsets(SymmetryTools.symmetryByHorizontalAxis(startY + pointD.y.toDouble(), DrawTools.offsetsToPoints(dartPoints)))
+        val dartPoints = arrayOf(a, b, e, d)
+        val dartSymPoints = SymmetryTools.symmetryByHorizontalAxis(d.y, dartPoints)
         val dartRightPoints = arrayOf(E, D, A, B)
         val dartTopPoints = arrayOf(pointBSym, ATop, D, ETop)
 
         // Kites
-        val kitePoints = arrayOf(pointB, pointC, pointD, pointE)
-        val kiteSymPoints = arrayOf(pointD, pointESym, pointBSym, pointC)
+        val kitePoints = arrayOf(b, c, d, e)
+        val kiteSymPoints = SymmetryTools.symmetryByHorizontalAxis(d.y, kitePoints)
         val kiteRightPoints = arrayOf(pointC, D, E, B)
         val kiteTopPoints = arrayOf(pointBSym, pointC, D, ETop)
         val kiteBottomPoints = arrayOf(pointC, pointB, EBottom, B)
 
-        val darts = listOf(dartPoints, dartSymPoints, dartRightPoints, dartTopPoints)
+        val darts = listOf(
+            graph2D.pointsToOffsets(dartPoints),
+            graph2D.pointsToOffsets(dartSymPoints),
+            dartRightPoints, dartTopPoints)
         for(dart in darts) {
             val path = DrawTools.createPath(dart)
             drawPath(path, Color.Green)
             drawPath(path, Color.Black, 1F, Stroke(width = strokeWidth))
         }
 
-        val kites = listOf(kitePoints, kiteSymPoints, kiteRightPoints, kiteTopPoints, kiteBottomPoints)
+        val kites = listOf(
+            graph2D.pointsToOffsets(kitePoints),
+            graph2D.pointsToOffsets(kiteSymPoints),
+            kiteRightPoints, kiteTopPoints, kiteBottomPoints)
         for(kite in kites) {
             val path = DrawTools.createPath(kite)
             drawPath(path, Color.Yellow)
