@@ -1,7 +1,9 @@
 package com.cjanie.pavages.tools
 
 import kotlin.math.cos
+import kotlin.math.pow
 import kotlin.math.sin
+import kotlin.math.sqrt
 import kotlin.math.tan
 
 class TrigonometryTools {
@@ -36,6 +38,13 @@ class TrigonometryTools {
         }
         fun hypotenuseLength(adjacentSideLength: Double, angleInDegrees: Double): Double {
             return adjacentSideLength / cosine(angleInDegrees)
+        }
+
+        fun hypotenuseLengthFromPythagoreTheorem(side1Length: Double, side2Length: Double): Double {
+            // Si un triangle est rectangle,
+            // alors le carré de la logueur de l'hypoténuse est égal à
+            // la somme des carrés des longueurs des deux autres côtés
+            return sqrt(side1Length.pow(2) + side2Length.pow(2))
         }
 
     }
