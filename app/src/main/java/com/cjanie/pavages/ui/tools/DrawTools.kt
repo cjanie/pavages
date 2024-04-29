@@ -1,6 +1,9 @@
 package com.cjanie.pavages.ui.tools
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.TextMeasurer
 import com.cjanie.pavages.Point
 
 class DrawTools {
@@ -16,6 +19,16 @@ class DrawTools {
             path.lineTo(points[0].x, points[0].y)
             path.close()
             return path
+        }
+
+        fun getTextResultLayout(text: String, textMeasurer: TextMeasurer) : TextLayoutResult {
+            return textMeasurer.measure(
+                    text = AnnotatedString(text)
+                )
+        }
+        fun getTextOffset(textLayoutResult: TextLayoutResult, pointOffset: Offset): Offset {
+            val textSize = textLayoutResult.size
+            return Offset(pointOffset.x - textSize.width/2f, pointOffset.y - textSize.height/2f)
         }
     }
 }

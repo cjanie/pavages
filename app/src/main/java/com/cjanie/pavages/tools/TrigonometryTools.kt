@@ -47,6 +47,10 @@ class TrigonometryTools {
             return sqrt(side1Length.pow(2) + side2Length.pow(2))
         }
 
+        fun side2LengthFromPythagoreTheorem(hypotenuseLength: Double, side1Length: Double): Double {
+            return sqrt(hypotenuseLength.pow(2) - side1Length.pow(2))
+        }
+
     }
 
 }
