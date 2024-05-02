@@ -2,7 +2,7 @@ package com.cjanie.pavages
 
 import com.cjanie.pavages.tools.TrigonometryTools.Companion.adjacentSideLength
 import com.cjanie.pavages.tools.TrigonometryTools.Companion.hypotenuseLength
-import com.cjanie.pavages.tools.TrigonometryTools.Companion.hypotenuseLengthFromPythagoreTheorem
+import com.cjanie.pavages.tools.TrigonometryTools.Companion.hypotenuseLengthFromPythagoreanTheorem
 import com.cjanie.pavages.tools.TrigonometryTools.Companion.oppositeSideLengthFromAdjacentSideAndAngle
 import com.cjanie.pavages.tools.TrigonometryTools.Companion.oppositeSideLengthFromHypotenuseAndAngle
 import org.junit.Test
@@ -52,7 +52,7 @@ class TrigonometryTest {
 
     @Test
     fun `hypotenuse side length from Pythagore theorem`() {
-        assertEquals(2.8284271247461903, hypotenuseLengthFromPythagoreTheorem(2.0, 2.0), 0.0)
+        assertEquals(2.8284271247461903, hypotenuseLengthFromPythagoreanTheorem(2.0, 2.0), 0.0)
     }
 
 }

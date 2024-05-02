@@ -1,7 +1,7 @@
 package com.cjanie.pavages.ui.tools
 
 import androidx.compose.ui.geometry.Offset
-import com.cjanie.pavages.Point
+import com.cjanie.pavages.logic.Point
 
 class Graph2D(private val verticalAxisX: Double, private val horizontalAxisY: Double) {
 

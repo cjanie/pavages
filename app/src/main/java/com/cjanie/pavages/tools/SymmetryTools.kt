@@ -1,7 +1,6 @@
 package com.cjanie.pavages.tools
 
-import com.cjanie.pavages.Point
-import com.cjanie.pavages.exceptions.NullPointException
+import com.cjanie.pavages.logic.Point
 
 class SymmetryTools {
 

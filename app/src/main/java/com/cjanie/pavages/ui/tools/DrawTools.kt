@@ -4,7 +4,6 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextMeasurer
-import com.cjanie.pavages.Point
 
 class DrawTools {
 

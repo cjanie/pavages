@@ -1,11 +1,7 @@
 package com.cjanie.pavages.logic
 
-import androidx.compose.ui.geometry.Offset
-import com.cjanie.pavages.Point
 import com.cjanie.pavages.tools.SymmetryTools
 import com.cjanie.pavages.tools.TrigonometryTools
-import kotlin.math.pow
-import kotlin.math.sqrt
 
 class Pentagon(private val circleRadius: Double) { // A pentagon is enclose in a circle
 
@@ -22,7 +18,7 @@ class Pentagon(private val circleRadius: Double) { // A pentagon is enclose in a
     private val k = Point("K", O.x, O.y + o_k)
 
     // Point U on vertical axis to the top, on the circle of centre k and radius k_bb
-    private val k_bb = TrigonometryTools.hypotenuseLengthFromPythagoreTheorem(
+    private val k_bb = TrigonometryTools.hypotenuseLengthFromPythagoreanTheorem(
         circleRadius,
         o_k
     )
@@ -50,6 +46,7 @@ class Pentagon(private val circleRadius: Double) { // A pentagon is enclose in a
 
     val pentagonPoints = arrayOf(A, B, C, D, E)
     val triangle = arrayOf(pentagonPoints[0], pentagonPoints[2], pentagonPoints[3])
+    val goldenTriangle = GoldenTriangle(pentagonPoints[0], pentagonPoints[2], pentagonPoints[3])
 
     fun circleEnclosure(): CircleEnclosure {
         return CircleEnclosure()

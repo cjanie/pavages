@@ -40,7 +40,7 @@ class TrigonometryTools {
             return adjacentSideLength / cosine(angleInDegrees)
         }
 
-        fun hypotenuseLengthFromPythagoreTheorem(side1Length: Double, side2Length: Double): Double {
+        fun hypotenuseLengthFromPythagoreanTheorem(side1Length: Double, side2Length: Double): Double {
             // Si un triangle est rectangle,
             // alors le carré de la logueur de l'hypoténuse est égal à
             // la somme des carrés des longueurs des deux autres côtés
