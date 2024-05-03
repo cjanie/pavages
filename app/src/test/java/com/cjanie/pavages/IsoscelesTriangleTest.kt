@@ -1,6 +1,6 @@
 package com.cjanie.pavages
 
-import com.cjanie.pavages.logic.IsoscelesTriangle
+import com.cjanie.pavages.logic.triangles.IsoscelesTriangle
 import com.cjanie.pavages.logic.Point
 import org.junit.Test
 

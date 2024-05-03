@@ -1,4 +1,7 @@
-package com.cjanie.pavages.logic
+package com.cjanie.pavages.logic.triangles
+
+import com.cjanie.pavages.logic.Line
+import com.cjanie.pavages.logic.Point
 
 open class IsoscelesTriangle(pointOppositeToBase: Point, basePoint1: Point, basePoint2: Point): Triangle(
     arrayOf(pointOppositeToBase, basePoint1, basePoint2)) {

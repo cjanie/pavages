@@ -1,5 +1,7 @@
 package com.cjanie.pavages.logic
 
+import com.cjanie.pavages.logic.triangles.GoldenGnomon
+import com.cjanie.pavages.logic.triangles.GoldenTriangle
 import com.cjanie.pavages.tools.SymmetryTools
 import com.cjanie.pavages.tools.TrigonometryTools
 
@@ -47,6 +49,10 @@ class Pentagon(private val circleRadius: Double) { // A pentagon is enclose in a
     val pentagonPoints = arrayOf(A, B, C, D, E)
     val triangle = arrayOf(pentagonPoints[0], pentagonPoints[2], pentagonPoints[3])
     val goldenTriangle = GoldenTriangle(pentagonPoints[0], pentagonPoints[2], pentagonPoints[3])
+    val goldenGnomons = arrayOf(
+        GoldenGnomon(pentagonPoints[1], pentagonPoints[2], pentagonPoints[0]),
+        GoldenGnomon(pentagonPoints[4], pentagonPoints[3], pentagonPoints[0])
+    )
 
     fun circleEnclosure(): CircleEnclosure {
         return CircleEnclosure()
