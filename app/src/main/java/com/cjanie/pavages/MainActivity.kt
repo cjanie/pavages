@@ -21,19 +21,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.cjanie.pavages.logic.Pentagon
-import com.cjanie.pavages.tools.TrigonometryTools
 import com.cjanie.pavages.ui.theme.PavagesTheme
 import com.cjanie.pavages.ui.tools.DrawTools
-import com.cjanie.pavages.ui.tools.Graph2D
-import kotlin.math.pow
-import kotlin.math.sqrt
+import com.cjanie.pavages.ui.tools.CanvasGraph2DAdapter
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,15 +76,30 @@ class MainActivity : ComponentActivity() {
                             fun drawText(text: String, offset: Offset) {
                                 drawText(this, text, offset)
                             }
+                            // Draw Graph (horizontal and vertical axis, center O
+                            val canvasAdapter = CanvasGraph2DAdapter(canvasSizePx)
+
+                            val horizontalAxis = canvasAdapter.horizontalAxis
+
+                            drawLine(Color.Blue, horizontalAxis[0], horizontalAxis[1], strokeWidth)
+
+                            val verticalAxis = canvasAdapter.verticalAxis
+                            drawLine(Color.Blue, verticalAxis[0], verticalAxis[1], strokeWidth)
+
+                            val center = canvasAdapter.center
+                            drawText("O", center)
+
+                            val P = canvasAdapter.P
+                            drawText("P", P)
+
+                            val triangle = canvasAdapter.trianglePath
+                            drawPath(triangle, Color.Green)
 
                             // http://www.debart.fr/1s/pentagone.mobile.html
                             // Steps to draw a pentagon
-                            val marginForText = 50f
-                            val circleRadius = canvasSizePx / 2f - marginForText
 
-                            val graph2D = Graph2D((canvasSizePx/2f).toDouble(), (canvasSizePx/2f).toDouble())
 
-                            val pentagon = Pentagon(circleRadius.toDouble())
+                            //val pentagon = Pentagon(circleRadius.toDouble())
                             /*
                             // Steps to draw a pentagon
                             // CircleEnclosure
@@ -139,10 +149,12 @@ class MainActivity : ComponentActivity() {
                             }
                             drawLine(Color.Green, pentagonOffsets[pentagonOffsets.size - 1], pentagonOffsets[0])
 
-                            */
+
+                            val goldenTriangle = pentagon.goldenTriangle
                             val triangleOffsets = graph2D.pointsToOffsets(pentagon.triangle)
                             val trianglePath = DrawTools.createPath(triangleOffsets)
                             drawPath(trianglePath, Color.Blue)
+                            */
                         }
 
 

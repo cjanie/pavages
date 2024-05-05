@@ -2,11 +2,21 @@ package com.cjanie.pavages.logic
 
 import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
-import com.cjanie.pavages.tools.SymmetryTools
-import com.cjanie.pavages.tools.TrigonometryTools
 
-class Pentagon(private val circleRadius: Double) { // A pentagon is enclose in a circle
+class Pentagon(points: Array<Point>) { // A pentagon is enclose in a circle
 
+    init {
+        assert(points.size == 5)
+    }
+
+    val goldenTriangle = GoldenTriangle(points[0], points[2], points[3])
+    val goldenGnomons = arrayOf(
+        GoldenGnomon(points[1], points[2], points[0]),
+        GoldenGnomon(points[4], points[3], points[0])
+    )
+
+
+    /*
     companion object {
         // Center
         private val O = Point("O", 0.0, 0.0)
@@ -120,4 +130,6 @@ class Pentagon(private val circleRadius: Double) { // A pentagon is enclose in a
         val left = C
         val right = D
     }
+
+     */
 }

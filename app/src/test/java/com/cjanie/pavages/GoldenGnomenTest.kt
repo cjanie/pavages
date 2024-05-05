@@ -1,7 +1,8 @@
 package com.cjanie.pavages
 
-import com.cjanie.pavages.logic.NumberConstants
-import com.cjanie.pavages.logic.Pentagon
+import com.cjanie.pavages.logic.Cercle
+import com.cjanie.pavages.logic.Number
+import com.cjanie.pavages.logic.PentagonBuilder
 import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import org.junit.Assert.assertEquals
@@ -19,8 +20,10 @@ class GoldenGnomenTest {
 
     @Test
     fun `golden gnomon`() {
-        val pentagon = Pentagon(2.0)
-        val gnomon = GoldenGnomon.createGoldenGnomons(pentagon)[0]
-        assertEquals((1 / NumberConstants.GOLDEN_NUMBER_PHI).toFloat(), (gnomon.duplicatedSideLength() / gnomon.baseSideLength()).toFloat(), 0.0f)
+        val pentagon = PentagonBuilder(
+            Cercle(Point("O", 0.0, 0.0), 2.0)
+        ).build()
+        val gnomon = pentagon.goldenGnomons[0]
+        assertEquals((1 / Number.GOLDEN_NUMBER_PHI).toFloat(), (gnomon.duplicatedSideLength() / gnomon.baseSideLength()).toFloat(), 0.0f)
     }
 }

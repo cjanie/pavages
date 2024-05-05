@@ -3,10 +3,10 @@ package com.cjanie.pavages.logic.triangles
 import com.cjanie.pavages.logic.Line
 import com.cjanie.pavages.logic.Point
 
-open class IsoscelesTriangle(pointOppositeToBase: Point, basePoint1: Point, basePoint2: Point): Triangle(
-    arrayOf(pointOppositeToBase, basePoint1, basePoint2)) {
+open class IsoscelesTriangle(val oppositeToBase: Point, val basePoint1: Point, val basePoint2: Point): Triangle(
+    arrayOf(oppositeToBase, basePoint1, basePoint2)) {
 
-    private val duplicatedSides = arrayOf(Line(pointOppositeToBase, basePoint1), Line(pointOppositeToBase, basePoint2))
+    private val duplicatedSides = arrayOf(Line(oppositeToBase, basePoint1), Line(oppositeToBase, basePoint2))
 
     private val baseSide = Line(basePoint1, basePoint2)
 

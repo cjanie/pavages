@@ -1,12 +1,15 @@
 package com.cjanie.pavages.tools
 
+import kotlin.math.acos
+import kotlin.math.asin
+import kotlin.math.atan
 import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
 import kotlin.math.tan
 
-class TrigonometryTools {
+class Trigonometry {
 
     companion object {
         private fun degreeToRadian(angleInDegrees: Double): Double {
@@ -50,6 +53,22 @@ class TrigonometryTools {
         fun side2LengthFromPythagoreTheorem(hypotenuseLength: Double, side1Length: Double): Double {
             return sqrt(hypotenuseLength.pow(2) - side1Length.pow(2))
         }
+
+        fun angleDegreesFromHypothenuseAndAdjacentLengths(hypothenuseLength: Double, adjacentLength: Double): Double {
+            val cosOfAngle = adjacentLength / hypothenuseLength
+            return acos(cosOfAngle)
+        }
+
+        fun angleDegreesFromHypothenuseAndOppositeLengths(hypothenuseLength: Double, oppositeLength: Double): Double {
+            val sinOfAngle = oppositeLength / hypothenuseLength
+            return asin(sinOfAngle)
+        }
+
+        fun angleDegreesFromOppositeAndAdjacentLengths(oppositeLength: Double, adjacentLength: Double): Double {
+            val tanOfAngle = oppositeLength / adjacentLength
+            return atan(tanOfAngle)
+        }
+
 
     }
 

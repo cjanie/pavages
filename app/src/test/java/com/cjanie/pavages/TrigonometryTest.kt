@@ -1,10 +1,10 @@
 package com.cjanie.pavages
 
-import com.cjanie.pavages.tools.TrigonometryTools.Companion.adjacentSideLength
-import com.cjanie.pavages.tools.TrigonometryTools.Companion.hypotenuseLength
-import com.cjanie.pavages.tools.TrigonometryTools.Companion.hypotenuseLengthFromPythagoreanTheorem
-import com.cjanie.pavages.tools.TrigonometryTools.Companion.oppositeSideLengthFromAdjacentSideAndAngle
-import com.cjanie.pavages.tools.TrigonometryTools.Companion.oppositeSideLengthFromHypotenuseAndAngle
+import com.cjanie.pavages.tools.Trigonometry.Companion.adjacentSideLength
+import com.cjanie.pavages.tools.Trigonometry.Companion.hypotenuseLength
+import com.cjanie.pavages.tools.Trigonometry.Companion.hypotenuseLengthFromPythagoreanTheorem
+import com.cjanie.pavages.tools.Trigonometry.Companion.oppositeSideLengthFromAdjacentSideAndAngle
+import com.cjanie.pavages.tools.Trigonometry.Companion.oppositeSideLengthFromHypotenuseAndAngle
 import org.junit.Test
 
 import org.junit.Assert.*

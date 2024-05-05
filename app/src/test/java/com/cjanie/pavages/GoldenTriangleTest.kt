@@ -1,6 +1,8 @@
 package com.cjanie.pavages
 
-import com.cjanie.pavages.logic.NumberConstants
+import com.cjanie.pavages.logic.Cercle
+import com.cjanie.pavages.logic.Number
+import com.cjanie.pavages.logic.PentagonBuilder
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 import com.cjanie.pavages.logic.Point
 import org.junit.Assert.assertEquals
@@ -18,7 +20,10 @@ class GoldenTriangleTest {
 
     @Test
     fun `golden triangle`() {
-        val triangle = GoldenTriangle.createGoldenTriangle(2.0)
-        assertEquals(NumberConstants.GOLDEN_NUMBER_PHI.toFloat(), (triangle.duplicatedSideLength() / triangle.baseSideLength()).toFloat(), 0.0f)
+        val pentagon = PentagonBuilder(
+            Cercle(Point("O", 0.0, 0.0), 2.0)
+        ).build()
+        val triangle = pentagon.goldenTriangle
+        assertEquals(Number.GOLDEN_NUMBER_PHI.toFloat(), (triangle.duplicatedSideLength() / triangle.baseSideLength()).toFloat(), 0.0f)
     }
 }

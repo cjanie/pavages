@@ -2,7 +2,7 @@ package com.cjanie.pavages.tools
 
 import com.cjanie.pavages.logic.Point
 
-class SymmetryTools {
+class Symmetry {
 
     companion object {
 
