@@ -37,9 +37,7 @@ class CanvasGraph2DAdapter(canvasSize: Float) {
 
     // Set the graph2D size fitting the view size
     private val graph2D = Graph2D(canvasSize.toDouble())
-    val P = Offset(
-        center.x + graph2D.P.x.toFloat(),
-        center.y - graph2D.P.y.toFloat())
+    val P = offset(graph2D.P)
 
     val triangle = graph2D.triangle.points
     val A = offset(graph2D.triangle.points[0])

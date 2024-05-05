@@ -1,6 +1,9 @@
 package com.cjanie.pavages.logic
 
+import com.cjanie.pavages.logic.triangles.GoldenTriangle
+import com.cjanie.pavages.logic.triangles.GoldenTriangleFactory
 import com.cjanie.pavages.logic.triangles.IsoscelesTriangle
+import com.cjanie.pavages.tools.Trigonometry
 
 class Graph2D(size: Double = 200.0) {
 
@@ -36,9 +39,9 @@ class Graph2D(size: Double = 200.0) {
         )
     )
 
-
+    val scale = 200.0
     val P = Point(x = O.x - 200, y = 100.0)
-    private val A = Point(x = O.x - 400, y = 0.0)
-    val triangle = IsoscelesTriangle(P, A, O)
+
+    val triangle = GoldenTriangleFactory.create(scale)
 
 }
