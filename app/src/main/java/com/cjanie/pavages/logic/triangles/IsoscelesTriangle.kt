@@ -11,7 +11,7 @@ open class IsoscelesTriangle(val oppositeToBase: Point, val basePoint1: Point, v
     private val baseSide = Line(basePoint1, basePoint2)
 
     init {
-        assert(duplicatedSides[0].length() == duplicatedSides[1].length())
+        assert(duplicatedSides[0].length().toFloat() == duplicatedSides[1].length().toFloat())
     }
 
     fun duplicatedSideLength(): Double {

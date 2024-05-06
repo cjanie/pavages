@@ -92,6 +92,12 @@ class MainActivity : ComponentActivity() {
                             val goldenTriangle = canvasAdapter.goldenTrianglePath
                             drawPath(goldenTriangle, Color.Green)
 
+                            val decomposeGoldenTriangle = canvasAdapter.decomposeGoldenTrianglePath
+                            drawPath(decomposeGoldenTriangle, Color.Yellow)
+
+                            val decomposeGoldenGnomon = canvasAdapter.decomposeGoldenGnomonPath
+                            drawPath(decomposeGoldenGnomon, Color.Magenta)
+
                             // http://www.debart.fr/1s/pentagone.mobile.html
                             // Steps to draw a pentagon
 

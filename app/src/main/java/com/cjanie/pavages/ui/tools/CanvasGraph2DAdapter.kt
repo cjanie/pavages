@@ -1,8 +1,11 @@
 package com.cjanie.pavages.ui.tools
 
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Path
 import com.cjanie.pavages.logic.Graph2D
 import com.cjanie.pavages.logic.Point
+import com.cjanie.pavages.logic.triangles.GoldenTriangle
+import com.cjanie.pavages.logic.triangles.Triangle
 
 class CanvasGraph2DAdapter(canvasSize: Float) {
 
@@ -37,13 +40,24 @@ class CanvasGraph2DAdapter(canvasSize: Float) {
     // Graph 2D containing shapes
     private val graph2D = Graph2D()
 
-    private val goldenTrianglePoints = graph2D.goldenTriangle.points
+    // Initial shape path
+    val goldenTrianglePath = path(graph2D.goldenTriangle)
 
-    // Path for shape
-    val goldenTrianglePath = DrawTools.createPath(arrayOf(
-        offset(goldenTrianglePoints[0]),
-        offset(goldenTrianglePoints[1]),
-        offset(goldenTrianglePoints[2])))
+    // Decompose
+    // Step 1 : 1 golden triangle, 1 golden gnomon
+    val decomposeGoldenTrianglePath = path(graph2D.decomposeGoldenTriangle)
+
+    val decomposeGoldenGnomonPath = path(graph2D.decomposeGoldenGnomon)
+
+    private fun path(triangle: Triangle): Path {
+        return DrawTools.createPath(
+            arrayOf(
+                offset(triangle.points[0]),
+                offset(triangle.points[1]),
+                offset(triangle.points[2])
+            )
+        )
+    }
 
     private fun offset(point: Point): Offset {
         return Offset(
@@ -51,6 +65,8 @@ class CanvasGraph2DAdapter(canvasSize: Float) {
             center.y - point.y.toFloat()
         )
     }
+
+
 
 }
 
