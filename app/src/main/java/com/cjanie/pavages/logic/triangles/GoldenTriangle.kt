@@ -1,9 +1,8 @@
 package com.cjanie.pavages.logic.triangles
 
-import com.cjanie.pavages.logic.Line
 import com.cjanie.pavages.logic.Number
-import com.cjanie.pavages.logic.Pentagon
 import com.cjanie.pavages.logic.Point
+import com.cjanie.pavages.tools.Trigonometry
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -14,19 +13,37 @@ class GoldenTriangle(
 ): IsoscelesTriangle(oppositeToBase, basePoint1, basePoint2) {
 
     companion object {
-        fun create(pentagon: Pentagon): GoldenTriangle {
-            return pentagon.goldenTriangle
+        // Golden ratio: 1:phi:phi
+        val duplicatedSidesRatio = Number.GOLDEN_NUMBER_PHI
+        val baseRatio = 1.0
+        val angleAtBaseDegrees = 72.0
+
+        fun create(baseLength: Double): GoldenTriangle {
+
+            // Golden ratio
+            val hypothenuseLength = GoldenTriangle.duplicatedSidesRatio * baseLength
+            val baseLength = GoldenTriangle.baseRatio * baseLength
+            // Get height by trigonometry
+            val height = Trigonometry.oppositeSideLengthFromHypotenuseAndAngle(hypothenuseLength,
+                angleAtBaseDegrees
+            )
+            // Set points coordinates
+            val A = Point(x = 0.0, y = height)
+            val B = Point(x = -baseLength / 2, y = 0.0)
+            val C = Point(x = baseLength / 2, y = 0.0)
+
+            return GoldenTriangle(A, B, C)
+
         }
 
         fun duplicatedSidesLength(baseLength: Double): Double {
             // Golden ratio: 1:phi:phi
-            return baseLength * Number.GOLDEN_NUMBER_PHI
+            return baseLength * duplicatedSidesRatio
         }
+    }
 
-        fun createPointOppositeToBase(basePoint1: Point, basePoint2: Point) {
-            val base = Line(basePoint1, basePoint2)
-            val baseMiddlePoint = base.middle()
-        }
+    fun decompose(): GoldenTriangle {
+        return this
     }
 
 init {

@@ -1,7 +1,6 @@
 package com.cjanie.pavages.ui.tools
 
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Path
 import com.cjanie.pavages.logic.Graph2D
 import com.cjanie.pavages.logic.Point
 
@@ -35,16 +34,16 @@ class CanvasGraph2DAdapter(canvasSize: Float) {
         canvasSize / 2f
     )
 
-    // Set the graph2D size fitting the view size
-    private val graph2D = Graph2D(canvasSize.toDouble())
-    val P = offset(graph2D.P)
+    // Graph 2D containing shapes
+    private val graph2D = Graph2D()
 
-    val triangle = graph2D.triangle.points
-    val A = offset(graph2D.triangle.points[0])
-    val B = offset(graph2D.triangle.points[1])
-    val C = offset(graph2D.triangle.points[2])
+    private val goldenTrianglePoints = graph2D.goldenTriangle.points
 
-    val trianglePath = DrawTools.createPath(arrayOf(A, B, C))
+    // Path for shape
+    val goldenTrianglePath = DrawTools.createPath(arrayOf(
+        offset(goldenTrianglePoints[0]),
+        offset(goldenTrianglePoints[1]),
+        offset(goldenTrianglePoints[2])))
 
     private fun offset(point: Point): Offset {
         return Offset(

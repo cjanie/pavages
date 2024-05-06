@@ -89,11 +89,8 @@ class MainActivity : ComponentActivity() {
                             val center = canvasAdapter.center
                             drawText("O", center)
 
-                            val P = canvasAdapter.P
-                            drawText("P", P)
-
-                            val triangle = canvasAdapter.trianglePath
-                            drawPath(triangle, Color.Green)
+                            val goldenTriangle = canvasAdapter.goldenTrianglePath
+                            drawPath(goldenTriangle, Color.Green)
 
                             // http://www.debart.fr/1s/pentagone.mobile.html
                             // Steps to draw a pentagon
