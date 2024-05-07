@@ -1,5 +1,6 @@
 package com.cjanie.pavages.logic.triangles
 
+import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.Number
 import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.tools.Symmetry
@@ -8,10 +9,11 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 
 class GoldenTriangle(
-    oppositeToBase: Point,
-    basePoint1: Point,
-    basePoint2: Point
-): IsoscelesTriangle(oppositeToBase, basePoint1, basePoint2) {
+    oppositeToBase: Point = Point(x = 0.0, y = height),
+    basePoint1: Point = Point( x = -baseRatio / 2.0, y = 0.0),
+    basePoint2: Point = Point( x = baseRatio / 2.0, y = 0.0)
+): IsoscelesTriangle(oppositeToBase, basePoint1, basePoint2),
+    Decomposable {
 
     val decomposeStep1 by lazy { DecomposeStep1() }
     val decomposeStep2 by lazy { DecomposeStep2() }
@@ -32,7 +34,11 @@ class GoldenTriangle(
     companion object {
         // Golden ratio: 1:phi:phi
         val duplicatedSidesRatio = Number.GOLDEN_NUMBER_PHI
+        val baseRatio = 1.0
         val angleAtBaseDegrees = 72.0
+        val height = Trigonometry.oppositeSideLengthFromHypotenuseAndAngle(
+            duplicatedSidesRatio,
+            angleAtBaseDegrees)
 
         fun create(baseLength: Double): GoldenTriangle {
 
@@ -54,6 +60,12 @@ class GoldenTriangle(
         }
     }
 
+    fun iterate(iteration: Int): Array<Decomposable> {
+        if(iteration == 1)
+            return arrayOf(decomposeStep2.goldenGnomon, decomposeStep2.goldenTriangles[0], decomposeStep2.goldenTriangles[1])
+        // If iteration is 0, return the initial golden triangle
+        else return arrayOf(this)
+    }
     inner class DecomposeStep1 {
         // Create golden triangle BCP of base CP
         private val duplicatedSidesLength = points[2].x - points[1].x

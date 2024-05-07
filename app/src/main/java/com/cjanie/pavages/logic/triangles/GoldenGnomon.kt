@@ -1,5 +1,6 @@
 package com.cjanie.pavages.logic.triangles
 
+import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.Number
 import com.cjanie.pavages.logic.Pentagon
 import com.cjanie.pavages.logic.Point
@@ -8,7 +9,8 @@ class GoldenGnomon(
     pointOppositeToBase: Point,
     basePoint1: Point,
     basePoint2: Point
-): IsoscelesTriangle(pointOppositeToBase, basePoint1, basePoint2) {
+): IsoscelesTriangle(pointOppositeToBase, basePoint1, basePoint2),
+    Decomposable {
 
     companion object {
         fun createGoldenGnomons(pentagon: Pentagon): Array<GoldenGnomon> {

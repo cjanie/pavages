@@ -5,7 +5,9 @@ import com.cjanie.pavages.logic.Number
 import com.cjanie.pavages.logic.PentagonBuilder
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 import com.cjanie.pavages.logic.Point
+import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Test
 
 class GoldenTriangleTest {
@@ -25,5 +27,23 @@ class GoldenTriangleTest {
         ).build()
         val triangle = pentagon.goldenTriangle
         assertEquals(Number.GOLDEN_NUMBER_PHI.toFloat(), (triangle.duplicatedSideLength() / triangle.baseSideLength()).toFloat(), 0.0f)
+    }
+
+    @Test
+    fun `golden ratio checked`() {
+        GoldenTriangle()
+    }
+
+    @Test
+    fun `decompose 1st iteration returns 2 golden triangles and 1 golden gnomon`() {
+        val goldenTriangle = GoldenTriangle()
+        val decomposables = goldenTriangle.iterate(1)
+        assertEquals(3, decomposables.size)
+
+        val goldenTriangles = decomposables.filter { it is GoldenTriangle }
+        assertEquals(2, goldenTriangles.size)
+
+        val gnomons = decomposables.filter { it is GoldenGnomon }
+        assertEquals(1, gnomons.size)
     }
 }
