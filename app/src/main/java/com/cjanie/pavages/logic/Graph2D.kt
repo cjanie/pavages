@@ -6,13 +6,8 @@ class Graph2D {
 
     val goldenTriangle = GoldenTriangle.create(baseLength = 200.0)
 
-    val decomposeStep1 = goldenTriangle.decomposeStep1
+    fun iterate(iteration: Int): Array<Decomposable> {
+        return goldenTriangle.iterate(iteration)
+    }
 
-    val decomposeStep2 = goldenTriangle.decomposeStep2
-
-    val decomposeStep2ArrangeAdjacentGoldenTriangles = goldenTriangle.decomposeStep2ArrangeAdjacentGoldenTriangles
-
-    val decomposeStep3 = goldenTriangle.decomposeStep3
-
-    val decomposeStep4 = goldenTriangle.decomposeStep4
 }

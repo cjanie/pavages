@@ -46,4 +46,17 @@ class GoldenTriangleTest {
         val gnomons = decomposables.filter { it is GoldenGnomon }
         assertEquals(1, gnomons.size)
     }
+
+    @Test
+    fun `decompose 1st iteration another arrangement`() {
+        val goldenTriangle = GoldenTriangle()
+        val decomposables = goldenTriangle.iterate(1, true)
+        assertEquals(3, decomposables.size)
+
+        val goldenTriangles = decomposables.filter { it is GoldenTriangle }
+        assertEquals(2, goldenTriangles.size)
+
+        val gnomons = decomposables.filter { it is GoldenGnomon }
+        assertEquals(1, gnomons.size)
+    }
 }

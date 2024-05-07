@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
                         mutableFloatStateOf(0f)
                     }
                     
-                    var drawingStep by remember {
+                    var decomposeIteration by remember {
                         mutableIntStateOf(0)
                     }
 
@@ -61,11 +61,11 @@ class MainActivity : ComponentActivity() {
                     }
                     
                     Row {
-                        Button(onClick = { drawingStep -= 1 }) {
+                        Button(onClick = { decomposeIteration -= 1 }) {
                             Text("Back")
                         }
 
-                        Button(onClick = { drawingStep += 1 }) {
+                        Button(onClick = { decomposeIteration += 1 }) {
                             Text("Forward")
                         }
                     }
@@ -117,38 +117,10 @@ class MainActivity : ComponentActivity() {
                             val drawing = canvasAdapter.goldenTriangle
                             drawPath(drawing.path, drawing.color)
 
-                            if(drawingStep == 1) {
-                                for (drawing in canvasAdapter.decomposeStep1.drawings) {
-                                    drawPath(drawing.path, drawing.color)
-                                }
-                                stepText = canvasAdapter.decomposeStep1.text
+                            val drawings = canvasAdapter.decompose(decomposeIteration)
+                            for (drawing in drawings) {
+                                drawPath(drawing.path, drawing.color)
                             }
-
-                            if(drawingStep == 2) {
-                                for(drawing in canvasAdapter.decomposeStep2.drawings) {
-                                    drawPath(drawing.path, drawing.color)
-                                }
-                                stepText = canvasAdapter.decomposeStep2.text
-                            }
-                            if(drawingStep == 3) {
-                                for (drawing in canvasAdapter.decomposeStep2ArrangeAdjacentGoldenTriangles.drawings) {
-                                   drawPath(drawing.path, drawing.color)
-                                }
-                                stepText = canvasAdapter.decomposeStep2ArrangeAdjacentGoldenTriangles.text
-                            }
-
-                            if (drawingStep == 4){
-                                for (drawing in canvasAdapter.decomposeStep3.drawings) {
-                                    drawPath(drawing.path, drawing.color)
-                                }
-                            }
-                            if(drawingStep == 5) {
-                                for (drawing in canvasAdapter.decomposeStep4.drawings) {
-                                    //drawPath(drawing.path, drawing.color)
-                                }
-                            }
-
-
 
                             // http://www.debart.fr/1s/pentagone.mobile.html
                             // Steps to draw a pentagon

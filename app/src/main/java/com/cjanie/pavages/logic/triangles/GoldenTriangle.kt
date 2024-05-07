@@ -15,11 +15,11 @@ class GoldenTriangle(
 ): IsoscelesTriangle(oppositeToBase, basePoint1, basePoint2),
     Decomposable {
 
-    val decomposeStep1 by lazy { DecomposeStep1() }
+    val decomposeInit by lazy { DecomposeInit() }
+    val decompose1NonAdjacentGoldenTrianglesArrangement by lazy { Decompose1NonAdjacentGoldenTrianglesArrangement() }
+    val decomposeStep1AdjacentGoldenTrianglesArrangement by lazy { Decompose1AdjacentGoldenTrianglesArrangement() }
     val decomposeStep2 by lazy { DecomposeStep2() }
-    val decomposeStep2ArrangeAdjacentGoldenTriangles by lazy { DecomposeStep2ArrangeAdjacentGoldenTriangle() }
-    val decomposeStep3 by lazy { DecomposeStep3() }
-    val decomposeStep4 by lazy { DecomposeStep4() }
+
 
     init {
 
@@ -60,13 +60,22 @@ class GoldenTriangle(
         }
     }
 
-    fun iterate(iteration: Int): Array<Decomposable> {
-        if(iteration == 1)
-            return arrayOf(decomposeStep2.goldenGnomon, decomposeStep2.goldenTriangles[0], decomposeStep2.goldenTriangles[1])
+    fun iterate(iteration: Int, arrange: Boolean = false): Array<Decomposable> {
+        if(iteration == 1) {
+            if(arrange) {
+                // Case adjacent golden triangle arrangement
+                return decomposeStep1AdjacentGoldenTrianglesArrangement.decomposables
+            }
+            // Case non adjacent golden triangle arrangement
+            return decompose1NonAdjacentGoldenTrianglesArrangement.decomposables
+        } else if (iteration == 2) {
+            return decomposeStep2.decomposables
+        }
+
         // If iteration is 0, return the initial golden triangle
         else return arrayOf(this)
     }
-    inner class DecomposeStep1 {
+    inner class DecomposeInit {
         // Create golden triangle BCP of base CP
         private val duplicatedSidesLength = points[2].x - points[1].x
 
@@ -81,110 +90,163 @@ class GoldenTriangle(
         val goldenGnomon = GoldenGnomon(P, points[0], points[1])
     }
 
-    inner class DecomposeStep2 {
-        // 2 golden triangle, 1 golden gnomon
-        // 4 arrangements possible
-        // Case: the 2 golden triangles are not adjacent
+    abstract inner class Decompose {
 
-        val P = Symmetry.symmetryByVerticalAxis(0.0, decomposeStep1.P)
-        val goldenGnomon = GoldenGnomon(P, points[1], decomposeStep1.P)
-        val goldenTriangles = arrayOf(
-            decomposeStep1.goldenTriangle,
-            GoldenTriangle(points[0], P, decomposeStep1.P)
-        )
+        abstract val goldenTriangles: Array<GoldenTriangle>
+        abstract val goldenGnomons: Array<GoldenGnomon>
+        abstract val decomposables: Array<Decomposable>
+
     }
 
-    inner class DecomposeStep2ArrangeAdjacentGoldenTriangle {
+    abstract inner class Decompose1: Decompose() {
+
+        protected fun assertion() {
+            assert(goldenTriangles.size == 2)
+            assert(goldenGnomons.size == 1)
+            assert(decomposables.size == 3)
+        }
+
+    }
+
+    inner class Decompose1NonAdjacentGoldenTrianglesArrangement: Decompose1() {
+        // 2 golden triangle, 1 golden gnomon
+
+
+        // Create the golden triangle1 BCP of base CP
+        // Define coordinates of P by trigonometry
+        // We have the angle at base in B of 36° and hypotenuse
+
+        private val duplicatedSidesLength = points[2].x - points[1].x
+
+        // P coordinates
+        val P = Point(
+            x = points[1].x + Trigonometry.adjacentSideLength(duplicatedSidesLength, 36.0),
+            y = points[1].y + Trigonometry.oppositeSideLengthFromHypotenuseAndAngle(duplicatedSidesLength, 36.0)
+
+        )
+        private val goldenTriangle1 = GoldenTriangle(points[1], points[2], P)
+
+        // Second Triangle A, base symP P
+        val symP = Symmetry.symmetryByVerticalAxis(0.0, P)
+        private val goldenTriangle2 = GoldenTriangle(points[0], symP, P)
+
+        // Total 2 goldenTriangles
+        override val goldenTriangles = arrayOf(
+            goldenTriangle1,
+            goldenTriangle2
+        )
+        // + 1 Gnomon
+        override val goldenGnomons = arrayOf(GoldenGnomon(symP, points[1], P))
+
+        override val decomposables: Array<Decomposable> = arrayOf(*goldenTriangles, *goldenGnomons)
+
+        init {
+            assertion()
+        }
+    }
+
+    inner class Decompose1AdjacentGoldenTrianglesArrangement: Decompose1() {
         // triangle A, PP, P
-        val duplicatedSidesLength = decomposeStep1.P.x - decomposeStep2.P.x
+        val duplicatedSidesLength = decompose1NonAdjacentGoldenTrianglesArrangement.P.x - decompose1NonAdjacentGoldenTrianglesArrangement.symP.x
 
         val P = Point(
-            x = decomposeStep2.goldenTriangles[1].points[1].x + Trigonometry.adjacentSideLength(duplicatedSidesLength, 36.0),
-            y = decomposeStep2.goldenTriangles[1].points[1].y + Trigonometry.oppositeSideLengthFromHypotenuseAndAngle(duplicatedSidesLength, 36.0)
+            x = decompose1NonAdjacentGoldenTrianglesArrangement.goldenTriangles[1].points[1].x + Trigonometry.adjacentSideLength(duplicatedSidesLength, 36.0),
+            y = decompose1NonAdjacentGoldenTrianglesArrangement.goldenTriangles[1].points[1].y + Trigonometry.oppositeSideLengthFromHypotenuseAndAngle(duplicatedSidesLength, 36.0)
 
         )
 
-        val goldenGnomon = GoldenGnomon(P, points[0], decomposeStep2.P)
-
-        val goldenTriangle = Triangle(arrayOf(decomposeStep2.P, decomposeStep1.P, P))
-
-        val goldenTriangles = arrayOf(
-            GoldenTriangle(points[2], decomposeStep2.P, points[1]),
-            GoldenTriangle(points[2], P, decomposeStep2.P)
+        override val goldenTriangles = arrayOf(
+            GoldenTriangle(points[2], decompose1NonAdjacentGoldenTrianglesArrangement.symP, points[1]),
+            GoldenTriangle(points[2], P, decompose1NonAdjacentGoldenTrianglesArrangement.symP)
         )
 
+        override val goldenGnomons = arrayOf(GoldenGnomon(P, points[0], decompose1NonAdjacentGoldenTrianglesArrangement.symP))
+
+        override val decomposables: Array<Decomposable>
+            get() = arrayOf(*goldenTriangles, *goldenGnomons)
+
+        init {
+            assertion()
+        }
     }
 
-    inner class DecomposeStep3 {
+    inner class DecomposeStep2 {
 
-        val duplicatedSidesLenght = decomposeStep2ArrangeAdjacentGoldenTriangles.P.x - Symmetry.symmetryByVerticalAxis(0.0, decomposeStep2ArrangeAdjacentGoldenTriangles.P).x
-        private val step2Sym = Symmetry.symmetryByVerticalAxis(0.0, decomposeStep2ArrangeAdjacentGoldenTriangles.P)
-        val goldenTriangle = GoldenTriangle(points[0], step2Sym, decomposeStep2ArrangeAdjacentGoldenTriangles.P)
-        val goldenGnomon = GoldenGnomon(step2Sym, decomposeStep2.P, decomposeStep2ArrangeAdjacentGoldenTriangles.P)
+        // Sym of step1 arrange P
+        private val step1arrangePSym = Symmetry.symmetryByVerticalAxis(0.0, decomposeStep1AdjacentGoldenTrianglesArrangement.P)
+        private val goldenTriangle = GoldenTriangle(points[0], step1arrangePSym, decomposeStep1AdjacentGoldenTrianglesArrangement.P)
+        private val goldenGnomon = GoldenGnomon(step1arrangePSym, decompose1NonAdjacentGoldenTrianglesArrangement.symP, decomposeStep1AdjacentGoldenTrianglesArrangement.P)
 
-        val baseGoldenTriangle = GoldenTriangle(
-            decomposeStep2.P,
+        private val baseGoldenTriangle = GoldenTriangle(
+            decompose1NonAdjacentGoldenTrianglesArrangement.symP,
             points[1],
             Point(
-                x = points[1].x + decomposeStep2ArrangeAdjacentGoldenTriangles.P.x - step2Sym.x,
+                x = points[1].x + decomposeStep1AdjacentGoldenTrianglesArrangement.P.x - step1arrangePSym.x,
                 y = points[1].y
             )
         )
-        val baseGoldeGnomon = GoldenGnomon(
+        private val baseGoldeGnomon = GoldenGnomon(
             baseGoldenTriangle.points[2],
             points[2],
-            decomposeStep2.P
+            decompose1NonAdjacentGoldenTrianglesArrangement.symP
         )
-        val otherGoldenTriangle = GoldenTriangle(
-            decomposeStep2.P,
-            decomposeStep1.P,
-            decomposeStep2ArrangeAdjacentGoldenTriangles.P
+        private val otherGoldenTriangle = GoldenTriangle(
+            decompose1NonAdjacentGoldenTrianglesArrangement.symP,
+            decomposeInit.P,
+            decomposeStep1AdjacentGoldenTrianglesArrangement.P
         )
-        val otherGoldenGnomon = GoldenGnomon(
-            decomposeStep1.P,
-            decomposeStep2.P,
+        private val otherGoldenGnomon = GoldenGnomon(
+            decomposeInit.P,
+            decompose1NonAdjacentGoldenTrianglesArrangement.symP,
             points[2]
         )
 
         // Kite and Dart from losange
-        val P = Point(
+        private val P = Point(
             x = 0.0,
             y = otherGoldenTriangle.points[2].y - otherGoldenTriangle.points[1].y)
-        val goldenGnomon1 = GoldenGnomon(
+        private val goldenGnomon1 = GoldenGnomon(
             P,
             otherGoldenTriangle.points[1],
             otherGoldenTriangle.points[0]
         )
 
-        val goldenGnomon2 = GoldenGnomon(
+        private val goldenGnomon2 = GoldenGnomon(
             P,
             baseGoldenTriangle.points[0],
             baseGoldenTriangle.points[2]
         )
 
-        val goldenTriangle1 = GoldenTriangle(points[2], goldenGnomon1.points[1], goldenGnomon1.points[0])
-        val goldenTriangle2 = GoldenTriangle(points[2], goldenGnomon2.points[0], goldenGnomon2.points[2])
+        private val goldenTriangle1 = GoldenTriangle(points[2], goldenGnomon1.points[1], goldenGnomon1.points[0])
+        private val goldenTriangle2 = GoldenTriangle(points[2], goldenGnomon2.points[0], goldenGnomon2.points[2])
 
+        private val goldenTriangles = arrayOf(goldenTriangle, baseGoldenTriangle, otherGoldenTriangle, goldenTriangle1, goldenTriangle2)
+        private val goldenGnomons = arrayOf(goldenGnomon, baseGoldeGnomon, otherGoldenGnomon, goldenGnomon1, goldenGnomon2)
+        val decomposables: Array<Decomposable> = arrayOf(*goldenTriangles, *goldenGnomons)
+        }
 
     }
+/*
 
     inner class DecomposeStep4 {
         // Kite and Dart from losange
         val P = Point(
             x = 0.0,
-            y = decomposeStep3.otherGoldenTriangle.points[2].y - decomposeStep3.otherGoldenTriangle.points[1].y)
+            y = decomposeStep2.otherGoldenTriangle.points[2].y - decomposeStep2.otherGoldenTriangle.points[1].y)
         val goldenGnomon = GoldenGnomon(
             P,
-            decomposeStep3.otherGoldenTriangle.points[1],
-            decomposeStep3.otherGoldenTriangle.points[0]
+            decomposeStep2.otherGoldenTriangle.points[1],
+            decomposeStep2.otherGoldenTriangle.points[0]
         )
 
         val goldenGnomon2 = GoldenGnomon(
             P,
-            decomposeStep3.baseGoldenTriangle.points[0],
-            decomposeStep3.baseGoldenTriangle.points[2]
+            decomposeStep2.baseGoldenTriangle.points[0],
+            decomposeStep2.baseGoldenTriangle.points[2]
         )
 
     }
 
+
 }
+*/
