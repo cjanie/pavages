@@ -58,6 +58,22 @@ class CanvasGraph2DAdapter(canvasSize: Float) {
         }
     }
 
+    fun kite(): List<Drawing> {
+        return graph2D.kite().map {
+            Drawing(
+                path = path(it), color = Color.Green
+            )
+        }
+    }
+
+    fun dart(): List<Drawing> {
+        return graph2D.dart().map {
+            Drawing(
+                path(it), Color.Red
+            )
+        }
+    }
+
     inner class Drawing(val path: Path, val color: Color)
 
     private fun path(triangle: Triangle): Path {

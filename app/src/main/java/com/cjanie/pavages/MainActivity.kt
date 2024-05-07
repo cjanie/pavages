@@ -121,6 +121,17 @@ class MainActivity : ComponentActivity() {
                             for (drawing in drawings) {
                                 drawPath(drawing.path, drawing.color)
                             }
+                            if(decomposeIteration == 3) {
+                                val kiteDrawings = canvasAdapter.kite()
+                                for (drawing in kiteDrawings) {
+                                    drawPath(drawing.path, drawing.color)
+                                }
+                                val dartDrawings = canvasAdapter.dart()
+                                for (drawing in dartDrawings) {
+                                    drawPath(drawing.path, drawing.color)
+                                }
+                            }
+
 
                             // http://www.debart.fr/1s/pentagone.mobile.html
                             // Steps to draw a pentagon

@@ -15,10 +15,11 @@ class GoldenTriangle(
 ): IsoscelesTriangle(oppositeToBase, basePoint1, basePoint2),
     Decomposable {
 
-    val decomposeInit by lazy { DecomposeInit() }
     val decompose1NonAdjacentGoldenTrianglesArrangement by lazy { Decompose1NonAdjacentGoldenTrianglesArrangement() }
     val decomposeStep1AdjacentGoldenTrianglesArrangement by lazy { Decompose1AdjacentGoldenTrianglesArrangement() }
+    //val decomposeStep2 by lazy { Decompose2Arrange()} //DecomposeStep2() }
     val decomposeStep2 by lazy { DecomposeStep2() }
+    //val decompose2Arrange by lazy { Decompose2Arrange() }
 
 
     init {
@@ -172,7 +173,7 @@ class GoldenTriangle(
         }
     }
 
-    inner class DecomposeStep2: Decompose() {
+    open inner class DecomposeStep2: Decompose() {
 
         val P3 = Point(
             x = points[1].x + P2.x - symP2.x,
@@ -180,10 +181,16 @@ class GoldenTriangle(
         )
 
         // Kite and Dart from losange P3 C P1 symP1
-        private val P4 = Point(
+        val P4 = Point(
             x = 0.0,
             y = P2.y - P1.y)
 
+        // P5 Sym of P2 on horizontal axis P1 symP1
+        // val P5 = Symmetry.symmetryByHorizontalAxis(P1.y, P2)
+        val P5 = Point(
+            x = P2.x,
+            y = P1.y - (P2.y - P1.y)
+        )
         override val goldenTriangles = arrayOf(
             // Top
             GoldenTriangle(points[0], symP2, P2),
@@ -193,7 +200,7 @@ class GoldenTriangle(
                 points[1],
                 P3
             ),
-            //
+            // under top
             GoldenTriangle(
                 symP1,
                 P1,
@@ -201,25 +208,12 @@ class GoldenTriangle(
             ),
             // Kite
             GoldenTriangle(points[2], P1, P4),
-            GoldenTriangle(points[2], P4, P3))
+            GoldenTriangle(points[2], P4, P3)
+            )
+
 
         override val goldenGnomons = arrayOf(
             GoldenGnomon(symP2, symP1, P2),
-            /*
-            // base // TODO decompose
-            GoldenGnomon(
-                P3,
-                points[2],
-                symP1
-            ),
-            // other // TODO decompose
-            GoldenGnomon(
-                P1,
-                symP1,
-                points[2]
-            ),
-
-             */
             // Dart
             GoldenGnomon(
                 P4,
@@ -234,14 +228,37 @@ class GoldenTriangle(
         )
 
         override val decomposables: Array<Decomposable> = arrayOf(*goldenTriangles, *goldenGnomons)
-
+/*
         init {
             assert(goldenTriangles.size == 5)
             assert(goldenGnomons.size == 3)
             assert(decomposables.size == 8)
         }
 
+ */
+        val kite = arrayOf(
+                GoldenTriangle(symP1, P5, P1),
+                GoldenTriangle(symP1, P3, P5)
+        )
+
+        val dart = arrayOf(
+            GoldenGnomon(P5, P3, points[2]),
+            GoldenGnomon(P5, points[2], P1)
+        )
+
     }
+/*
+    inner class Decompose2Arrange: DecomposeStep2() {
+
+        override val goldenTriangles = arrayOf(
+                GoldenTriangle(symP1, P5, P1),
+                GoldenTriangle(symP1, P3, P5)
+            )
+        override val decomposables: Array<Decomposable> = arrayOf(*goldenTriangles)
+
+    }
+
+ */
 
     }
 /*

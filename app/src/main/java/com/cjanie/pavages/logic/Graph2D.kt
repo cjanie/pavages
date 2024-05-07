@@ -1,5 +1,6 @@
 package com.cjanie.pavages.logic
 
+import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
 class Graph2D {
@@ -8,6 +9,14 @@ class Graph2D {
 
     fun iterate(iteration: Int): Array<Decomposable> {
         return goldenTriangle.iterate(iteration)
+    }
+
+    fun kite(): Array<GoldenTriangle> {
+        return goldenTriangle.decomposeStep2.kite
+    }
+
+    fun dart(): Array<GoldenGnomon> {
+        return goldenTriangle.decomposeStep2.dart
     }
 
 }
