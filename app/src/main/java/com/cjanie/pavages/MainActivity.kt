@@ -6,14 +6,18 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -46,6 +50,27 @@ class MainActivity : ComponentActivity() {
                     }
                     var columnWidthPx by remember {
                         mutableFloatStateOf(0f)
+                    }
+                    
+                    var drawingStep by remember {
+                        mutableIntStateOf(0)
+                    }
+
+                    var stepText by remember {
+                        mutableStateOf("Initial")
+                    }
+                    
+                    Row {
+                        Button(onClick = { drawingStep -= 1 }) {
+                            Text("Back")
+                        }
+
+                        Button(onClick = { drawingStep += 1 }) {
+                            Text("Forward")
+                        }
+                    }
+                    Row {
+                        Text(stepText)
                     }
 
                     Column(
@@ -89,14 +114,41 @@ class MainActivity : ComponentActivity() {
                             val center = canvasAdapter.center
                             drawText("O", center)
 
-                            val goldenTriangle = canvasAdapter.goldenTrianglePath
-                            drawPath(goldenTriangle, Color.Green)
+                            val drawing = canvasAdapter.goldenTriangle
+                            drawPath(drawing.path, drawing.color)
 
-                            val decomposeGoldenTriangle = canvasAdapter.decomposeGoldenTrianglePath
-                            drawPath(decomposeGoldenTriangle, Color.Yellow)
+                            if(drawingStep == 1) {
+                                for (drawing in canvasAdapter.decomposeStep1.drawings) {
+                                    drawPath(drawing.path, drawing.color)
+                                }
+                                stepText = canvasAdapter.decomposeStep1.text
+                            }
 
-                            val decomposeGoldenGnomon = canvasAdapter.decomposeGoldenGnomonPath
-                            drawPath(decomposeGoldenGnomon, Color.Magenta)
+                            if(drawingStep == 2) {
+                                for(drawing in canvasAdapter.decomposeStep2.drawings) {
+                                    drawPath(drawing.path, drawing.color)
+                                }
+                                stepText = canvasAdapter.decomposeStep2.text
+                            }
+                            if(drawingStep == 3) {
+                                for (drawing in canvasAdapter.decomposeStep2ArrangeAdjacentGoldenTriangles.drawings) {
+                                   drawPath(drawing.path, drawing.color)
+                                }
+                                stepText = canvasAdapter.decomposeStep2ArrangeAdjacentGoldenTriangles.text
+                            }
+
+                            if (drawingStep == 4){
+                                for (drawing in canvasAdapter.decomposeStep3.drawings) {
+                                    drawPath(drawing.path, drawing.color)
+                                }
+                            }
+                            if(drawingStep == 5) {
+                                for (drawing in canvasAdapter.decomposeStep4.drawings) {
+                                    //drawPath(drawing.path, drawing.color)
+                                }
+                            }
+
+
 
                             // http://www.debart.fr/1s/pentagone.mobile.html
                             // Steps to draw a pentagon
