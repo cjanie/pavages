@@ -7,16 +7,7 @@ class Graph2D {
 
     val goldenTriangle = GoldenTriangle.create(baseLength = 200.0)
 
-    fun iterate(iteration: Int): Array<Decomposable> {
-        return goldenTriangle.iterate(iteration)
+    fun iterate(iteration: Int, arrange: Boolean): Array<Decomposable> {
+        return goldenTriangle.iterate(iteration, arrange)
     }
-
-    fun kite(): Array<GoldenTriangle> {
-        return goldenTriangle.decompose2KiteBottom.kite()
-    }
-
-    fun dart(): Array<GoldenGnomon> {
-        return goldenTriangle.decompose2KiteBottom.dart()
-    }
-
 }

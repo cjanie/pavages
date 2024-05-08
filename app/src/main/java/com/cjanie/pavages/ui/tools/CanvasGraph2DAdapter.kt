@@ -45,31 +45,12 @@ class CanvasGraph2DAdapter(canvasSize: Float) {
     // Graph 2D containing shapes
     private val graph2D = Graph2D()
 
-    // Initial shape path
-    val goldenTriangle = Drawing(path(graph2D.goldenTriangle), goldenTriangleColor)
-
-    fun decompose(iteration: Int) : List<Drawing> {
-        return graph2D.iterate(iteration).map {
+    fun decompose(iteration: Int, arrange: Boolean) : List<Drawing> {
+        return graph2D.iterate(iteration, arrange).map {
             Drawing(
                 path = path(it as Triangle),
                 color = if (it is GoldenTriangle) goldenTriangleColor
                 else goldenGnomonColor
-            )
-        }
-    }
-
-    fun kite(): List<Drawing> {
-        return graph2D.kite().map {
-            Drawing(
-                path = path(it), color = Color.Green
-            )
-        }
-    }
-
-    fun dart(): List<Drawing> {
-        return graph2D.dart().map {
-            Drawing(
-                path(it), Color.Red
             )
         }
     }

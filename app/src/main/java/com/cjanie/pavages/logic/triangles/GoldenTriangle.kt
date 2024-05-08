@@ -17,9 +17,9 @@ class GoldenTriangle(
 
     val decompose1NonAdjacentGoldenTrianglesArrangement by lazy { Decompose1NonAdjacentGoldenTrianglesArrangement() }
     val decomposeStep1AdjacentGoldenTrianglesArrangement by lazy { Decompose1AdjacentGoldenTrianglesArrangement() }
-    //val decomposeStep2 by lazy { Decompose2Arrange()} //DecomposeStep2() }
-    val decompose2KiteBottom by lazy { Decompose2DartBottomArrangement() }
-    //val decompose2Arrange by lazy { Decompose2Arrange() }
+
+    val decompose2KiteBottomArrangement by lazy { Decompose2KiteBottomArrangement() }
+    val decompose2DartBottomArrangement by lazy { Decompose2DartBottomArrangement()}
 
 
     init {
@@ -70,26 +70,14 @@ class GoldenTriangle(
             // Case non adjacent golden triangle arrangement
             return decompose1NonAdjacentGoldenTrianglesArrangement.decomposables
         } else if (iteration == 2) {
-            return decompose2KiteBottom.decomposables
+            if(arrange) {
+                return decompose2DartBottomArrangement.decomposables
+            }
+            return decompose2KiteBottomArrangement.decomposables
         }
 
         // If iteration is 0, return the initial golden triangle
         else return arrayOf(this)
-    }
-    inner class DecomposeInit {
-        // Create golden triangle BCP of base CP
-        private val duplicatedSidesLength = points[2].x - points[1].x
-
-        // We have the angle at base in B of 36° and hypotenuse
-        // coordinates of P by trigonometry
-        // We have the angle at base in B of 36° and hypotenuse
-        val P = Point(
-            x = points[1].x + Trigonometry.adjacentSideLength(duplicatedSidesLength, 36.0),
-            y = points[1].y + Trigonometry.oppositeSideLengthFromHypotenuseAndAngle(duplicatedSidesLength, 36.0)
-
-        )
-        val goldenTriangle = GoldenTriangle(points[1], points[2], P)
-        val goldenGnomon = GoldenGnomon(P, points[0], points[1])
     }
 
     abstract inner class Decompose {
@@ -192,12 +180,23 @@ class GoldenTriangle(
             y = P1.y - (P2.y - P1.y)
         )
 
+        // Golden triangle P2 P6 P2sym
+        val duplicatedSidesLengthP2P6symP2 = P2.x - symP2.x
+        val P6 = Point(
+            x = P2.x - Trigonometry.adjacentSideLength(duplicatedSidesLengthP2P6symP2, 36.0),
+            y = P2.y + Trigonometry.oppositeSideLengthFromHypotenuseAndAngle(duplicatedSidesLengthP2P6symP2, 36.0)
+        )
+
         abstract fun kite(): Array<GoldenTriangle>
         abstract fun dart(): Array<GoldenGnomon>
 
+        abstract fun topGoldenTriangle(): GoldenTriangle
+
+        abstract fun topGoldenGnomon(): GoldenGnomon
+
         override val goldenTriangles = arrayOf(
             // Top
-            GoldenTriangle(points[0], symP2, P2),
+            topGoldenTriangle(),
             // base
             GoldenTriangle(
                 symP1,
@@ -215,7 +214,7 @@ class GoldenTriangle(
         )
 
         override val goldenGnomons = arrayOf(
-            GoldenGnomon(symP2, symP1, P2),
+            topGoldenGnomon(),
             // Dart
             *dart()
         )
@@ -228,7 +227,7 @@ class GoldenTriangle(
         }
 
     }
-    inner class Decompose2KiteBottom: Decompose2() {
+    inner class Decompose2KiteBottomArrangement: Decompose2() {
 
         // Kite at bottom
         override fun kite() = arrayOf(
@@ -250,6 +249,14 @@ class GoldenTriangle(
             )
         )
 
+        override fun topGoldenTriangle(): GoldenTriangle {
+            return GoldenTriangle(points[0], symP2, P2)
+        }
+
+        override fun topGoldenGnomon(): GoldenGnomon {
+            return GoldenGnomon(symP2, symP1, P2)
+        }
+
     }
 
     inner class Decompose2DartBottomArrangement: Decompose2() {
@@ -264,32 +271,14 @@ class GoldenTriangle(
             GoldenGnomon(P5, points[2], P1)
         )
 
-    }
+        override fun topGoldenTriangle(): GoldenTriangle {
+            return GoldenTriangle(symP1, P2, P6)
+        }
 
-
-
-    }
-/*
-
-    inner class DecomposeStep4 {
-        // Kite and Dart from losange
-        val P = Point(
-            x = 0.0,
-            y = decomposeStep2.otherGoldenTriangle.points[2].y - decomposeStep2.otherGoldenTriangle.points[1].y)
-        val goldenGnomon = GoldenGnomon(
-            P,
-            decomposeStep2.otherGoldenTriangle.points[1],
-            decomposeStep2.otherGoldenTriangle.points[0]
-        )
-
-        val goldenGnomon2 = GoldenGnomon(
-            P,
-            decomposeStep2.baseGoldenTriangle.points[0],
-            decomposeStep2.baseGoldenTriangle.points[2]
-        )
+        override fun topGoldenGnomon(): GoldenGnomon {
+            return GoldenGnomon(P6, P2, points[0])
+        }
 
     }
-
 
 }
-*/
