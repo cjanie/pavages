@@ -8,7 +8,7 @@ import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 import com.cjanie.pavages.logic.triangles.Triangle
 
-class CanvasGraph2DAdapter(canvasSize: Float) {
+class CanvasAdapter(canvasSize: Float) {
     companion object {
         val goldenTriangleColor = Color(android.graphics.Color.parseColor("#FFD700"))
         val goldenGnomonColor = Color(android.graphics.Color.parseColor("#C0C0C0"))

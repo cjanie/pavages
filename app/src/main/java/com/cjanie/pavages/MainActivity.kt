@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cjanie.pavages.ui.theme.PavagesTheme
 import com.cjanie.pavages.ui.tools.DrawTools
-import com.cjanie.pavages.ui.tools.CanvasGraph2DAdapter
+import com.cjanie.pavages.ui.tools.CanvasAdapter
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,10 +59,6 @@ class MainActivity : ComponentActivity() {
                     var arrange by remember {
                         mutableStateOf(false)
                     }
-
-                    var stepText by remember {
-                        mutableStateOf("Initial")
-                    }
                     
                     Row {
                         Button(onClick = { decomposeIteration -= 1 }) {
@@ -75,7 +71,6 @@ class MainActivity : ComponentActivity() {
                         Button(onClick = { arrange = !arrange }) {
                             Text("Arrange")
                         }
-                        Text(stepText)
                     }
 
                     Column(
@@ -107,7 +102,7 @@ class MainActivity : ComponentActivity() {
                                 drawText(this, text, offset)
                             }
 
-                            val canvasAdapter = CanvasGraph2DAdapter(canvasSizePx)
+                            val canvasAdapter = CanvasAdapter(canvasSizePx)
                             // Draw Graph (horizontal and vertical axis, center O)
                             val horizontalAxis = canvasAdapter.horizontalAxis
                             drawLine(Color.Blue, horizontalAxis[0], horizontalAxis[1], strokeWidth)
@@ -118,7 +113,7 @@ class MainActivity : ComponentActivity() {
                             val center = canvasAdapter.center
                             drawText("O", center)
 
-                            // Draw the decomposable shape
+                            // Drawings
                             val drawings = canvasAdapter.decompose(decomposeIteration, arrange)
                             for (drawing in drawings) {
                                 drawPath(drawing.path, drawing.color)
@@ -126,26 +121,15 @@ class MainActivity : ComponentActivity() {
 
                         }
 
-
                     }
                 }
             }
         }
     }
 
-    @Composable
-    fun Greeting(name: String, modifier: Modifier = Modifier) {
-        Text(
-            text = "Hello $name!",
-            modifier = modifier
-        )
-    }
+}
 
-    @Preview(showBackground = true)
-    @Composable
-    fun GreetingPreview() {
-        PavagesTheme {
-            Greeting("Android")
-        }
-    }
+@Composable
+fun Buttons() {
+
 }

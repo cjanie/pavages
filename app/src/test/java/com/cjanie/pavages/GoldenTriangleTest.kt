@@ -85,4 +85,5 @@ class GoldenTriangleTest {
         val gnomons = decomposables.filter { it is GoldenGnomon }
         assertEquals(3, gnomons.size)
     }
+
 }
