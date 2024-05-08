@@ -61,22 +61,28 @@ class GoldenTriangle(
         }
     }
 
-    fun iterate(iteration: Int, arrange: Boolean = false): Array<Decomposable> {
-        val pointsToDecompose = getPointsToDecompose(iteration)
-        if(iteration == 1) {
-            if(arrange) {
-                // Case adjacent golden triangle arrangement
-                return decomposeStep1AdjacentGoldenTrianglesArrangement.decomposables
-            }
-            // Case non adjacent golden triangle arrangement
-            return decompose1NonAdjacentGoldenTrianglesArrangement.decomposables
-        } else if (iteration == 2) {
-            if(arrange) {
-                return decompose2DartBottomArrangement.decomposables
-            }
-            return decompose2KiteBottomArrangement.decomposables
+    fun oneToThree(arrange: Boolean): Array<Decomposable> {
+        if(arrange) {
+            // Case adjacent golden triangle arrangement
+            return decomposeStep1AdjacentGoldenTrianglesArrangement.decomposables
         }
+        // Case non adjacent golden triangle arrangement
+        return decompose1NonAdjacentGoldenTrianglesArrangement.decomposables
+    }
 
+    fun upToKiteAndDart(arrange: Boolean): Array<Decomposable> {
+        if(arrange) {
+            return decompose2DartBottomArrangement.decomposables
+        }
+        return decompose2KiteBottomArrangement.decomposables
+    }
+
+    fun iterate(iteration: Int, arrange: Boolean = false): Array<Decomposable> {
+        if(iteration == 1) {
+            return oneToThree(arrange)
+        } else if (iteration == 2) {
+            return upToKiteAndDart(arrange)
+        }
         // Default return the initial golden triangle ABC
         return arrayOf(this)
     }
