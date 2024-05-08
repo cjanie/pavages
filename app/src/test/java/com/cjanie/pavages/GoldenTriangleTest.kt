@@ -12,6 +12,8 @@ import org.junit.Test
 
 class GoldenTriangleTest {
 
+    val goldenTriangle = GoldenTriangle()
+
     @Test(expected = AssertionError::class)
     fun `duplicated side length is in the golden ratio phi to the base side`() {
         val A = Point("A", 0.0, 2.0)
@@ -49,7 +51,7 @@ class GoldenTriangleTest {
 
     @Test
     fun `decompose 1st iteration another arrangement`() {
-        val goldenTriangle = GoldenTriangle()
+
         val decomposables = goldenTriangle.iterate(1, true)
         assertEquals(3, decomposables.size)
 
@@ -58,5 +60,29 @@ class GoldenTriangleTest {
 
         val gnomons = decomposables.filter { it is GoldenGnomon }
         assertEquals(1, gnomons.size)
+    }
+
+    @Test
+    fun `decompose 2nd iteration return 5 golden triangles and 3 golden gnomons`() {
+        val decomposables = goldenTriangle.iterate(2)
+        assertEquals(8, decomposables.size)
+
+        val goldenTriangles = decomposables.filter { it is GoldenTriangle }
+        assertEquals(5, goldenTriangles.size)
+
+        val gnomons = decomposables.filter { it is GoldenGnomon }
+        assertEquals(3, gnomons.size)
+    }
+
+    @Test
+    fun `decompose 2nd other arrangement`() {
+        val decomposables = goldenTriangle.iterate(2, true)
+        assertEquals(8, decomposables.size)
+
+        val goldenTriangles = decomposables.filter { it is GoldenTriangle }
+        assertEquals(5, goldenTriangles.size)
+
+        val gnomons = decomposables.filter { it is GoldenGnomon }
+        assertEquals(3, gnomons.size)
     }
 }
