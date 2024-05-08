@@ -12,11 +12,11 @@ class Graph2D {
     }
 
     fun kite(): Array<GoldenTriangle> {
-        return goldenTriangle.decomposeStep2.kite
+        return goldenTriangle.decompose2KiteBottom.kite()
     }
 
     fun dart(): Array<GoldenGnomon> {
-        return goldenTriangle.decomposeStep2.dart
+        return goldenTriangle.decompose2KiteBottom.dart()
     }
 
 }

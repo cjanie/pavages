@@ -18,7 +18,7 @@ class GoldenTriangle(
     val decompose1NonAdjacentGoldenTrianglesArrangement by lazy { Decompose1NonAdjacentGoldenTrianglesArrangement() }
     val decomposeStep1AdjacentGoldenTrianglesArrangement by lazy { Decompose1AdjacentGoldenTrianglesArrangement() }
     //val decomposeStep2 by lazy { Decompose2Arrange()} //DecomposeStep2() }
-    val decomposeStep2 by lazy { DecomposeStep2() }
+    val decompose2KiteBottom by lazy { Decompose2DartBottomArrangement() }
     //val decompose2Arrange by lazy { Decompose2Arrange() }
 
 
@@ -70,7 +70,7 @@ class GoldenTriangle(
             // Case non adjacent golden triangle arrangement
             return decompose1NonAdjacentGoldenTrianglesArrangement.decomposables
         } else if (iteration == 2) {
-            return decomposeStep2.decomposables
+            return decompose2KiteBottom.decomposables
         }
 
         // If iteration is 0, return the initial golden triangle
@@ -173,8 +173,7 @@ class GoldenTriangle(
         }
     }
 
-    open inner class DecomposeStep2: Decompose() {
-
+    abstract inner class Decompose2: Decompose() {
         val P3 = Point(
             x = points[1].x + P2.x - symP2.x,
             y = points[1].y
@@ -183,7 +182,8 @@ class GoldenTriangle(
         // Kite and Dart from losange P3 C P1 symP1
         val P4 = Point(
             x = 0.0,
-            y = P2.y - P1.y)
+            y = P2.y - P1.y
+        )
 
         // P5 Sym of P2 on horizontal axis P1 symP1
         // val P5 = Symmetry.symmetryByHorizontalAxis(P1.y, P2)
@@ -191,6 +191,10 @@ class GoldenTriangle(
             x = P2.x,
             y = P1.y - (P2.y - P1.y)
         )
+
+        abstract fun kite(): Array<GoldenTriangle>
+        abstract fun dart(): Array<GoldenGnomon>
+
         override val goldenTriangles = arrayOf(
             // Top
             GoldenTriangle(points[0], symP2, P2),
@@ -206,15 +210,34 @@ class GoldenTriangle(
                 P1,
                 P2
             ),
-            // Kite
-            GoldenTriangle(points[2], P1, P4),
-            GoldenTriangle(points[2], P4, P3)
-            )
-
+            // Kite at bottom
+            *kite()
+        )
 
         override val goldenGnomons = arrayOf(
             GoldenGnomon(symP2, symP1, P2),
             // Dart
+            *dart()
+        )
+
+        override val decomposables: Array<Decomposable> = arrayOf(*goldenTriangles, *goldenGnomons)
+        init {
+            assert(goldenTriangles.size == 5)
+            assert(goldenGnomons.size == 3)
+            assert(decomposables.size == 8)
+        }
+
+    }
+    inner class Decompose2KiteBottom: Decompose2() {
+
+        // Kite at bottom
+        override fun kite() = arrayOf(
+            GoldenTriangle(points[2], P1, P4),
+            GoldenTriangle(points[2], P4, P3)
+        )
+
+        // Dart up
+        override fun dart() = arrayOf(
             GoldenGnomon(
                 P4,
                 P1,
@@ -227,38 +250,23 @@ class GoldenTriangle(
             )
         )
 
-        override val decomposables: Array<Decomposable> = arrayOf(*goldenTriangles, *goldenGnomons)
-/*
-        init {
-            assert(goldenTriangles.size == 5)
-            assert(goldenGnomons.size == 3)
-            assert(decomposables.size == 8)
-        }
+    }
 
- */
-        val kite = arrayOf(
-                GoldenTriangle(symP1, P5, P1),
-                GoldenTriangle(symP1, P3, P5)
+    inner class Decompose2DartBottomArrangement: Decompose2() {
+
+        override fun kite() = arrayOf(
+            GoldenTriangle(symP1, P5, P1),
+            GoldenTriangle(symP1, P3, P5)
         )
 
-        val dart = arrayOf(
+        override fun dart() = arrayOf(
             GoldenGnomon(P5, P3, points[2]),
             GoldenGnomon(P5, points[2], P1)
         )
 
     }
-/*
-    inner class Decompose2Arrange: DecomposeStep2() {
 
-        override val goldenTriangles = arrayOf(
-                GoldenTriangle(symP1, P5, P1),
-                GoldenTriangle(symP1, P3, P5)
-            )
-        override val decomposables: Array<Decomposable> = arrayOf(*goldenTriangles)
 
-    }
-
- */
 
     }
 /*
