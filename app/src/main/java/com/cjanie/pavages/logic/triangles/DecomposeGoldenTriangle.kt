@@ -2,6 +2,9 @@ package com.cjanie.pavages.logic.triangles
 
 import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.Point
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenGnomonDecomposables_1Triangle_1Gnomon
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdajacentTriangles_1Gnomon
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon
 import com.cjanie.pavages.tools.Symmetry
 import com.cjanie.pavages.tools.Trigonometry
 
@@ -110,18 +113,16 @@ class DecomposeGoldenTriangle(val goldenTriangle: GoldenTriangle) {
     }
 
     inner class DecomposePacket1NonAdjacentGoldenTrianglesArrangement: DecomposePacket1() {
-        // Total 2 goldenTriangles
-        override val goldenTriangles = arrayOf(
-            // BCP of base CP
-            GoldenTriangle(goldenTriangle.points[1], goldenTriangle.points[2], pointsToDecompose[0]),
-            // Triangle A symP1 P1 of base symP1 P1
-            GoldenTriangle(goldenTriangle.points[0], pointsToDecompose[1], pointsToDecompose[0])
+
+        val goldenTriangleDecomposables
+        = GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(
+            goldenTriangle = goldenTriangle,
+            pointsToDecompose = arrayOf(pointsToDecompose[0], pointsToDecompose[1])
         )
-        // + 1 Gnomon symP1 B P1 of base B P1
-        override val goldenGnomons = arrayOf(GoldenGnomon(pointsToDecompose[1], goldenTriangle.points[1], pointsToDecompose[0]))
 
+        override val goldenTriangles = goldenTriangleDecomposables.goldenTriangles
+        override val goldenGnomons = arrayOf(goldenTriangleDecomposables.goldenGnomon)
         override val decomposables: Array<Decomposable> = arrayOf(*goldenTriangles, *goldenGnomons)
-
         init {
             assertion()
         }
@@ -129,14 +130,12 @@ class DecomposeGoldenTriangle(val goldenTriangle: GoldenTriangle) {
 
     inner class DecomposePacket1AdjacentGoldenTrianglesArrangement: DecomposePacket1() {
 
-        override val goldenTriangles = arrayOf(
-            // C symP1 B: base = symP1 B
-            GoldenTriangle(goldenTriangle.points[2], pointsToDecompose[1], goldenTriangle.points[1]),
-            // C P2 symP1: base = P2 symP1
-            GoldenTriangle(goldenTriangle.points[2], pointsToDecompose[2], pointsToDecompose[1])
+        val goldenTriangleDecomposables = GoldenTriangleDecomposables_2AdajacentTriangles_1Gnomon(
+            goldenTriangle = goldenTriangle,
+            pointsToDecompose = arrayOf(pointsToDecompose[1], pointsToDecompose[2])
         )
-
-        override val goldenGnomons = arrayOf(GoldenGnomon(pointsToDecompose[2], goldenTriangle.points[0], pointsToDecompose[1]))
+        override val goldenTriangles = goldenTriangleDecomposables.goldenTriangles
+        override val goldenGnomons = arrayOf(goldenTriangleDecomposables.goldenGnomon)
 
         override val decomposables: Array<Decomposable> = arrayOf(*goldenTriangles, *goldenGnomons)
 
