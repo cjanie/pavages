@@ -3,6 +3,10 @@ package com.cjanie.pavages.logic.triangles
 import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.Number
 import com.cjanie.pavages.logic.Point
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Dart_atBottom
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdajacentTriangles_1Gnomon
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom
 import com.cjanie.pavages.tools.Symmetry
 import com.cjanie.pavages.tools.Trigonometry
 import java.math.BigDecimal
@@ -99,59 +103,38 @@ class GoldenTriangle(
     )
 
     // Golden triangle P2 P6 P2sym
+    /*
     val duplicatedSidesLengthP2P6symP2 = P2.x - symP2.x
     val P6 = Point(
         x = P2.x - Trigonometry.adjacentSideLength(duplicatedSidesLengthP2P6symP2, 36.0),
         y = P2.y + Trigonometry.oppositeSideLengthFromHypotenuseAndAngle(duplicatedSidesLengthP2P6symP2, 36.0)
     )
 
+     */
 
 
-    val lastIterationPacket = mutableListOf<Decomposable>()
     fun iterate(iteration: Int, arrange: Boolean = false): Array<Decomposable> {
-
-        val decomposeGoldenTriangle = DecomposeGoldenTriangle(this)
-        val packet = decomposeGoldenTriangle.decomposePacket(iteration, arrange)
-        lastIterationPacket.addAll(packet)
-
-        if(iteration in 1..2) {
-            return lastIterationPacket.toTypedArray()
-
-        } else if (iteration == 3) {
-            // filter the golden triangles of last iteration which base is horizontal
-            val goldenTriangles = lastIterationPacket.filter {
-                it is GoldenTriangle && it.basePoint1.y == it.basePoint2.y
+        if(iteration > 0) {
+            if(iteration == 3) {
+                val goldenTriangleToDecompose = GoldenTriangle(points[0], symP2, P2)
+                return GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(goldenTriangleToDecompose).decomposables
             }
-            val decomposables = mutableListOf<Decomposable>()
-            for (goldenTriangle in goldenTriangles) {
-                // Create new DecomposeGoldenTriangle
-                val decomposeGoldenTriangle = DecomposeGoldenTriangle(goldenTriangle as GoldenTriangle)
-                // 3 : iterate // oneToThree()
-                // 4 Iterate again // uptoKiteAndDart()
-                val packet = decomposeGoldenTriangle.decomposePacket(iteration, arrange)
-                decomposables.addAll(packet)
-            }
-            lastIterationPacket.clear()
-            lastIterationPacket.addAll(decomposables)
-            return lastIterationPacket.toTypedArray()
-            //return goldenTriangles.toTypedArray()
-
+            if(iteration % 2 != 0) return getOneToThree(arrange)
+            else return getUpToKiteAndDart(arrange)
         }
-
-
-
-            // Than again for all the golden triangles of last iteration...
-            // 5 :  Create new DecomposeGoldenTriangle and iterate // OneToThree()
-            // 6 : Iterate again // upToKiteAndDart
-        //}
-
-        // For more use the iterate on new golden triangles
-        // Default return the initial golden triangle ABC
         return arrayOf(this)
     }
 
-    fun iterate(goldenTriangle: DecomposeGoldenTriangle, iteration: Int, arrange: Boolean) {
-
+    private fun getOneToThree(arrange: Boolean): Array<Decomposable> {
+        return if (arrange) GoldenTriangleDecomposables_2AdajacentTriangles_1Gnomon(
+            goldenTriangle = this
+        ).decomposables
+        else GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(
+            goldenTriangle = this
+        ).decomposables
     }
-
+    private fun getUpToKiteAndDart(arrange: Boolean): Array<Decomposable> {
+        return if (arrange) GoldenTriangleDecomposables_Dart_atBottom(this).decomposables
+        else GoldenTriangleDecomposables_Kite_atBottom(this).decomposables
+    }
 }

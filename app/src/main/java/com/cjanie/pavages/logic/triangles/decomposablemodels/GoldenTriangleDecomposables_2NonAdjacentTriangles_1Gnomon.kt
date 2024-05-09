@@ -1,5 +1,6 @@
 package com.cjanie.pavages.logic.triangles.decomposablemodels
 
+import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
@@ -29,6 +30,9 @@ data class GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(
 
     // + 1 Gnomon symP1 B P1 of base B P1
     override val goldenGnomon = bigGoldenGnomonDecomposables1Triangle1Gnomon.goldenGnomon
+
+    override val decomposables: Array<Decomposable> = arrayOf(*goldenTriangles, goldenGnomon)
+
     init {
         assert_2Triangles_1Gnomon()
     }
