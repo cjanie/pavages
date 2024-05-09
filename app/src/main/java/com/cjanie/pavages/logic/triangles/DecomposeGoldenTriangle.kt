@@ -4,6 +4,7 @@ import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdajacentTriangles_1Gnomon
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom
 import com.cjanie.pavages.tools.Symmetry
 import com.cjanie.pavages.tools.Trigonometry
 
@@ -113,8 +114,7 @@ class DecomposeGoldenTriangle(val goldenTriangle: GoldenTriangle) {
 
         private val goldenTriangleDecomposables
         = GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(
-            goldenTriangle = goldenTriangle,
-            pointsToDecompose = arrayOf(pointsToDecompose[0], pointsToDecompose[1])
+            goldenTriangle = goldenTriangle
         )
 
         private val goldenTriangles = goldenTriangleDecomposables.goldenTriangles
@@ -129,20 +129,21 @@ class DecomposeGoldenTriangle(val goldenTriangle: GoldenTriangle) {
     inner class DecomposePacket1AdjacentGoldenTrianglesArrangement: DecomposePacket1() {
 
         private val goldenTriangleDecomposables = GoldenTriangleDecomposables_2AdajacentTriangles_1Gnomon(
-            goldenTriangle = goldenTriangle,
-            pointsToDecompose = arrayOf(pointsToDecompose[1], pointsToDecompose[2])
+            goldenTriangle = goldenTriangle
         )
         private val goldenTriangles = goldenTriangleDecomposables.goldenTriangles
         private val goldenGnomons = arrayOf(goldenTriangleDecomposables.goldenGnomon)
 
         override val decomposables: Array<Decomposable> = setUpDecomposables(goldenTriangles, goldenGnomons)
 
+        init {
+            assert_3_Decomposables()
+        }
     }
 
     abstract inner class DecomposePacket2: DecomposePacket() {
         abstract fun kite(): Array<GoldenTriangle>
         abstract fun dart(): Array<GoldenGnomon>
-
         abstract fun topGoldenTriangle(): GoldenTriangle
 
         abstract fun topGoldenGnomon(): GoldenGnomon
@@ -184,27 +185,18 @@ class DecomposeGoldenTriangle(val goldenTriangle: GoldenTriangle) {
     }
     inner class DecomposePacket2KiteBottomArrangement: DecomposePacket2() {
 
+
         // Kite at bottom
-        override fun kite() = arrayOf(
-            //C P1 P4
-            GoldenTriangle(goldenTriangle.points[2], pointsToDecompose[0], pointsToDecompose[5]),
-            // C P4 P3
-            GoldenTriangle(goldenTriangle.points[2], pointsToDecompose[5], pointsToDecompose[4])
-        )
+        override fun kite() =  GoldenTriangleDecomposables_Kite_atBottom(
+            goldenTriangle,
+            pointsToDecompose
+        ).kite
 
         // Dart up
-        override fun dart() = arrayOf(
-            GoldenGnomon(
-                pointsToDecompose[5], // P4,
-                pointsToDecompose[0], // P1,
-                pointsToDecompose[1] // symP1
-            ),
-            GoldenGnomon(
-                pointsToDecompose[5], // P4,
-                pointsToDecompose[1], // symP1,
-                pointsToDecompose[4] // P3
-            )
-        )
+        override fun dart() = GoldenTriangleDecomposables_Kite_atBottom(
+            goldenTriangle,
+            pointsToDecompose
+        ).dart
 
         override fun topGoldenTriangle(): GoldenTriangle {
             // A symP2 P2
