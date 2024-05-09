@@ -2,6 +2,7 @@ package com.cjanie.pavages.logic.triangles
 
 import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.Point
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposablesDartAtBottom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdajacentTriangles_1Gnomon
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom
@@ -26,8 +27,8 @@ class DecomposeGoldenTriangle(val goldenTriangle: GoldenTriangle) {
     }
 
     private fun getUpToKiteAndDart(arrange: Boolean): Array<Decomposable> {
-        return if (arrange) DecomposePacket2DartBottomArrangement().decomposables
-        else DecomposePacket2KiteBottomArrangement().decomposables
+        return if (arrange) GoldenTriangleDecomposablesDartAtBottom(goldenTriangle).decomposables
+        else GoldenTriangleDecomposables_Kite_atBottom(goldenTriangle).decomposables
     }
 
     abstract inner class DecomposePacket {
@@ -139,102 +140,11 @@ class DecomposeGoldenTriangle(val goldenTriangle: GoldenTriangle) {
         init {
             assert_3_Decomposables()
         }
-    }
 
-    abstract inner class DecomposePacket2: DecomposePacket() {
-        abstract fun kite(): Array<GoldenTriangle>
-        abstract fun dart(): Array<GoldenGnomon>
-        abstract fun topGoldenTriangle(): GoldenTriangle
-
-        abstract fun topGoldenGnomon(): GoldenGnomon
-
-        val pointsToDecompose = getPointsToDecompose(2)
-
-        val goldenTriangles = arrayOf(
-            // Top
-            topGoldenTriangle(),
-            // base
-            GoldenTriangle(
-                pointsToDecompose[1], //symP1,
-                goldenTriangle.points[1], // B
-                pointsToDecompose[4] //P3
-            ),
-            // under top
-            GoldenTriangle(
-                pointsToDecompose[1], //symP1,
-                pointsToDecompose[0], //P1,
-                pointsToDecompose[2] //P2
-            ),
-            // Kite at bottom
-            *kite()
-        )
-
-        val goldenGnomons = arrayOf(
-            topGoldenGnomon(),
-            // Dart
-            *dart()
-        )
-
-        override val decomposables: Array<Decomposable> = setUpDecomposables(goldenTriangles, goldenGnomons)
-        init {
-            assert(goldenTriangles.size == 5)
-            assert(goldenGnomons.size == 3)
-            assert(decomposables.size == 8)
-        }
-
-    }
-    inner class DecomposePacket2KiteBottomArrangement: DecomposePacket2() {
-
-
-        // Kite at bottom
-        override fun kite() =  GoldenTriangleDecomposables_Kite_atBottom(
-            goldenTriangle
-        ).kite
-
-        // Dart up
-        override fun dart() = GoldenTriangleDecomposables_Kite_atBottom(
-            goldenTriangle
-        ).dart
-
-        override fun topGoldenTriangle(): GoldenTriangle {
-            // A symP2 P2
-            return GoldenTriangle(goldenTriangle.points[0], pointsToDecompose[3], pointsToDecompose[2])
-        }
-
-        override fun topGoldenGnomon(): GoldenGnomon {
-            // symP2 symP1 P2
-            return GoldenGnomon(pointsToDecompose[3], pointsToDecompose[1], pointsToDecompose[2])
-        }
 
     }
 
-    inner class DecomposePacket2DartBottomArrangement: DecomposePacket2() {
 
-        override fun kite() = arrayOf(
-            // symP1 P5, P1
-            GoldenTriangle(pointsToDecompose[1], pointsToDecompose[6], pointsToDecompose[0]),
-            // symP1 P3 P5
-            GoldenTriangle(pointsToDecompose[1], pointsToDecompose[4], pointsToDecompose[6])
-        )
-
-        override fun dart() = arrayOf(
-            // P5 P3 C
-            GoldenGnomon(pointsToDecompose[6], pointsToDecompose[4], goldenTriangle.points[2]),
-            // P5 C P1
-            GoldenGnomon(pointsToDecompose[6], goldenTriangle.points[2], pointsToDecompose[0])
-        )
-
-        override fun topGoldenTriangle(): GoldenTriangle {
-            // symP1 P2 P6
-            return GoldenTriangle(pointsToDecompose[1], pointsToDecompose[2], pointsToDecompose[7])
-        }
-
-        override fun topGoldenGnomon(): GoldenGnomon {
-            // P6 P2 A
-            return GoldenGnomon(pointsToDecompose[7], pointsToDecompose[2], goldenTriangle.points[0])
-        }
-
-    }
 
 
 }
