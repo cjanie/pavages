@@ -10,12 +10,12 @@ data class GoldenTriangleDecomposables_2AdajacentTriangles_1Gnomon(
 
     override val goldenTriangles = arrayOf(
         // C symP1 B: base = symP1 B
-        GoldenTriangle(goldenTriangle.points[2], symP1, goldenTriangle.points[1]),
+        GoldenTriangle(goldenTriangle.points[2], goldenTriangle.symP1, goldenTriangle.points[1]),
         // C P2 symP1: base = P2 symP1
-        GoldenTriangle(goldenTriangle.points[2], P2, symP1)
+        GoldenTriangle(goldenTriangle.points[2], goldenTriangle.P2, goldenTriangle.symP1)
     )
 
-    override val goldenGnomon = GoldenGnomon(P2, goldenTriangle.points[0], symP1)
+    override val goldenGnomon = GoldenGnomon(goldenTriangle.P2, goldenTriangle.points[0], goldenTriangle.symP1)
 
     init {
         assert_2Triangles_1Gnomon()

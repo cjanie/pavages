@@ -188,14 +188,12 @@ class DecomposeGoldenTriangle(val goldenTriangle: GoldenTriangle) {
 
         // Kite at bottom
         override fun kite() =  GoldenTriangleDecomposables_Kite_atBottom(
-            goldenTriangle,
-            pointsToDecompose
+            goldenTriangle
         ).kite
 
         // Dart up
         override fun dart() = GoldenTriangleDecomposables_Kite_atBottom(
-            goldenTriangle,
-            pointsToDecompose
+            goldenTriangle
         ).dart
 
         override fun topGoldenTriangle(): GoldenTriangle {
