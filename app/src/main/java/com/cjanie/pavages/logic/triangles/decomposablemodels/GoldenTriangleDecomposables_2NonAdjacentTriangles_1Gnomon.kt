@@ -4,7 +4,9 @@ import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
-data class GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(val goldenTriangle: GoldenTriangle, val pointsToDecompose: Array<Point>) {
+data class GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(
+    val goldenTriangle: GoldenTriangle, val pointsToDecompose: Array<Point>
+) : GoldenTriangleDecomposables_2Triangles_1Gnomon() {
     // One golden triangle BCP1 of base CP1 + One Big Gnomon P1 A B of base AB
     private val goldenTriangleBCP1 = GoldenTriangle(goldenTriangle.points[1], goldenTriangle.points[2], pointsToDecompose[0])
     // Big golden gnomonP1AB to decompose:
@@ -17,7 +19,7 @@ data class GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(val goldenT
     )
 
     // Total 2 goldenTriangles
-    val goldenTriangles = arrayOf(
+    override val goldenTriangles = arrayOf(
         // BCP1 of base CP1
         goldenTriangleBCP1,
         // GoldenTriangle(goldenTriangle.points[1], goldenTriangle.points[2], pointsToDecompose[0]),
@@ -26,9 +28,8 @@ data class GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(val goldenT
     )
 
     // + 1 Gnomon symP1 B P1 of base B P1
-    val goldenGnomon = bigGoldenGnomonDecomposables1Triangle1Gnomon.goldenGnomon
+    override val goldenGnomon = bigGoldenGnomonDecomposables1Triangle1Gnomon.goldenGnomon
     init {
-        assert(goldenTriangles.size == 2)
-        assert(goldenGnomon != null)
+        assert_2Triangles_1Gnomon()
     }
 }

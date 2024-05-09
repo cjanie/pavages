@@ -2,7 +2,6 @@ package com.cjanie.pavages.logic.triangles
 
 import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.Point
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenGnomonDecomposables_1Triangle_1Gnomon
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdajacentTriangles_1Gnomon
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon
 import com.cjanie.pavages.tools.Symmetry
@@ -31,20 +30,18 @@ class DecomposeGoldenTriangle(val goldenTriangle: GoldenTriangle) {
     }
 
     abstract inner class DecomposePacket {
-        abstract val goldenTriangles: Array<GoldenTriangle>
-        abstract val goldenGnomons: Array<GoldenGnomon>
         abstract val decomposables: Array<Decomposable>
+        protected fun setUpDecomposables(goldenTriangles: Array<GoldenTriangle>, goldenGnomons: Array<GoldenGnomon>): Array<Decomposable> {
+            return arrayOf(*goldenTriangles, *goldenGnomons)
+        }
     }
 
     abstract inner class DecomposePacket1: DecomposePacket() {
         // total : 3 = 2 golden triangle + 1 golden gnomon
         val pointsToDecompose = getPointsToDecompose(1)
-        protected fun assertion() {
-            assert(goldenTriangles.size == 2)
-            assert(goldenGnomons.size == 1)
+        protected fun assert_3_Decomposables() {
             assert(decomposables.size == 3)
         }
-
     }
 
     fun getPointsToDecompose(iteration: Int): Array<Point> {
@@ -114,34 +111,32 @@ class DecomposeGoldenTriangle(val goldenTriangle: GoldenTriangle) {
 
     inner class DecomposePacket1NonAdjacentGoldenTrianglesArrangement: DecomposePacket1() {
 
-        val goldenTriangleDecomposables
+        private val goldenTriangleDecomposables
         = GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(
             goldenTriangle = goldenTriangle,
             pointsToDecompose = arrayOf(pointsToDecompose[0], pointsToDecompose[1])
         )
 
-        override val goldenTriangles = goldenTriangleDecomposables.goldenTriangles
-        override val goldenGnomons = arrayOf(goldenTriangleDecomposables.goldenGnomon)
-        override val decomposables: Array<Decomposable> = arrayOf(*goldenTriangles, *goldenGnomons)
+        private val goldenTriangles = goldenTriangleDecomposables.goldenTriangles
+        private val goldenGnomons = arrayOf(goldenTriangleDecomposables.goldenGnomon)
+
+        override val decomposables: Array<Decomposable> = setUpDecomposables(goldenTriangles, goldenGnomons)
         init {
-            assertion()
+            assert_3_Decomposables()
         }
     }
 
     inner class DecomposePacket1AdjacentGoldenTrianglesArrangement: DecomposePacket1() {
 
-        val goldenTriangleDecomposables = GoldenTriangleDecomposables_2AdajacentTriangles_1Gnomon(
+        private val goldenTriangleDecomposables = GoldenTriangleDecomposables_2AdajacentTriangles_1Gnomon(
             goldenTriangle = goldenTriangle,
             pointsToDecompose = arrayOf(pointsToDecompose[1], pointsToDecompose[2])
         )
-        override val goldenTriangles = goldenTriangleDecomposables.goldenTriangles
-        override val goldenGnomons = arrayOf(goldenTriangleDecomposables.goldenGnomon)
+        private val goldenTriangles = goldenTriangleDecomposables.goldenTriangles
+        private val goldenGnomons = arrayOf(goldenTriangleDecomposables.goldenGnomon)
 
-        override val decomposables: Array<Decomposable> = arrayOf(*goldenTriangles, *goldenGnomons)
+        override val decomposables: Array<Decomposable> = setUpDecomposables(goldenTriangles, goldenGnomons)
 
-        init {
-            assertion()
-        }
     }
 
     abstract inner class DecomposePacket2: DecomposePacket() {
@@ -154,7 +149,7 @@ class DecomposeGoldenTriangle(val goldenTriangle: GoldenTriangle) {
 
         val pointsToDecompose = getPointsToDecompose(2)
 
-        override val goldenTriangles = arrayOf(
+        val goldenTriangles = arrayOf(
             // Top
             topGoldenTriangle(),
             // base
@@ -173,13 +168,13 @@ class DecomposeGoldenTriangle(val goldenTriangle: GoldenTriangle) {
             *kite()
         )
 
-        override val goldenGnomons = arrayOf(
+        val goldenGnomons = arrayOf(
             topGoldenGnomon(),
             // Dart
             *dart()
         )
 
-        override val decomposables: Array<Decomposable> = arrayOf(*goldenTriangles, *goldenGnomons)
+        override val decomposables: Array<Decomposable> = setUpDecomposables(goldenTriangles, goldenGnomons)
         init {
             assert(goldenTriangles.size == 5)
             assert(goldenGnomons.size == 3)
