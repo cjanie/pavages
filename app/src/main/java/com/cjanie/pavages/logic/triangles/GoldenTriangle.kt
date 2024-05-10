@@ -94,7 +94,7 @@ class GoldenTriangle(
     // Kite and Dart from losange P3 C P1 symP1
     val P4 = Point(
         x = points[0].x,
-        y = P2.y - P1.y
+        y = points[2].y + P2.y - P1.y
     )
 
     // P5 Sym of P2 on horizontal axis P1 symP1
@@ -145,14 +145,14 @@ class GoldenTriangle(
                 val goldenTriangleP1P7C = GoldenTriangle(P1, P7, points[2])
                 val decomposables = arrayOf(
                     // Top triangle decomposition
-                    *GoldenTriangleDecomposables_Dart_atBottom(goldenTriangleToDecompose).decomposables,
+                    *GoldenTriangleDecomposables_Kite_atBottom(goldenTriangleToDecompose).decomposables,
                     // Bottom triangle decomposition
                     *GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(bottomGoldetriangleToDecompose).decomposables,
                     // Losange decomposition
                     //*GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(losangeGoldenTriangle).decomposables,
                     //*GoldenTriangleDecomposables_2AdajacentTriangles_1Gnomon(losangeGoldenTriangle2).decomposables,
-                    *GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(goldenTriangleP1P7C).decomposables,
-                    *GoldenTriangleDecomposables_Dart_atBottom(goldenTriangle2ToDecompose).decomposables
+                    //*GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(goldenTriangleP1P7C).decomposables,
+                    //*GoldenTriangleDecomposables_Dart_atBottom(goldenTriangle2ToDecompose).decomposables
                 )
                 return  decomposables
             }
