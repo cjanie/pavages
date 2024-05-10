@@ -36,7 +36,7 @@ class GoldenTriangleDecomposables_Kite_atBottom_sym(val goldenTriangle: GoldenTr
 
      fun topGoldenTriangleDecomposables(): Array<Decomposable> {
         val bigGoldenTriangleTop = GoldenTriangle(goldenTriangle.points[0], goldenTriangle.symP1, goldenTriangle.P1)
-        val decomposeTop = GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(bigGoldenTriangleTop)
+        val decomposeTop = GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon_sym(bigGoldenTriangleTop)
         return arrayOf(*decomposeTop.goldenTriangles, decomposeTop.goldenGnomon)
 
     }

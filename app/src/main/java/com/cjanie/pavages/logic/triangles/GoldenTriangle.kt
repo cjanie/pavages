@@ -5,7 +5,9 @@ import com.cjanie.pavages.logic.Number
 import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Dart_atBottom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon_sym
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom_sym
 import com.cjanie.pavages.tools.Symmetry
@@ -149,12 +151,12 @@ class GoldenTriangle(
                     // Top triangle decomposition
                     *GoldenTriangleDecomposables_Kite_atBottom(goldenTriangleToDecompose).decomposables,
                     // Bottom triangle decomposition
-                    *GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(bottomGoldetriangleToDecompose).decomposables,
+                    *GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(bottomGoldetriangleToDecompose).decomposables,
                     // Losange decomposition
                     //*GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(losangeGoldenTriangle).decomposables,
                     //*GoldenTriangleDecomposables_2AdajacentTriangles_1Gnomon(losangeGoldenTriangle2).decomposables,
-                    *GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(goldenTriangleP1P7C).decomposables,
-                    *GoldenTriangleDecomposables_Kite_atBottom(goldenTriangle2ToDecompose).decomposables
+                    *GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon_sym(goldenTriangleP1P7C).decomposables,
+                    *GoldenTriangleDecomposables_Kite_atBottom_sym(goldenTriangle2ToDecompose).decomposables
                 )
                 return  decomposables
             }
