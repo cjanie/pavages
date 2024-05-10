@@ -12,6 +12,7 @@ import com.cjanie.pavages.tools.Symmetry
 import com.cjanie.pavages.tools.Trigonometry
 import java.math.BigDecimal
 import java.math.RoundingMode
+import kotlin.math.abs
 
 class GoldenTriangle(
     oppositeToBase: Point = Point(name = "A", x = 0.0, y = height),
@@ -103,6 +104,18 @@ class GoldenTriangle(
         y = P1.y - (P2.y - P1.y)
     )
 
+    // Decompose losange kite/Dart
+    // Golden triangle P3 P6 symP1
+    val BP3length = abs(symP2.x) + abs(P2.x)
+    val P6 = Point(
+        x = symP1.x + BP3length,
+        y = symP1.y
+    )
+    // Golden triangle P6 P3 P7
+    val P7 = Point(
+        x = points[2].x - BP3length,
+        y = points[2].y
+    )
     // Golden triangle P2 P6 P2sym
     /*
     val duplicatedSidesLengthP2P6symP2 = P2.x - symP2.x
@@ -117,11 +130,29 @@ class GoldenTriangle(
     fun iterate(iteration: Int, arrange: Boolean = false): Array<Decomposable> {
         if(iteration > 0) {
             if(iteration == 3) {
-                val goldenTriangleToDecompose = GoldenTriangle(points[0], symP2, P2)
+                val goldenTriangleToDecompose = GoldenTriangle(points[0], symP1, P1)
                 val bottomGoldetriangleToDecompose = GoldenTriangle(symP1, points[1], P3)
+                val losangeGoldenTriangle = GoldenTriangle(P3, P6, symP1)
+                val losangeGoldenTriangle2 = GoldenTriangle(P6, P3, P7)
+                // Golden triangle AA P1 symP1
+                // Height of A symP1 P1 = A.y - symP1.y
+                val AA = Point(
+                    x = points[0].x,
+                    y = symP1.y - (points[0].y - symP1.y)
+                )
+                val goldenTriangle2ToDecompose = GoldenTriangle(AA, P1, symP1)
+                // GoldenTrinagle P1 P7 C
+                val goldenTriangleP1P7C = GoldenTriangle(P1, P7, points[2])
                 val decomposables = arrayOf(
-                    *GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(goldenTriangleToDecompose).decomposables,
-                    *GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(bottomGoldetriangleToDecompose).decomposables
+                    // Top triangle decomposition
+                    *GoldenTriangleDecomposables_Dart_atBottom(goldenTriangleToDecompose).decomposables,
+                    // Bottom triangle decomposition
+                    *GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(bottomGoldetriangleToDecompose).decomposables,
+                    // Losange decomposition
+                    //*GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(losangeGoldenTriangle).decomposables,
+                    //*GoldenTriangleDecomposables_2AdajacentTriangles_1Gnomon(losangeGoldenTriangle2).decomposables,
+                    *GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(goldenTriangleP1P7C).decomposables,
+                    *GoldenTriangleDecomposables_Dart_atBottom(goldenTriangle2ToDecompose).decomposables
                 )
                 return  decomposables
             }

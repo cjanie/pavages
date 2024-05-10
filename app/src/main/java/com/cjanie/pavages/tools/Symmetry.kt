@@ -8,13 +8,13 @@ class Symmetry {
     companion object {
 
         fun symmetryByVerticalAxis(axisX: Double, point: Point, symPointName: String = "${point.name}'"): Point {
-            if(axisX < 0) {
-                return Point(symPointName, axisX - (point.x+ abs(axisX)), point.y)
-            }
-            return Point(symPointName, axisX - point.x, point.y)
+            return if(axisX < 0) Point(symPointName, axisX - (point.x + abs(axisX)), point.y)
+            else  Point(symPointName, axisX - (point.x - axisX), point.y)
         }
         fun symmetryByHorizontalAxis(axisY: Double, point: Point, symPointName: String = "${point.name}'"): Point {
-            return Point(symPointName, point.x, axisY - point.y)
+            return if(axisY < 0) Point(symPointName, point.x, axisY - (abs(axisY) + point.y))
+            else Point(symPointName, point.x, axisY - (point.y - axisY))
+
         }
 
         fun symmetryByHorizontalAxis(axisY: Double, points: Array<Point>): Array<Point> {
