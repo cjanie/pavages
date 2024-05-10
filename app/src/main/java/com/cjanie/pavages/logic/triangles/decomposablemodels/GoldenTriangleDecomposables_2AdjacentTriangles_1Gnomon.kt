@@ -6,7 +6,7 @@ import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
 data class GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(
     val goldenTriangle: GoldenTriangle,
-): GoldenTriangleDecomposables_2Triangles_1Gnomon(goldenTriangle) {
+): GoldenTriangleDecomposables_2Triangles_1Gnomon(goldenTriangle), DecomposablesModel {
 
     override val goldenTriangles = arrayOf(
         // C symP1 B: base = symP1 B
