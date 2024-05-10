@@ -35,11 +35,11 @@ class GoldenTriangleDecomposables_Kite_atBottom(val goldenTriangle: GoldenTriang
     }
 
     // Original symP1 B P3
-    // sym = P1 symP3 C
+
     private val bottomGoldenTriangle =  GoldenTriangle(
-        goldenTriangle.P1,
-        goldenTriangle.symP3,
-        goldenTriangle.points[2]
+        goldenTriangle.symP1,
+        goldenTriangle.points[1],
+        goldenTriangle.P3
     )
 
     val decomposables : Array<Decomposable> = arrayOf(
