@@ -3,9 +3,8 @@ package com.cjanie.pavages.logic.triangles.decomposablemodels
 import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
-import com.cjanie.pavages.tools.Symmetry
 
-class GoldenTriangleDecomposables_Kite_atBottom_sym(val goldenTriangle: GoldenTriangle) {
+class GoldenTriangleDecomposables_Kite_atBottom_sym(val goldenTriangle: GoldenTriangle): DecomposablesModel {
 
     // Original Kite and Dart P3 C P1 symP1
      fun kite(): Array<GoldenTriangle> = arrayOf(
@@ -49,7 +48,7 @@ class GoldenTriangleDecomposables_Kite_atBottom_sym(val goldenTriangle: GoldenTr
         goldenTriangle.points[2]
     )
 
-    val decomposables : Array<Decomposable> = arrayOf(
+    override val decomposables : Array<Decomposable> = arrayOf(
         *kite(), *dart(), *topGoldenTriangleDecomposables(), bottomGoldenTriangle
     )
 
