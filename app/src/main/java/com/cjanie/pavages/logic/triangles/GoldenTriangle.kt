@@ -4,10 +4,10 @@ import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.Number
 import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Dart_atBottom
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdajacentTriangles_1Gnomon
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom_sym
 import com.cjanie.pavages.tools.Symmetry
 import com.cjanie.pavages.tools.Trigonometry
 import java.math.BigDecimal
@@ -90,6 +90,8 @@ class GoldenTriangle(
         x = points[1].x + P2.x - symP2.x,
         y = points[1].y
     )
+    val symP3 = Symmetry.symmetryByVerticalAxis(points[0].x, P3)
+
 
     // Kite and Dart from losange P3 C P1 symP1
     val P4 = Point(
@@ -147,12 +149,12 @@ class GoldenTriangle(
                     // Top triangle decomposition
                     *GoldenTriangleDecomposables_Kite_atBottom(goldenTriangleToDecompose).decomposables,
                     // Bottom triangle decomposition
-                    *GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(bottomGoldetriangleToDecompose).decomposables,
+                    *GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(bottomGoldetriangleToDecompose).decomposables,
                     // Losange decomposition
                     //*GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(losangeGoldenTriangle).decomposables,
                     //*GoldenTriangleDecomposables_2AdajacentTriangles_1Gnomon(losangeGoldenTriangle2).decomposables,
-                    //*GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(goldenTriangleP1P7C).decomposables,
-                    //*GoldenTriangleDecomposables_Dart_atBottom(goldenTriangle2ToDecompose).decomposables
+                    *GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(goldenTriangleP1P7C).decomposables,
+                    *GoldenTriangleDecomposables_Kite_atBottom(goldenTriangle2ToDecompose).decomposables
                 )
                 return  decomposables
             }
@@ -163,7 +165,7 @@ class GoldenTriangle(
     }
 
     private fun getOneToThree(arrange: Boolean): Array<Decomposable> {
-        return if (arrange) GoldenTriangleDecomposables_2AdajacentTriangles_1Gnomon(
+        return if (arrange) GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(
             goldenTriangle = this
         ).decomposables
         else GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(
@@ -172,6 +174,6 @@ class GoldenTriangle(
     }
     private fun getUpToKiteAndDart(arrange: Boolean): Array<Decomposable> {
         return if (arrange) GoldenTriangleDecomposables_Dart_atBottom(this).decomposables
-        else GoldenTriangleDecomposables_Kite_atBottom(this).decomposables
+        else GoldenTriangleDecomposables_Kite_atBottom_sym(this).decomposables
     }
 }

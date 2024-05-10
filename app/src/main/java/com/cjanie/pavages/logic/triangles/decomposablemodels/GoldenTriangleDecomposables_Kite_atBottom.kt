@@ -4,7 +4,8 @@ import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
-class GoldenTriangleDecomposables_Kite_atBottom(goldenTriangle: GoldenTriangle): GoldenTriangleDecomposables_Kite_Dart(goldenTriangle) {
+class GoldenTriangleDecomposables_Kite_atBottom(val goldenTriangle: GoldenTriangle):
+    GoldenTriangleDecomposables_Kite_Dart(goldenTriangle) {
 
     // Kite and Dart P3 C P1 symP1
     override fun kite(): Array<GoldenTriangle> = arrayOf(

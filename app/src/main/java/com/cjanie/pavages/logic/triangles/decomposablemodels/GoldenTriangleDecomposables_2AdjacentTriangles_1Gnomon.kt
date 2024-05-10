@@ -1,11 +1,10 @@
 package com.cjanie.pavages.logic.triangles.decomposablemodels
 
 import com.cjanie.pavages.logic.Decomposable
-import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
-data class GoldenTriangleDecomposables_2AdajacentTriangles_1Gnomon(
+data class GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(
     val goldenTriangle: GoldenTriangle,
 ): GoldenTriangleDecomposables_2Triangles_1Gnomon(goldenTriangle) {
 
