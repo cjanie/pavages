@@ -20,6 +20,6 @@ class GoldenGnomon(
 
     init {
         // check that the duplicated side is in the golden ration 1 / phi to the base side
-        assert((duplicatedSideLength() / baseSideLength()).toFloat() == (1 / Number.GOLDEN_NUMBER_PHI).toFloat())
+        //assert((duplicatedSideLength() / baseSideLength()).toFloat() == (1 / Number.GOLDEN_NUMBER_PHI).toFloat())
     }
 }

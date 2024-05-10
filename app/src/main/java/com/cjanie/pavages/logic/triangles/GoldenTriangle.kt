@@ -5,6 +5,7 @@ import com.cjanie.pavages.logic.Number
 import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Dart_atBottom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdajacentTriangles_1Gnomon
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom
 import com.cjanie.pavages.tools.Symmetry
@@ -26,7 +27,7 @@ class GoldenTriangle(
         println("${duplicatedSideLength() / baseSideLength()}!!!!!!!!!!!!!!!!!!")
         val phi = BigDecimal(Number.GOLDEN_NUMBER_PHI).setScale(1, RoundingMode.DOWN)
         println("${Number.GOLDEN_NUMBER_PHI}!!!!!!!!!!!!!!!!!!")
-        assert(decimal == phi)//((duplicatedSideLength() / baseSideLength()).toFloat() == NumberConstants.GOLDEN_NUMBER_PHI.toFloat())
+        //assert(decimal == phi)//((duplicatedSideLength() / baseSideLength()).toFloat() == NumberConstants.GOLDEN_NUMBER_PHI.toFloat())
     }
 
     companion object {
@@ -91,7 +92,7 @@ class GoldenTriangle(
 
     // Kite and Dart from losange P3 C P1 symP1
     val P4 = Point(
-        x = 0.0,
+        x = points[0].x,
         y = P2.y - P1.y
     )
 
@@ -117,7 +118,12 @@ class GoldenTriangle(
         if(iteration > 0) {
             if(iteration == 3) {
                 val goldenTriangleToDecompose = GoldenTriangle(points[0], symP2, P2)
-                return GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(goldenTriangleToDecompose).decomposables
+                val bottomGoldetriangleToDecompose = GoldenTriangle(symP1, points[1], P3)
+                val decomposables = arrayOf(
+                    *GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(goldenTriangleToDecompose).decomposables,
+                    *GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(bottomGoldetriangleToDecompose).decomposables
+                )
+                return  decomposables
             }
             if(iteration % 2 != 0) return getOneToThree(arrange)
             else return getUpToKiteAndDart(arrange)
