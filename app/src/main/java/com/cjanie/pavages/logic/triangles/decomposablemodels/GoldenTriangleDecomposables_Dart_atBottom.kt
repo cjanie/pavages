@@ -4,7 +4,7 @@ import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
-class GoldenTriangleDecomposables_Dart_atBottom(val goldenTriangle: GoldenTriangle) {
+class GoldenTriangleDecomposables_Dart_atBottom(val goldenTriangle: GoldenTriangle, val iteration: Int) {
     fun kite(): Array<GoldenTriangle> = arrayOf(
         // symP1 P5, P1
         GoldenTriangle(goldenTriangle.symP1, goldenTriangle.P5, goldenTriangle.P1),
@@ -21,7 +21,10 @@ class GoldenTriangleDecomposables_Dart_atBottom(val goldenTriangle: GoldenTriang
 
     fun topGoldenTriangleDecomposables(): Array<Decomposable> {
         val bigGoldenTriangleTop = GoldenTriangle(goldenTriangle.points[0], goldenTriangle.symP1, goldenTriangle.P1)
-        val decomposeTop = GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(bigGoldenTriangleTop)
+        val decomposeTop = if(iteration == 3) GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(bigGoldenTriangleTop)
+        // TODO vary if iteration 3 or 2
+        // if 2 decomposeTop =
+        else GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(bigGoldenTriangleTop)
         return arrayOf(*decomposeTop.goldenTriangles, decomposeTop.goldenGnomon)
     }
     private val bottomGoldenTriangle =  GoldenTriangle(
