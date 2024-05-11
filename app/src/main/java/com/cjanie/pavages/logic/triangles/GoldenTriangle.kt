@@ -3,7 +3,6 @@ package com.cjanie.pavages.logic.triangles
 import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.Number
 import com.cjanie.pavages.logic.Point
-import com.cjanie.pavages.logic.triangles.decomposablemodels.DecomposableModel
 import com.cjanie.pavages.logic.triangles.decomposablemodels.DecomposablesModel
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Dart_atBottom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon
@@ -164,7 +163,7 @@ class GoldenTriangle(
                 val symModelAdapter = if(arrange) GoldenTriangleDecomposables_Dart_atBottom_sym(symGoldenTriangle_on_P1_symP1_base)
                     else GoldenTriangleDecomposables_Kite_atBottom_sym(symGoldenTriangle_on_P1_symP1_base)
                 // remove pyramidion
-                val symTruncatedBaseDecomposables = symModelAdapter.decomposables.toMutableList()
+                val symTruncatedBaseDecomposables = symModelAdapter.decomposables().toMutableList()
                     .toMutableList()
                     symTruncatedBaseDecomposables.removeAt(5)
 
@@ -182,23 +181,23 @@ class GoldenTriangle(
 
                 state.decomposablesState.addAll(
                     arrayOf(
-                        *topGoldenTriangleModel.decomposables,
+                        *topGoldenTriangleModel.decomposables(),
                         *symTruncatedBaseDecomposables.toTypedArray(),
-                        *bottomGoldenTriangleModel.decomposables,
-                        *symBottomGoldenTriangleModel.decomposables
+                        *bottomGoldenTriangleModel.decomposables(),
+                        *symBottomGoldenTriangleModel.decomposables()
                     )
                 )
                 return  arrayOf(
-                    *topGoldenTriangleModel.decomposables,
+                    *topGoldenTriangleModel.decomposables(),
                     *symTruncatedBaseDecomposables.toTypedArray(),
-                    *bottomGoldenTriangleModel.decomposables,
-                    *symBottomGoldenTriangleModel.decomposables
+                    *bottomGoldenTriangleModel.decomposables(),
+                    *symBottomGoldenTriangleModel.decomposables()
                 )
             }
 
             if(iteration == 4) {
 
-                return state.decomposables
+                return state.decomposables()
             }
 /*
                 return arrayOf(
@@ -215,13 +214,13 @@ class GoldenTriangle(
     private fun getOneToThree(arrange: Boolean): Array<Decomposable> {
         return if (arrange) GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(
             goldenTriangle = this
-        ).decomposables
+        ).decomposables()
         else GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(
             goldenTriangle = this
-        ).decomposables
+        ).decomposables()
     }
     private fun getUpToKiteAndDart(iteration: Int, arrange: Boolean): Array<Decomposable> {
-        return if (arrange) GoldenTriangleDecomposables_Dart_atBottom(this, iteration).decomposables
-        else GoldenTriangleDecomposables_Kite_atBottom(this).decomposables
+        return if (arrange) GoldenTriangleDecomposables_Dart_atBottom(this, iteration).decomposables()
+        else GoldenTriangleDecomposables_Kite_atBottom(this).decomposables()
     }
 }

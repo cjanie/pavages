@@ -4,7 +4,7 @@ import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
-class GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon_sym(val goldenTriangle: GoldenTriangle): GoldenTriangleDecomposables_2Triangles_1Gnomon(goldenTriangle), DecomposablesModel {
+class GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon_sym(var goldenTriangle: GoldenTriangle): GoldenTriangleDecomposables_2Triangles_1Gnomon(), DecomposablesModel {
     // Original One golden triangle BCP1 of base CP1 + One Big Gnomon P1 A B of base AB
     // sym = C symP B
     private val goldenTriangleBCP1 = GoldenTriangle(goldenTriangle.points[2], goldenTriangle.symP1, goldenTriangle.points[1])
@@ -20,7 +20,7 @@ class GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon_sym(val goldenTr
     )
 
     // Total 2 goldenTriangles
-    override val goldenTriangles = arrayOf(
+    override fun goldenTriangles() = arrayOf(
         // BCP1 of base CP1
         goldenTriangleBCP1,
         // GoldenTriangle(goldenTriangle.points[1], goldenTriangle.points[2], pointsToDecompose[0]),
@@ -29,9 +29,12 @@ class GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon_sym(val goldenTr
     )
 
     // + 1 Gnomon symP1 B P1 of base B P1
-    override val goldenGnomon = bigGoldenGnomonDecomposables1Triangle1Gnomon.goldenGnomon
+    override fun goldenGnomon() = bigGoldenGnomonDecomposables1Triangle1Gnomon.goldenGnomon
+    override fun updateGoldenTriangle(goldenTriangle: GoldenTriangle) {
+        this.goldenTriangle = goldenTriangle
+    }
 
-    override val decomposables: Array<Decomposable> = arrayOf(*goldenTriangles, goldenGnomon)
+    override fun decomposables(): Array<Decomposable> = arrayOf(*goldenTriangles(), goldenGnomon())
 
     init {
         assert_2Triangles_1Gnomon()

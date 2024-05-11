@@ -1,8 +1,10 @@
 package com.cjanie.pavages.logic.triangles.decomposablemodels
 
 import com.cjanie.pavages.logic.Decomposable
+import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
 interface DecomposablesModel {
 
-    val decomposables: Array<Decomposable>
+    fun updateGoldenTriangle(goldenTriangle: GoldenTriangle)
+    fun decomposables(): Array<Decomposable>
 }
