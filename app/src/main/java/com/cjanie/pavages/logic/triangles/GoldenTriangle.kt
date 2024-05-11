@@ -151,7 +151,8 @@ class GoldenTriangle(
                 val goldenTriangle_on_symP1_P1_base = GoldenTriangle(points[0], symP1, P1)
                 // current model is kite dart
                 // TODO get the current model from state and tranfert to the new container pushUp()
-                val topGoldenTriangleModel: DecomposablesModel = if(arrange) GoldenTriangleDecomposables_Dart_atBottom(goldenTriangle_on_symP1_P1_base, iteration)
+                val topGoldenTriangleModel: DecomposablesModel = if(arrange)
+                    GoldenTriangleDecomposables_Dart_atBottom(goldenTriangle_on_symP1_P1_base, iteration)
                 else GoldenTriangleDecomposables_Kite_atBottom(goldenTriangle_on_symP1_P1_base)
                 // This is the model to pushUp
 
@@ -184,7 +185,8 @@ class GoldenTriangle(
                 val goldenTriangle_on_symP1_P1_base = GoldenTriangle(points[0], symP1, P1)
                 // current model is kite dart
                 // TODO get the current model from state and tranfert to the new container pushUp()
-                val topGoldenTriangleModel: DecomposablesModel = if(arrange) GoldenTriangleDecomposables_Dart_atBottom(goldenTriangle_on_symP1_P1_base, iteration)
+                val topGoldenTriangleModel: DecomposablesModel = if(arrange)
+                    GoldenTriangleDecomposables_Dart_atBottom(goldenTriangle_on_symP1_P1_base, iteration - 1)
                 else GoldenTriangleDecomposables_Kite_atBottom(goldenTriangle_on_symP1_P1_base)
 
                 val bottomGoldenTriangle = GoldenTriangle(symP1, points[1], P3)
@@ -216,6 +218,7 @@ class GoldenTriangle(
                     ),
                     arrange
                 )
+                rosaceUnit.pushUp()
                 rosaceUnit.pushUp()
 
                 return rosaceUnit.decomposables()
