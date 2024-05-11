@@ -13,43 +13,21 @@ class GoldenTriangleDecomposables_RosaceUnit(
     }
 
     fun pushUp() {
-        this.goldenTriangle = GoldenTriangle(
-            this.goldenTriangle.points[0],
-            models[0].goldenTriangle().symP2,
-            models[0].goldenTriangle().P2
-        )
-        // Adapt the model scale
-        models[0].updateGoldenTriangle(
-            GoldenTriangle(
-                this.goldenTriangle.points[0],
-                models[0].goldenTriangle().symP1,
-                models[0].goldenTriangle().P1
-            )
-        )
 
+        models[1].updateGoldenTriangle(GoldenTriangle(
+            models[0].goldenTriangle().symP1,
+            models[0].goldenTriangle().points[1],
+            models[0].goldenTriangle().P3
+            ))
+        models[2].updateGoldenTriangle(GoldenTriangle(
+            models[0].goldenTriangle().P1,
+            models[0].goldenTriangle().symP3,
+            models[0].goldenTriangle().points[2]
+        ))
+        
     }
-    fun build() {
-        val model = StateBuilder(
-            goldenTriangle,
-            models[0],
-            models[1],
-            models[2]
-        )
-        model.buildStateModel(arrange)
-
-        for(model in models) {
-            model.updateGoldenTriangle(
-                (GoldenTriangle(goldenTriangle.points[0], goldenTriangle.symP1, goldenTriangle.P1))
-            )
-
-        }
-
-    }
-
-
-
     fun decomposables(): Array<Decomposable> {
-        build()
+        //build()
         val decomposables = mutableListOf<Decomposable>()
         for (model in models) {
             decomposables.addAll(model.decomposables())
