@@ -24,7 +24,14 @@ class GoldenTriangleDecomposables_RosaceUnit(
             models[0].goldenTriangle().symP3,
             models[0].goldenTriangle().points[2]
         ))
-        
+        models[0].updateGoldenTriangle(
+            GoldenTriangle(
+            goldenTriangle.points[0],
+                models[1].goldenTriangle().points[0],
+                models[2].goldenTriangle().points[0]
+        )
+        )
+
     }
     fun decomposables(): Array<Decomposable> {
         //build()
