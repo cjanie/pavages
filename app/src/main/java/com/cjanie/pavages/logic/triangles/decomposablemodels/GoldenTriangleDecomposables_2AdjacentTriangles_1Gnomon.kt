@@ -16,6 +16,10 @@ data class GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(
     )
 
     override fun goldenGnomon() = GoldenGnomon(goldenTriangle.P2, goldenTriangle.points[0], goldenTriangle.symP1)
+    override fun goldenTriangle(): GoldenTriangle {
+        return goldenTriangle
+    }
+
     override fun updateGoldenTriangle(goldenTriangle: GoldenTriangle) {
         this.goldenTriangle = goldenTriangle
     }

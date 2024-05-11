@@ -6,7 +6,7 @@ import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
 class GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(var goldenTriangle: GoldenTriangle) : GoldenTriangleDecomposables_2Triangles_1Gnomon(
 
-) {
+), DecomposablesModel {
     override fun goldenTriangles() = arrayOf(
         // C symP1 B: base = symP1 B
         GoldenTriangle(goldenTriangle.points[1], goldenTriangle.points[2], goldenTriangle.P1),
@@ -15,6 +15,14 @@ class GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(var goldenTrian
     )
 
     override fun goldenGnomon() = GoldenGnomon(goldenTriangle.symP2, goldenTriangle.P1, goldenTriangle.points[0])
+    override fun goldenTriangle(): GoldenTriangle {
+        return goldenTriangle
+    }
+
+    override fun updateGoldenTriangle(goldenTriangle: GoldenTriangle) {
+        this.goldenTriangle = goldenTriangle
+    }
+
     override fun decomposables(): Array<Decomposable> = arrayOf(*goldenTriangles(), goldenGnomon())
 
     init {

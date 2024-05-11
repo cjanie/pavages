@@ -30,6 +30,10 @@ data class GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(
 
     // + 1 Gnomon symP1 B P1 of base B P1
     override fun goldenGnomon() = bigGoldenGnomonDecomposables1Triangle1Gnomon().goldenGnomon
+    override fun goldenTriangle(): GoldenTriangle {
+        return goldenTriangle
+    }
+
     override fun updateGoldenTriangle(goldenTriangle: GoldenTriangle) {
         this.goldenTriangle = goldenTriangle
     }

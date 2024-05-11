@@ -33,6 +33,10 @@ class GoldenTriangleDecomposables_Dart_atBottom(var goldenTriangle: GoldenTriang
         goldenTriangle.P3 //P3
     )
 
+    override fun goldenTriangle(): GoldenTriangle {
+        return goldenTriangle
+    }
+
     override fun updateGoldenTriangle(goldenTriangle: GoldenTriangle) {
         this.goldenTriangle = goldenTriangle
     }
