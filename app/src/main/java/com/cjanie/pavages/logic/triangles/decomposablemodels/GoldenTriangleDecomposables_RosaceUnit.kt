@@ -23,8 +23,10 @@ class GoldenTriangleDecomposables_RosaceUnit(
             GoldenTriangle(
                 this.goldenTriangle.points[0],
                 models[0].goldenTriangle().symP1,
-                models[0].goldenTriangle().P1)
+                models[0].goldenTriangle().P1
+            )
         )
+
     }
     fun build() {
         val model = StateBuilder(
