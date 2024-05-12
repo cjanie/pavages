@@ -40,6 +40,9 @@ data class GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(
 
     override fun decomposables(): Array<Decomposable> = arrayOf(*goldenTriangles(), goldenGnomon())
 
+    fun sym(): GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon_sym {
+        return GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon_sym(goldenTriangle)
+    }
     init {
         //assert_2Triangles_1Gnomon()
     }

@@ -167,7 +167,8 @@ class GoldenTriangle(
                 val symBottomGoldenTriangle = GoldenTriangle(P1, P7, points[2])
                 // model adapter for the bottom golden triangle
                 val symBottomGoldenTriangleModel = if (arrange) GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(symBottomGoldenTriangle)
-                    else GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon_sym(symBottomGoldenTriangle)
+                    else GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(symBottomGoldenTriangle).sym()
+
 
                 val stateBuilder = StateBuilder(this,
                     topGoldenTriangleModel,
@@ -195,10 +196,11 @@ class GoldenTriangle(
                 else GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(bottomGoldenTriangle)
 
                 // sym bottom golden triangle P1 P7 C
-                val symBottomGoldenTriangle = GoldenTriangle(P1, P7, points[2])
+                val symBottomGoldenTriangle = GoldenTriangle(P1, symP3, points[2])
                 // model adapter for the bottom golden triangle
                 val symBottomGoldenTriangleModel = if (arrange) GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(symBottomGoldenTriangle)
-                else GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon_sym(symBottomGoldenTriangle)
+                else GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(symBottomGoldenTriangle).sym()
+                //else GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(goldenTriangle = symBottomGoldenTriangle).sym()
 
                 val stateBuilder = StateBuilder(this,
                     topGoldenTriangleModel = topGoldenTriangleModel,
