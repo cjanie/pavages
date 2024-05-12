@@ -4,7 +4,7 @@ import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
-abstract class GoldenTriangleDecomposables_Kite_Dart(goldenTriangle: GoldenTriangle): DecomposablesModel {
+abstract class GoldenTriangleDecomposables_Kite_Dart(open var goldenTriangle: GoldenTriangle): DecomposablesModel {
 
     protected abstract fun kite(): Array<GoldenTriangle>
     protected abstract fun dart(): Array<GoldenGnomon>
@@ -15,6 +15,14 @@ abstract class GoldenTriangleDecomposables_Kite_Dart(goldenTriangle: GoldenTrian
     override fun decomposables() = arrayOf(
     *kite(), *dart(), *topGoldenTriangleDecomposables(), bottomGoldenTriangle()
     )
+
+    override fun goldenTriangle(): GoldenTriangle {
+        return goldenTriangle
+    }
+
+    override fun updateGoldenTriangle(goldenTriangle: GoldenTriangle) {
+        this.goldenTriangle = goldenTriangle
+    }
 
 
 
