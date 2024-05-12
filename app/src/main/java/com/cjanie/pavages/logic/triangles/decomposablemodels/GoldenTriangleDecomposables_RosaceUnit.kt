@@ -15,6 +15,7 @@ class GoldenTriangleDecomposables_RosaceUnit(
 
     fun pushUp() {
 
+
         models[1].updateGoldenTriangle(GoldenTriangle(
             models[0].goldenTriangle().symP1,
             models[0].goldenTriangle().points[1],
@@ -35,15 +36,10 @@ class GoldenTriangleDecomposables_RosaceUnit(
 
         models[0].updateGoldenTriangle(
             GoldenTriangle(
-            goldenTriangle.points[0],
+                goldenTriangle.points[0],
                 models[1].goldenTriangle().points[0],
                 models[2].goldenTriangle().points[0]
-        ))
-
-
-
-
-
+            ))
 
     }
 

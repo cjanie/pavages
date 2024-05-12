@@ -24,7 +24,7 @@ class GoldenTriangleDecomposables_Dart_atBottom(
 
     override fun topGoldenTriangleDecomposables(): Array<Decomposable> {
         val bigGoldenTriangleTop = GoldenTriangle(goldenTriangle.points[0], goldenTriangle.symP1, goldenTriangle.P1)
-        val decomposeTop = if(iteration == 3) GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(bigGoldenTriangleTop)
+        val decomposeTop = if(iteration > 2) GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(bigGoldenTriangleTop)
         // TODO vary if iteration 3 or 2
         // if 2 decomposeTop =
             else GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(bigGoldenTriangleTop)
