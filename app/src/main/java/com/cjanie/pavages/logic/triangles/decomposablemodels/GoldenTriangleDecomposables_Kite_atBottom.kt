@@ -36,11 +36,14 @@ class GoldenTriangleDecomposables_Kite_atBottom(var goldenTriangle: GoldenTriang
 
     // Original symP1 B P3
 
-    private val bottomGoldenTriangle =  GoldenTriangle(
+    private fun bottomGoldenTriangle() =  GoldenTriangle(
         goldenTriangle.symP1,
         goldenTriangle.points[1],
         goldenTriangle.P3
     )
+
+
+
 
     override fun goldenTriangle(): GoldenTriangle {
         return goldenTriangle
@@ -51,7 +54,7 @@ class GoldenTriangleDecomposables_Kite_atBottom(var goldenTriangle: GoldenTriang
     }
 
     override fun decomposables() : Array<Decomposable> = arrayOf(
-        *kite(), *dart(), *topGoldenTriangleDecomposables(), bottomGoldenTriangle
+        *kite(), *dart(), *topGoldenTriangleDecomposables(), bottomGoldenTriangle()
     )
 
 

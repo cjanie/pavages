@@ -219,7 +219,7 @@ class GoldenTriangle(
                     arrange
                 )
                 rosaceUnit.pushUp()
-                rosaceUnit.pushUp()
+                //rosaceUnit.pushUp()
 
                 return rosaceUnit.decomposables()
 
