@@ -12,6 +12,7 @@ class CanvasAdapter(val canvasSize: Float) {
     companion object {
         val goldenTriangleColor = Color(android.graphics.Color.parseColor("#FFD700"))
         val goldenGnomonColor = Color(android.graphics.Color.parseColor("#C0C0C0"))
+        val topBackgroundColor = Color(android.graphics.Color.parseColor("#26619c"))
         val backgroundColor = Color(android.graphics.Color.parseColor("#6e0b14"))
     }
 
@@ -21,6 +22,18 @@ class CanvasAdapter(val canvasSize: Float) {
             canvasSize / 2f,
             canvasSize * 3f /2f
         )
+    }
+
+    fun square(): Drawing {
+        val path = DrawTools.createPath(
+            arrayOf(
+                Offset(0f, 0f),
+                Offset(0f, offset(graph2D.symP1).y),
+                Offset(canvasSize, offset(graph2D.symP1).y),
+                Offset(canvasSize, 0f)
+            )
+        )
+        return Drawing(path, topBackgroundColor)
     }
 
     // Graph 2D containing shapes

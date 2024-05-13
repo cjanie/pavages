@@ -82,7 +82,8 @@ fun ConstraintLayoutContent() {
         }
 
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .constrainAs(graph) {
                     top.linkTo(parent.top)
                     bottom.linkTo(buttons.top)
@@ -97,8 +98,7 @@ fun ConstraintLayoutContent() {
                         if (columnWidthPx < columnHeightPx) columnWidthPx else columnHeightPx
                 }
         ) {
-            //val canvasSizePx =
-              //  if (columnWidthPx < columnHeightPx) columnWidthPx else columnHeightPx
+
             val textMeasurer = rememberTextMeasurer()
 
             fun drawText(drawScope: DrawScope, text: String, offset: Offset) {
@@ -120,6 +120,8 @@ fun ConstraintLayoutContent() {
                 // Graph center O
                 val center = canvasAdapter.center()
                 //drawText("O", center)
+                val square = canvasAdapter.square()
+                drawPath(square.path, square.color)
 
                 // Drawings
                 val drawings = canvasAdapter.decompose(decomposeIteration, arrange)
@@ -131,12 +133,14 @@ fun ConstraintLayoutContent() {
 
         }
 
-        Row(Modifier
-            .constrainAs(buttons) {
-                bottom.linkTo(parent.bottom)
-                start.linkTo(graph.start)
-                end.linkTo(graph.end)
-            }.padding(20.dp)
+        Row(
+            Modifier
+                .constrainAs(buttons) {
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(graph.start)
+                    end.linkTo(graph.end)
+                }
+                .padding(20.dp)
         ) {
             Button(
                 onClick = { decomposeIteration -= 1 },
