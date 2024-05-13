@@ -53,7 +53,8 @@ class GoldenTriangle(
             val duplicatedSidesLength = duplicatedSidesRatio * baseLength
             // baselength =
             // Get height by trigonometry
-            val height = Trigonometry.oppositeSideLengthFromHypotenuseAndAngle(duplicatedSidesLength,
+            val height = Trigonometry.oppositeSideLengthFromHypotenuseAndAngle(
+                duplicatedSidesLength,
                 angleAtBaseDegrees
             )
             // Set points coordinates
@@ -64,6 +65,27 @@ class GoldenTriangle(
             val C = Point(x = baseLength / 2, y = 0.0)
 
             return GoldenTriangle(A, B, C)
+        }
+
+        fun createByHeight(height: Double): GoldenTriangle {
+            // Golden ratio
+            // From half angle A
+            val hypothenuse = Trigonometry.hypotenuseLength(height, 36.0 / 2.0)
+
+            // From angle = B = 72° = angleAtBaseDegrees
+            val adjacent = Trigonometry.adjacentSideLength(hypothenuse, angleAtBaseDegrees)
+            val baseLength = adjacent * 2
+            create(baseLength)
+
+            // Set points coordinates
+            // A, opposite to base, on vertical Axis
+            val A = Point(x = 0.0, y = height)
+            // Base BC on horizontal Axis
+            val B = Point(x = -baseLength / 2, y = 0.0)
+            val C = Point(x = baseLength / 2, y = 0.0)
+
+            return GoldenTriangle(A, B, C)
+
         }
 
 

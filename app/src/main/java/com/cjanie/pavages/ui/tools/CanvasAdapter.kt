@@ -43,7 +43,7 @@ class CanvasAdapter(canvasSize: Float) {
     )
 
     // Graph 2D containing shapes
-    private val graph2D = Graph2D()
+    private val graph2D = Graph2D(800.0)
 
     fun decompose(iteration: Int, arrange: Boolean) : List<Drawing> {
         return graph2D.iterate(iteration, arrange).map {

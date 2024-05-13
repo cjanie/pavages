@@ -85,7 +85,6 @@ fun ConstraintLayoutContent() {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
-                .padding(20.dp)
                 // Set the column size using the layout coordinates
                 .onGloballyPositioned {
                     columnHeightPx = it.size.height.toFloat()
