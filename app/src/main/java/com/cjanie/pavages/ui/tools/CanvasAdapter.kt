@@ -12,6 +12,7 @@ class CanvasAdapter(val canvasSize: Float) {
     companion object {
         val goldenTriangleColor = Color(android.graphics.Color.parseColor("#FFD700"))
         val goldenGnomonColor = Color(android.graphics.Color.parseColor("#C0C0C0"))
+        val backgroundColor = Color(android.graphics.Color.parseColor("#6e0b14"))
     }
 
     // Vertical Axis

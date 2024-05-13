@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = CanvasAdapter.backgroundColor
                 ) {
                     ConstraintLayoutContent()
                 }
@@ -109,15 +109,10 @@ fun ConstraintLayoutContent() {
                 }
 
                 val canvasAdapter = CanvasAdapter(canvasSizePx)
-                // Draw Graph (horizontal and vertical axis, center O)
-                val horizontalAxis = canvasAdapter.horizontalAxis
-                drawLine(Color.Blue, horizontalAxis[0], horizontalAxis[1], strokeWidth)
 
-                val verticalAxis = canvasAdapter.verticalAxis
-                drawLine(Color.Blue, verticalAxis[0], verticalAxis[1], strokeWidth)
-
+                // Graph center O
                 val center = canvasAdapter.center()
-                drawText("O", center)
+                //drawText("O", center)
 
                 // Drawings
                 val drawings = canvasAdapter.decompose(decomposeIteration, arrange)
