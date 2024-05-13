@@ -15,7 +15,6 @@ class GoldenTriangleDecomposables_RosaceUnit(
 
     fun pushUp() {
 
-
         models[1].updateGoldenTriangle(GoldenTriangle(
             models[0].goldenTriangle().symP1,
             models[0].goldenTriangle().points[1],
@@ -27,12 +26,6 @@ class GoldenTriangleDecomposables_RosaceUnit(
             models[0].goldenTriangle().points[2]
         ))
 
-        val AA = Point(
-            x = models[0].goldenTriangle().points[0].x,
-            y = models[0].goldenTriangle().symP3.y - (models[0].goldenTriangle().points[0].y - models[0].goldenTriangle().symP1.y)
-        )
-        val symGoldenTriangle_on_P1_symP1_base = GoldenTriangle(AA, models[0].goldenTriangle().P1, models[0].goldenTriangle().symP1)
-        models[3].updateGoldenTriangle(symGoldenTriangle_on_P1_symP1_base)
 
         models[0].updateGoldenTriangle(
             GoldenTriangle(
@@ -41,6 +34,21 @@ class GoldenTriangleDecomposables_RosaceUnit(
                 models[2].goldenTriangle().points[0]
             ))
 
+        val AA = Point(
+            x = models[0].goldenTriangle().points[0].x,
+            y = models[0].goldenTriangle().symP3.y - (models[0].goldenTriangle().points[0].y - models[0].goldenTriangle().symP1.y)
+        )
+        val symGoldenTriangle_on_P1_symP1_base = GoldenTriangle(AA, models[0].goldenTriangle().P2, models[0].goldenTriangle().symP2)
+        //models[3].updateGoldenTriangle(symGoldenTriangle_on_P1_symP1_base)
+
+    }
+
+    private fun getSymToOppositeToBasePoint(): Point {
+        val AA = Point(
+            x = models[0].goldenTriangle().points[0].x,
+            y = models[0].goldenTriangle().symP3.y - (models[0].goldenTriangle().points[0].y - models[0].goldenTriangle().symP1.y)
+        )
+        return AA
     }
 
 

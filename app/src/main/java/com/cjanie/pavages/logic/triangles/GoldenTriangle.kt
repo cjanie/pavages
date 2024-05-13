@@ -224,6 +224,9 @@ class GoldenTriangle(
                 rosaceUnit.pushUp()
                 //rosaceUnit.pushUp()
 
+
+
+
                 return rosaceUnit.decomposables()
 
 
