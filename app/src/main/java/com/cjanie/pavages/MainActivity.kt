@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,6 +31,7 @@ import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.cjanie.pavages.ui.theme.PavagesTheme
 import com.cjanie.pavages.ui.tools.DrawTools
 import com.cjanie.pavages.ui.tools.CanvasAdapter
@@ -44,89 +46,114 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // For column size depending on screen size
-                    var columnHeightPx by remember {
-                        mutableFloatStateOf(0f)
-                    }
-                    var columnWidthPx by remember {
-                        mutableFloatStateOf(0f)
-                    }
-                    
-                    var decomposeIteration by remember {
-                        mutableIntStateOf(0)
-                    }
-
-                    var arrange by remember {
-                        mutableStateOf(false)
-                    }
-                    
-                    Row {
-                        Button(onClick = { decomposeIteration -= 1 }) {
-                            Text("Back")
-                        }
-
-                        Button(onClick = { decomposeIteration += 1 }) {
-                            Text("Forward")
-                        }
-                        Button(onClick = { arrange = !arrange }) {
-                            Text("Arrange")
-                        }
-                    }
-
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(20.dp)
-                            // Set the column size using the layout coordinates
-                            .onGloballyPositioned {
-                                columnHeightPx = it.size.height.toFloat()
-                                columnWidthPx = it.size.width.toFloat()
-                            }
-                    ) {
-                        val canvasSizePx =
-                            if (columnWidthPx < columnHeightPx) columnWidthPx else columnHeightPx
-                        val textMeasurer = rememberTextMeasurer()
-
-                        fun drawText(drawScope: DrawScope, text: String, offset: Offset) {
-                            val textLayoutResult = DrawTools.getTextResultLayout(text, textMeasurer)
-                            drawScope.drawText(textLayoutResult, Color.Red, DrawTools.getTextOffset(textLayoutResult, offset))
-
-                        }
-
-                        Canvas(modifier = Modifier.fillMaxSize()) {
-                            val strokeWidth = 1F
-
-                            fun drawText(text: String, offset: Offset) {
-                                drawText(this, text, offset)
-                            }
-
-                            val canvasAdapter = CanvasAdapter(canvasSizePx)
-                            // Draw Graph (horizontal and vertical axis, center O)
-                            val horizontalAxis = canvasAdapter.horizontalAxis
-                            drawLine(Color.Blue, horizontalAxis[0], horizontalAxis[1], strokeWidth)
-
-                            val verticalAxis = canvasAdapter.verticalAxis
-                            drawLine(Color.Blue, verticalAxis[0], verticalAxis[1], strokeWidth)
-
-                            val center = canvasAdapter.center
-                            drawText("O", center)
-
-                            // Drawings
-                            val drawings = canvasAdapter.decompose(decomposeIteration, arrange)
-                            for (drawing in drawings) {
-                                drawPath(drawing.path, drawing.color)
-                            }
-
-                        }
-
-                    }
+                    ConstraintLayoutContent()
                 }
             }
         }
     }
+}
 
+@Composable
+fun ConstraintLayoutContent() {
+    ConstraintLayout(Modifier.fillMaxSize()) {
+        // Create references for the composables to constrain
+        val (graph, buttons) = createRefs()
+
+        var decomposeIteration by remember {
+            mutableIntStateOf(0)
+        }
+
+        var arrange by remember {
+            mutableStateOf(false)
+        }
+
+        // For column size depending on screen size
+        var columnHeightPx by remember {
+            mutableFloatStateOf(0f)
+        }
+        var columnWidthPx by remember {
+            mutableFloatStateOf(0f)
+        }
+
+        Column(
+            modifier = Modifier
+                .constrainAs(graph) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(buttons.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+                .padding(20.dp)
+                // Set the column size using the layout coordinates
+                .onGloballyPositioned {
+                    columnHeightPx = it.size.height.toFloat()
+                    columnWidthPx = it.size.width.toFloat()
+                }
+        ) {
+            val canvasSizePx =
+                if (columnWidthPx < columnHeightPx) columnWidthPx else columnHeightPx
+            val textMeasurer = rememberTextMeasurer()
+
+            fun drawText(drawScope: DrawScope, text: String, offset: Offset) {
+                val textLayoutResult = DrawTools.getTextResultLayout(text, textMeasurer)
+                drawScope.drawText(textLayoutResult, Color.Red, DrawTools.getTextOffset(textLayoutResult, offset))
+
+            }
+
+            Canvas(modifier = Modifier.fillMaxSize()) {
+                val strokeWidth = 1F
+
+                fun drawText(text: String, offset: Offset) {
+                    drawText(this, text, offset)
+                }
+
+                val canvasAdapter = CanvasAdapter(canvasSizePx)
+                // Draw Graph (horizontal and vertical axis, center O)
+                val horizontalAxis = canvasAdapter.horizontalAxis
+                drawLine(Color.Blue, horizontalAxis[0], horizontalAxis[1], strokeWidth)
+
+                val verticalAxis = canvasAdapter.verticalAxis
+                drawLine(Color.Blue, verticalAxis[0], verticalAxis[1], strokeWidth)
+
+                val center = canvasAdapter.center
+                drawText("O", center)
+
+                // Drawings
+                val drawings = canvasAdapter.decompose(decomposeIteration, arrange)
+                for (drawing in drawings) {
+                    drawPath(drawing.path, drawing.color)
+                }
+
+            }
+
+        }
+
+        Row(Modifier
+            .constrainAs(buttons) {
+                bottom.linkTo(parent.bottom)
+                start.linkTo(graph.start)
+                end.linkTo(graph.end)
+            }.padding(20.dp)
+        ) {
+            Button(
+                onClick = { decomposeIteration -= 1 },
+                modifier = Modifier.padding(8.dp)
+
+
+            ) {
+                Text("-")
+            }
+
+            Button(onClick = { decomposeIteration += 1 },
+                modifier = Modifier.padding(8.dp)) {
+                Text("+")
+            }
+            Button(onClick = { arrange = !arrange },
+                modifier = Modifier.padding(8.dp)) {
+                Text("Arrange")
+            }
+        }
+    }
 }
 
 @Composable
