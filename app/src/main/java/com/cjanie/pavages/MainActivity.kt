@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ConstraintLayoutContent() {
-    ConstraintLayout(Modifier.fillMaxSize()) {
+    ConstraintLayout(Modifier) {
         // Create references for the composables to constrain
         val (graph, buttons) = createRefs()
 
@@ -98,28 +98,10 @@ fun ConstraintLayoutContent() {
                         if (columnWidthPx < columnHeightPx) columnWidthPx else columnHeightPx
                 }
         ) {
-
-            val textMeasurer = rememberTextMeasurer()
-
-            fun drawText(drawScope: DrawScope, text: String, offset: Offset) {
-                val textLayoutResult = DrawTools.getTextResultLayout(text, textMeasurer)
-                drawScope.drawText(textLayoutResult, Color.Red, DrawTools.getTextOffset(textLayoutResult, offset))
-
-            }
-
             Canvas(modifier = Modifier) {
-                val strokeWidth = 1F
-
-                fun drawText(text: String, offset: Offset) {
-                    drawText(this, text, offset)
-                }
 
                 val canvasAdapter = CanvasAdapter(canvasSizePx)
-                //val canvasAdapter = CanvasAdapter(600f)
 
-                // Graph center O
-                val center = canvasAdapter.center()
-                //drawText("O", center)
                 val square = canvasAdapter.square()
                 drawPath(square.path, square.color)
 
@@ -128,9 +110,7 @@ fun ConstraintLayoutContent() {
                 for (drawing in drawings) {
                     drawPath(drawing.path, drawing.color)
                 }
-
             }
-
         }
 
         Row(
