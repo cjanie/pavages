@@ -108,7 +108,8 @@ fun ConstraintLayoutContent() {
                     drawText(this, text, offset)
                 }
 
-                val canvasAdapter = CanvasAdapter(canvasSizePx)
+                //val canvasAdapter = CanvasAdapter(canvasSizePx)
+                val canvasAdapter = CanvasAdapter(600f)
 
                 // Graph center O
                 val center = canvasAdapter.center()

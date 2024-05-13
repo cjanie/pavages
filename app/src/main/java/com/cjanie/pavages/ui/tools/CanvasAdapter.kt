@@ -15,38 +15,16 @@ class CanvasAdapter(val canvasSize: Float) {
         val backgroundColor = Color(android.graphics.Color.parseColor("#6e0b14"))
     }
 
-    // Vertical Axis
-    val verticalAxis = arrayOf(
-            Offset(
-                canvasSize / 2f,
-                0f),
-            Offset(
-                canvasSize / 2f,
-                canvasSize)
-        )
-
-    // Horizontal Axis
-    val horizontalAxis = arrayOf(
-        Offset(
-           canvasSize,
-            canvasSize / 2f,
-        ),
-        Offset(
-            0f,
-            canvasSize / 2f
-        )
-    )
-
     // Center
     fun center(): Offset {
         return Offset(
-            canvasSize / 2f,
-            600f//canvasSize / 2f
+            0f,
+            canvasSize * 3f/4f
         )
     }
 
     // Graph 2D containing shapes
-    private val graph2D = Graph2D(heigth = 600.0)
+    private val graph2D = Graph2D(heigth = canvasSize.toDouble())
 
     fun decompose(iteration: Int, arrange: Boolean) : List<Drawing> {
         return graph2D.iterate(iteration, arrange).map {
