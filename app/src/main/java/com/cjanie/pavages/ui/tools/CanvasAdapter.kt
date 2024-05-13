@@ -18,8 +18,8 @@ class CanvasAdapter(val canvasSize: Float) {
     // Center
     fun center(): Offset {
         return Offset(
-            0f,
-            canvasSize * 3f/4f
+            canvasSize / 2f,
+            canvasSize * 3f /2f
         )
     }
 

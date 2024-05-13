@@ -77,8 +77,12 @@ fun ConstraintLayoutContent() {
             mutableFloatStateOf(0f)
         }
 
+        var canvasSizePx by remember {
+            mutableFloatStateOf(0f)
+        }
+
         Column(
-            modifier = Modifier
+            modifier = Modifier.fillMaxSize()
                 .constrainAs(graph) {
                     top.linkTo(parent.top)
                     bottom.linkTo(buttons.top)
@@ -89,10 +93,12 @@ fun ConstraintLayoutContent() {
                 .onGloballyPositioned {
                     columnHeightPx = it.size.height.toFloat()
                     columnWidthPx = it.size.width.toFloat()
+                    canvasSizePx =
+                        if (columnWidthPx < columnHeightPx) columnWidthPx else columnHeightPx
                 }
         ) {
-            val canvasSizePx =
-                if (columnWidthPx < columnHeightPx) columnWidthPx else columnHeightPx
+            //val canvasSizePx =
+              //  if (columnWidthPx < columnHeightPx) columnWidthPx else columnHeightPx
             val textMeasurer = rememberTextMeasurer()
 
             fun drawText(drawScope: DrawScope, text: String, offset: Offset) {
@@ -101,15 +107,15 @@ fun ConstraintLayoutContent() {
 
             }
 
-            Canvas(modifier = Modifier.fillMaxHeight(canvasSizePx)) {
+            Canvas(modifier = Modifier) {
                 val strokeWidth = 1F
 
                 fun drawText(text: String, offset: Offset) {
                     drawText(this, text, offset)
                 }
 
-                //val canvasAdapter = CanvasAdapter(canvasSizePx)
-                val canvasAdapter = CanvasAdapter(600f)
+                val canvasAdapter = CanvasAdapter(canvasSizePx)
+                //val canvasAdapter = CanvasAdapter(600f)
 
                 // Graph center O
                 val center = canvasAdapter.center()
