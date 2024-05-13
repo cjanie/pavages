@@ -116,7 +116,7 @@ fun ConstraintLayoutContent() {
                 val verticalAxis = canvasAdapter.verticalAxis
                 drawLine(Color.Blue, verticalAxis[0], verticalAxis[1], strokeWidth)
 
-                val center = canvasAdapter.center
+                val center = canvasAdapter.center()
                 drawText("O", center)
 
                 // Drawings

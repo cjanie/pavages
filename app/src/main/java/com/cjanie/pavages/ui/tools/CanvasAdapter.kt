@@ -8,7 +8,7 @@ import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 import com.cjanie.pavages.logic.triangles.Triangle
 
-class CanvasAdapter(canvasSize: Float) {
+class CanvasAdapter(val canvasSize: Float) {
     companion object {
         val goldenTriangleColor = Color(android.graphics.Color.parseColor("#FFD700"))
         val goldenGnomonColor = Color(android.graphics.Color.parseColor("#C0C0C0"))
@@ -37,13 +37,15 @@ class CanvasAdapter(canvasSize: Float) {
     )
 
     // Center
-    val center = Offset(
-        canvasSize / 2f,
-        canvasSize / 2f
-    )
+    fun center(): Offset {
+        return Offset(
+            canvasSize / 2f,
+            600f//canvasSize / 2f
+        )
+    }
 
     // Graph 2D containing shapes
-    private val graph2D = Graph2D(800.0)
+    private val graph2D = Graph2D(heigth = 600.0)
 
     fun decompose(iteration: Int, arrange: Boolean) : List<Drawing> {
         return graph2D.iterate(iteration, arrange).map {
@@ -69,8 +71,8 @@ class CanvasAdapter(canvasSize: Float) {
 
     private fun offset(point: Point): Offset {
         return Offset(
-            center.x + point.x.toFloat(),
-            center.y - point.y.toFloat()
+            center().x + point.x.toFloat(),
+            center().y - point.y.toFloat()
         )
     }
 
