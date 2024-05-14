@@ -35,7 +35,7 @@ class GoldenTriangle(
         println("${duplicatedSideLength() / baseSideLength()}!!!!!!!!!!!!!!!!!!")
         val phi = BigDecimal(Number.GOLDEN_NUMBER_PHI).setScale(1, RoundingMode.DOWN)
         println("${Number.GOLDEN_NUMBER_PHI}!!!!!!!!!!!!!!!!!!")
-        //assert(decimal == phi)//((duplicatedSideLength() / baseSideLength()).toFloat() == NumberConstants.GOLDEN_NUMBER_PHI.toFloat())
+        assert(decimal == phi)//((duplicatedSideLength() / baseSideLength()).toFloat() == NumberConstants.GOLDEN_NUMBER_PHI.toFloat())
     }
 
     companion object {

@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ConstraintLayoutContent() {
-    ConstraintLayout(Modifier) {
+    ConstraintLayout(Modifier.fillMaxSize()) {
         // Create references for the composables to constrain
         val (graph, buttons) = createRefs()
 

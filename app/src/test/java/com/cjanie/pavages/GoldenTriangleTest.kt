@@ -7,7 +7,9 @@ import com.cjanie.pavages.logic.triangles.GoldenTriangle
 import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class GoldenTriangleTest {
@@ -47,6 +49,14 @@ class GoldenTriangleTest {
 
         val gnomons = decomposables.filter { it is GoldenGnomon }
         assertEquals(1, gnomons.size)
+    }
+
+    @Test fun `decompose 1st iteration non adjacent golden triangles arrangement`() {
+        // SUT
+        val decomposables = GoldenTriangle().iterate(1)
+        val goldenTriangles = decomposables.filter { it is GoldenTriangle }
+        val isAdjacent: Boolean = (goldenTriangles[0] as GoldenTriangle).points[0] == (goldenTriangles[1] as GoldenTriangle).points[0]
+        assertFalse(isAdjacent)
     }
 
     @Test
