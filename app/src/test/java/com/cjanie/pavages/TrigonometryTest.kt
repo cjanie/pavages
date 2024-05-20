@@ -1,7 +1,7 @@
 package com.cjanie.pavages
 
-import com.cjanie.pavages.tools.Trigonometry.Companion.adjacentSideLength
-import com.cjanie.pavages.tools.Trigonometry.Companion.hypotenuseLength
+import com.cjanie.pavages.tools.Trigonometry.Companion.adjacentSideLengthFromHypotenuseAndAngle
+import com.cjanie.pavages.tools.Trigonometry.Companion.hypotenuseLengthFromAdjacentSideAndAngle
 import com.cjanie.pavages.tools.Trigonometry.Companion.hypotenuseLengthFromPythagoreanTheorem
 import com.cjanie.pavages.tools.Trigonometry.Companion.oppositeSideLengthFromAdjacentSideAndAngle
 import com.cjanie.pavages.tools.Trigonometry.Companion.oppositeSideLengthFromHypotenuseAndAngle
@@ -21,7 +21,7 @@ class TrigonometryTest {
     fun `adjacent side length calculation is correct`() {
         val hypotenuseLength = 9.0 // cm
         val angle = 40.0 // degrees
-        val adjacentSideLength = adjacentSideLength(hypotenuseLength, angle)
+        val adjacentSideLength = adjacentSideLengthFromHypotenuseAndAngle(hypotenuseLength, angle)
         assertEquals(6.894399988070802, adjacentSideLength, 0.0)
 
     }
@@ -46,7 +46,7 @@ class TrigonometryTest {
     fun `hypotenuse side length calculation is correct`() {
         val adjacentSideLength = 6.0
         val angle = 37.0
-        val hypotenuse = hypotenuseLength(adjacentSideLength, angle)
+        val hypotenuse = hypotenuseLengthFromAdjacentSideAndAngle(adjacentSideLength, angle)
         assertEquals(7.512813948937354, hypotenuse, 0.0)
     }
 

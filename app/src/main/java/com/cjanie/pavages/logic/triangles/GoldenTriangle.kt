@@ -8,7 +8,6 @@ import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon_sym
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Dart_atBottom_sym
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom_sym
@@ -70,10 +69,10 @@ class GoldenTriangle(
         fun createByHeight(height: Double): GoldenTriangle {
             // Golden ratio
             // From half angle A
-            val hypothenuse = Trigonometry.hypotenuseLength(height, 36.0 / 2.0)
+            val hypothenuse = Trigonometry.hypotenuseLengthFromAdjacentSideAndAngle(height, 36.0 / 2.0)
 
             // From angle = B = 72° = angleAtBaseDegrees
-            val adjacent = Trigonometry.adjacentSideLength(hypothenuse, angleAtBaseDegrees)
+            val adjacent = Trigonometry.adjacentSideLengthFromHypotenuseAndAngle(hypothenuse, angleAtBaseDegrees)
             val baseLength = adjacent * 2
             create(baseLength)
 
@@ -99,7 +98,7 @@ class GoldenTriangle(
 
     // P1 coordinates
     val P1 = Point(
-        x = points[1].x + Trigonometry.adjacentSideLength(duplicatedSidesLength, 36.0),
+        x = points[1].x + Trigonometry.adjacentSideLengthFromHypotenuseAndAngle(duplicatedSidesLength, 36.0),
         y = points[1].y + Trigonometry.oppositeSideLengthFromHypotenuseAndAngle(duplicatedSidesLength, 36.0)
     )
 
@@ -111,7 +110,7 @@ class GoldenTriangle(
     // P2 coordinates
     val P2 = Point(
         x = symP1.x
-                + Trigonometry.adjacentSideLength(duplicatedSideSymP1_P1Length, 36.0),
+                + Trigonometry.adjacentSideLengthFromHypotenuseAndAngle(duplicatedSideSymP1_P1Length, 36.0),
         y = symP1.y
                 + Trigonometry.oppositeSideLengthFromHypotenuseAndAngle(
             duplicatedSideSymP1_P1Length, 36.0

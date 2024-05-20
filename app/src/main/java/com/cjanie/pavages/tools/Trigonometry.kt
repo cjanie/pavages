@@ -28,8 +28,12 @@ class Trigonometry {
             return tan(degreeToRadian(angleInDegrees))
         }
 
-        fun adjacentSideLength(hypotenuseLength: Double, angleInDegrees: Double): Double {
+        fun adjacentSideLengthFromHypotenuseAndAngle(hypotenuseLength: Double, angleInDegrees: Double): Double {
             return hypotenuseLength * cosine(angleInDegrees)
+        }
+
+        fun adjacentSideLengthFromOppositeSideAndAngle(oppositeSideLength: Double, angleInDegrees: Double): Double {
+            return oppositeSideLength / tangente(angleInDegrees)
         }
 
         fun oppositeSideLengthFromHypotenuseAndAngle(hypotenuseLength: Double, angleInDegrees: Double): Double {
@@ -39,15 +43,15 @@ class Trigonometry {
         fun oppositeSideLengthFromAdjacentSideAndAngle(adjacentSideLength: Double, angleInDegrees: Double): Double {
             return adjacentSideLength * tangente(angleInDegrees)
         }
-        fun hypotenuseLength(adjacentSideLength: Double, angleInDegrees: Double): Double {
+        fun hypotenuseLengthFromAdjacentSideAndAngle(adjacentSideLength: Double, angleInDegrees: Double): Double {
             return adjacentSideLength / cosine(angleInDegrees)
         }
 
-        fun hypotenuseLengthFromPythagoreanTheorem(side1Length: Double, side2Length: Double): Double {
+        fun hypotenuseLengthFromPythagoreanTheorem(adjacentSideLength: Double, oppositeSideLength: Double): Double {
             // Si un triangle est rectangle,
             // alors le carré de la logueur de l'hypoténuse est égal à
             // la somme des carrés des longueurs des deux autres côtés
-            return sqrt(side1Length.pow(2) + side2Length.pow(2))
+            return sqrt(adjacentSideLength.pow(2) + oppositeSideLength.pow(2))
         }
 
         fun side2LengthFromPythagoreTheorem(hypotenuseLength: Double, side1Length: Double): Double {
