@@ -4,16 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,19 +18,11 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.text.drawText
-import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.cjanie.pavages.ui.theme.PavagesTheme
-import com.cjanie.pavages.ui.tools.DrawTools
 import com.cjanie.pavages.ui.tools.CanvasAdapter
 
 class MainActivity : ComponentActivity() {
@@ -46,7 +33,7 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = CanvasAdapter.backgroundColor
+                    color = CanvasAdapter.backgroundColor,
                 ) {
                     ConstraintLayoutContent()
                 }
@@ -57,7 +44,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ConstraintLayoutContent() {
-    ConstraintLayout(Modifier.fillMaxSize()) {
+    ConstraintLayout(
+        modifier = Modifier.fillMaxSize()) {
         // Create references for the composables to constrain
         val (graph, buttons) = createRefs()
 
@@ -77,7 +65,19 @@ fun ConstraintLayoutContent() {
             mutableFloatStateOf(0f)
         }
 
-        var canvasSizePx by remember {
+        var buttonsRowHeightPx by remember {
+            mutableFloatStateOf(0f)
+        }
+
+        var canvasHeightPx by remember {
+            mutableFloatStateOf(0f)
+        }
+
+        var canvasWidthPx by remember {
+            mutableFloatStateOf(0f)
+        }
+
+        var triangleHeightPx by remember {
             mutableFloatStateOf(0f)
         }
 
@@ -94,13 +94,12 @@ fun ConstraintLayoutContent() {
                 .onGloballyPositioned {
                     columnHeightPx = it.size.height.toFloat()
                     columnWidthPx = it.size.width.toFloat()
-                    canvasSizePx =
-                        if (columnWidthPx < columnHeightPx) columnWidthPx else columnHeightPx
+                    canvasWidthPx = columnWidthPx
                 }
         ) {
             Canvas(modifier = Modifier) {
 
-                val canvasAdapter = CanvasAdapter(canvasSizePx)
+                val canvasAdapter = CanvasAdapter(canvasHeightPx, canvasWidthPx, triangleHeightPx)
 
                 val square = canvasAdapter.square()
                 drawPath(square.path, square.color)
@@ -121,6 +120,18 @@ fun ConstraintLayoutContent() {
                     end.linkTo(graph.end)
                 }
                 .padding(20.dp)
+                .onGloballyPositioned {
+                    buttonsRowHeightPx = it.size.height.toFloat()
+                    canvasHeightPx =
+                            // portrait case
+                        if (columnWidthPx < columnHeightPx) columnHeightPx * 2f / 3f
+                        else columnHeightPx - buttonsRowHeightPx
+                    // portrait case
+                    triangleHeightPx =
+                        if (columnWidthPx < columnHeightPx) columnWidthPx
+                        // landscape case
+                        else canvasHeightPx * 2f / 3f
+                }
         ) {
             Button(
                 onClick = { decomposeIteration -= 1 },
@@ -141,9 +152,4 @@ fun ConstraintLayoutContent() {
             }
         }
     }
-}
-
-@Composable
-fun Buttons() {
-
 }
