@@ -1,4 +1,4 @@
-package com.cjanie.pavages.ui.tools
+package com.cjanie.pavages.ui
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -7,6 +7,8 @@ import com.cjanie.pavages.logic.Graph2D
 import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 import com.cjanie.pavages.logic.triangles.Triangle
+import com.cjanie.pavages.tools.CheckPointInBounds
+import com.cjanie.pavages.ui.tools.DrawTools
 
 class CanvasAdapter(val canvasHeight: Float, val canvasWidth: Float, val triangleHeight: Float) {
     companion object {
@@ -69,6 +71,16 @@ class CanvasAdapter(val canvasHeight: Float, val canvasWidth: Float, val triangl
     }
 
 
+
+    private fun point(offset: Offset): Point {
+        return Point(
+            x = (offset.x - center().x) .toDouble(),
+            y = (center().y - offset.y).toDouble()
+        )
+    }
+    fun isPointInGoldenTriangle(offset: Offset): Boolean {
+        return CheckPointInBounds.isInPointWithinGoldenTriangle(graph2D.goldenTriangle, point(offset))
+    }
 
 }
 

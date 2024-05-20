@@ -23,13 +23,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.cjanie.pavages.ui.theme.PavagesTheme
-import com.cjanie.pavages.ui.tools.CanvasAdapter
+import com.cjanie.pavages.ui.CanvasAdapter
 import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
@@ -88,6 +87,10 @@ fun ConstraintLayoutContent() {
             mutableFloatStateOf(0f)
         }
 
+        var tap by remember {
+            mutableStateOf(Offset.Zero)
+        }
+
 
         var clickableRects by remember {
             mutableStateOf(listOf<Rect>())
@@ -115,7 +118,7 @@ fun ConstraintLayoutContent() {
                 .pointerInput(key1 = Unit) {
                     detectTapGestures(
                         onTap = { tapOffset ->
-
+                            tap = tapOffset
                         }
                     )
                 }
@@ -133,34 +136,34 @@ fun ConstraintLayoutContent() {
                     drawPath(drawing.path, drawing.color)
                 }
 
-                clickableRects = drawings.map { it.path.getBounds() }
-                val rnd = Random.Default
-                val colors = listOf(
-                    // Predefined colors like
-                    Color.Green,
-                    Color.Black,
-                    Color.Red,
-                    Color.Yellow,
-                    Color.Cyan,
-                    Color.Magenta,
-                    Color.White,
-                    //Custom color hex:
-                    Color(0xFFF0670A),
-                    //Custom color RGB
-                    Color(12, 154, 224, 255),
-                    Color(241, 7, 230, 255),
-                    Color(146, 130, 116, 255),
-                    Color(0, 255, 179, 255)
-                )
+                if(canvasAdapter.isPointInGoldenTriangle(tap)) {
+                    clickableRects = drawings.map { it.path.getBounds() }
+                    val rnd = Random.Default
+                    val colors = listOf(
+                        // Predefined colors like
+                        Color.Green,
+                        Color.Black,
+                        Color.Red,
+                        Color.Yellow,
+                        Color.Cyan,
+                        Color.Magenta,
+                        Color.White,
+                        //Custom color hex:
+                        Color(0xFFF0670A),
+                        //Custom color RGB
+                        Color(12, 154, 224, 255),
+                        Color(241, 7, 230, 255),
+                        Color(146, 130, 116, 255),
+                        Color(0, 255, 179, 255)
+                    )
+                        for (i in clickableRects.indices) {
 
 
-                for (i in clickableRects.indices) {
+                            drawRect(colors[rnd.nextInt(colors.size - 1)], clickableRects[i].topLeft, clickableRects[i].size)
 
-
-                    drawRect(colors[rnd.nextInt(colors.size - 1)], clickableRects[i].topLeft, clickableRects[i].size)
+                        }
 
                 }
-
 
             }
         }
