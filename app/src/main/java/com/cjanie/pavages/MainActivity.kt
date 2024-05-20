@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,7 +20,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.cjanie.pavages.ui.theme.PavagesTheme
 import com.cjanie.pavages.ui.tools.CanvasAdapter
+import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,7 +88,10 @@ fun ConstraintLayoutContent() {
             mutableFloatStateOf(0f)
         }
 
-        var clickablePaths = mutableListOf<Path>()
+
+        var clickableRects by remember {
+            mutableStateOf(listOf<Rect>())
+        }
 
         Column(
             modifier = Modifier
@@ -109,13 +114,8 @@ fun ConstraintLayoutContent() {
                 // https://dev.to/lex_fury/touch-interactions-in-jetpack-compose-5be9
                 .pointerInput(key1 = Unit) {
                     detectTapGestures(
-                        onTap = {tapOffset ->
-                            val rects = clickablePaths.map { it.getBounds() }
-                            for (rect in rects) {
-                                if(rect.contains(tapOffset)) {
-                                    decomposeIteration += 1
-                                }
-                            }
+                        onTap = { tapOffset ->
+
                         }
                     )
                 }
@@ -133,8 +133,35 @@ fun ConstraintLayoutContent() {
                     drawPath(drawing.path, drawing.color)
                 }
 
-                clickablePaths.clear()
-                clickablePaths.addAll(drawings.map { it.path })
+                clickableRects = drawings.map { it.path.getBounds() }
+                val rnd = Random.Default
+                val colors = listOf(
+                    // Predefined colors like
+                    Color.Green,
+                    Color.Black,
+                    Color.Red,
+                    Color.Yellow,
+                    Color.Cyan,
+                    Color.Magenta,
+                    Color.White,
+                    //Custom color hex:
+                    Color(0xFFF0670A),
+                    //Custom color RGB
+                    Color(12, 154, 224, 255),
+                    Color(241, 7, 230, 255),
+                    Color(146, 130, 116, 255),
+                    Color(0, 255, 179, 255)
+                )
+
+
+                for (i in clickableRects.indices) {
+
+
+                    drawRect(colors[rnd.nextInt(colors.size - 1)], clickableRects[i].topLeft, clickableRects[i].size)
+
+                }
+
+
             }
         }
 
