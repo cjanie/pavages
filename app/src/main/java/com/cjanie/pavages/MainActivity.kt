@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +21,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -81,6 +86,8 @@ fun ConstraintLayoutContent() {
             mutableFloatStateOf(0f)
         }
 
+        var clickablePaths = mutableListOf<Path>()
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -97,7 +104,23 @@ fun ConstraintLayoutContent() {
                     canvasWidthPx = columnWidthPx
                 }
         ) {
-            Canvas(modifier = Modifier) {
+            Canvas(modifier = Modifier
+                .fillMaxSize() // Same as surface for the click to work
+                // https://dev.to/lex_fury/touch-interactions-in-jetpack-compose-5be9
+                .pointerInput(key1 = Unit) {
+                    detectTapGestures(
+                        onTap = {tapOffset ->
+                            val rects = clickablePaths.map { it.getBounds() }
+                            for (rect in rects) {
+                                if(rect.contains(tapOffset)) {
+                                    decomposeIteration += 1
+                                }
+                            }
+                        }
+                    )
+                }
+
+            ) {
 
                 val canvasAdapter = CanvasAdapter(canvasHeightPx, canvasWidthPx, triangleHeightPx)
 
@@ -109,6 +132,9 @@ fun ConstraintLayoutContent() {
                 for (drawing in drawings) {
                     drawPath(drawing.path, drawing.color)
                 }
+
+                clickablePaths.clear()
+                clickablePaths.addAll(drawings.map { it.path })
             }
         }
 
@@ -136,8 +162,6 @@ fun ConstraintLayoutContent() {
             Button(
                 onClick = { decomposeIteration -= 1 },
                 modifier = Modifier.padding(8.dp)
-
-
             ) {
                 Text("-")
             }

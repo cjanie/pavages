@@ -38,7 +38,7 @@ class GoldenTriangleDecomposables_RosaceUnit(
             x = models[0].goldenTriangle().points[0].x,
             y = models[0].goldenTriangle().symP3.y - (models[0].goldenTriangle().points[0].y - models[0].goldenTriangle().symP1.y)
         )
-        val symGoldenTriangle_on_P1_symP1_base = GoldenTriangle(AA, models[0].goldenTriangle().P2, models[0].goldenTriangle().symP2)
+//        val symGoldenTriangle_on_P1_symP1_base = GoldenTriangle(AA, models[0].goldenTriangle().P2, models[0].goldenTriangle().symP2)
         //models[3].updateGoldenTriangle(symGoldenTriangle_on_P1_symP1_base)
 
     }
