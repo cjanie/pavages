@@ -15,7 +15,7 @@ import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom_sym
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_RosaceUnit
 import com.cjanie.pavages.logic.triangles.decomposablemodels.StateBuilder
-import com.cjanie.pavages.logic.triangles.decomposablemodels.StateModel
+import com.cjanie.pavages.logic.triangles.decomposablemodels.DecompositionModel
 import com.cjanie.pavages.tools.Symmetry
 import com.cjanie.pavages.tools.Trigonometry
 import java.math.BigDecimal
@@ -92,7 +92,7 @@ class GoldenTriangle(
 
     }
 
-    var state = StateModel(goldenTriangle = this)
+    var state = DecompositionModel(goldenTriangle = this)
 
     // iteration 1 returns P1, symP1, P2
     // Golden triangle BCP : base = CP, duplicated sides = BC and BP
@@ -289,10 +289,11 @@ class GoldenTriangle(
                     points[1], // B
                     P3 //P3
                 )
-                decompositionState.updateModels(listOf(modelTop, kiteDartModel, StateModel(bottomGoldenTriangle)))
+                decompositionState.updateModels(listOf(modelTop, kiteDartModel, DecompositionModel(bottomGoldenTriangle, arrayOf(bottomGoldenTriangle))))
+
                 val decomposables = arrayOf(*modelTop.decomposables(), *kite, *dart, bottomGoldenTriangle)
 
-                return decomposables
+                return decompositionState.decomposables()
             }
         }
         return arrayOf(this)
@@ -327,6 +328,6 @@ class GoldenTriangle(
             .toMutableList()
         symTruncatedBaseDecomposables.removeAt(5)
 
-        return StateModel(symGoldenTriangle_on_P1_symP1_base, symTruncatedBaseDecomposables.toTypedArray())
+        return DecompositionModel(symGoldenTriangle_on_P1_symP1_base, symTruncatedBaseDecomposables.toTypedArray())
     }
 }

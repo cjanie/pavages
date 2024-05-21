@@ -1,5 +1,6 @@
 package com.cjanie.pavages.logic.triangles
 
+import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.decomposablemodels.DecomposablesModel
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2Triangles_1Gnomon
@@ -30,6 +31,14 @@ class DecompositionState {
             }
         }
         return null
+    }
+
+    fun decomposables(): Array<Decomposable> {
+        val decomposables = mutableListOf<Decomposable>()
+        for (model in models) {
+            decomposables.addAll(model.decomposables())
+        }
+        return decomposables.toTypedArray()
     }
 
 }

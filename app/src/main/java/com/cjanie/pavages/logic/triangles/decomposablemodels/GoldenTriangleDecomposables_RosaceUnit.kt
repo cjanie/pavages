@@ -79,6 +79,6 @@ class GoldenTriangleDecomposables_RosaceUnit(
             .toMutableList()
         symTruncatedBaseDecomposables.removeAt(5)
 
-        return StateModel(symGoldenTriangle_on_P1_symP1_base, symTruncatedBaseDecomposables.toTypedArray())
+        return DecompositionModel(symGoldenTriangle_on_P1_symP1_base, symTruncatedBaseDecomposables.toTypedArray())
     }
 }

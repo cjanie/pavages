@@ -3,7 +3,7 @@ package com.cjanie.pavages.logic.triangles.decomposablemodels
 import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
-class StateModel(var goldenTriangle: GoldenTriangle, var decomposables: Array<Decomposable> = emptyArray()): DecomposablesModel {
+class DecompositionModel(var goldenTriangle: GoldenTriangle, var decomposables: Array<Decomposable> = emptyArray()): DecomposablesModel {
     override fun goldenTriangle(): GoldenTriangle {
         return goldenTriangle
     }

@@ -10,14 +10,14 @@ class StateBuilder(
     val symBaseGoldenTrianglemodel: DecomposablesModel
 ) {
 
-    fun buildStateModel(arrange: Boolean): StateModel {
+    fun buildStateModel(arrange: Boolean): DecompositionModel {
         val decomposables = arrayOf(
             *topGoldenTriangleModel.decomposables(),
             *symOfTopGoldenTriangleModel(arrange).decomposables(),
             *baseGoldenTriangleModel.decomposables(),
             *symBaseGoldenTrianglemodel.decomposables()
         )
-        return StateModel(goldenTriangle, decomposables)
+        return DecompositionModel(goldenTriangle, decomposables)
     }
 
     fun symOfTopGoldenTriangleModel(arrange: Boolean): DecomposablesModel {
@@ -36,6 +36,6 @@ class StateBuilder(
             .toMutableList()
         symTruncatedBaseDecomposables.removeAt(5)
 
-        return StateModel(symGoldenTriangle_on_P1_symP1_base, symTruncatedBaseDecomposables.toTypedArray())
+        return DecompositionModel(symGoldenTriangle_on_P1_symP1_base, symTruncatedBaseDecomposables.toTypedArray())
     }
 }
