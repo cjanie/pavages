@@ -6,8 +6,8 @@ import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
 abstract class GoldenTriangleDecomposables_Kite_Dart(open var goldenTriangle: GoldenTriangle): DecomposablesModel {
 
-    protected abstract fun kite(): Array<GoldenTriangle>
-    protected abstract fun dart(): Array<GoldenGnomon>
+    abstract fun kite(): Array<GoldenTriangle>
+    abstract fun dart(): Array<GoldenGnomon>
     // Big Golden Triangle A symP1 P1 over kite/dart losange
     protected abstract fun topGoldenTriangleDecomposables() : Array<Decomposable>
     protected abstract fun bottomGoldenTriangle(): GoldenTriangle

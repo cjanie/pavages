@@ -8,7 +8,9 @@ import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2Triangles_1Gnomon
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Dart_atBottom_sym
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_Dart
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom_sym
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_RosaceUnit
@@ -162,7 +164,16 @@ class GoldenTriangle(
 
      */
 
+    val decompositionState = DecompositionState()
 
+    fun arrangeSelectedModel(point: Point): Array<Decomposable> {
+        decompositionState.arrangeSelectedModel(point)
+        val decomposables = mutableListOf<Decomposable>()
+        for (model in decompositionState.getModels()) {
+            decomposables.addAll(model.decomposables())
+        }
+        return decomposables.toTypedArray()
+    }
     fun iterate(iteration: Int, arrange: Boolean = false): Array<Decomposable> {
         if(iteration > 0) {
             if(iteration == 3) { // Use symetry on symP1 P1 axis
@@ -253,23 +264,51 @@ class GoldenTriangle(
 
             }
 
-            if(iteration % 2 != 0) return getOneToThree(arrange)
-            else return getUpToKiteAndDart(iteration, arrange)
+            if(iteration % 2 != 0) {
+                decompositionState.updateModels(listOf(getOneToThree(arrange)))
+                return decompositionState.getModels()[0].decomposables()
+            }
+            else {
+                // TODO
+                val bigGoldenTriangleTop = GoldenTriangle(points[0], symP1, P1)
+                // if iteration = 3
+                val modelTop = if(iteration > 2) GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(bigGoldenTriangleTop)
+                // if iteration = 2
+                    else
+                        if(arrange)
+                        GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(bigGoldenTriangleTop)
+                        else GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(bigGoldenTriangleTop)
+
+                val kiteDartModel = getUpToKiteAndDart(iteration, arrange)
+                val kite = kiteDartModel.kite()
+                val dart = kiteDartModel.dart()
+
+                val bottomGoldenTriangle =  GoldenTriangle(
+                    // Original symP1 B P3
+                    symP1, //symP1,
+                    points[1], // B
+                    P3 //P3
+                )
+                decompositionState.updateModels(listOf(modelTop, kiteDartModel, StateModel(bottomGoldenTriangle)))
+                val decomposables = arrayOf(*modelTop.decomposables(), *kite, *dart, bottomGoldenTriangle)
+
+                return decomposables
+            }
         }
         return arrayOf(this)
     }
 
-    private fun getOneToThree(arrange: Boolean): Array<Decomposable> {
+    private fun getOneToThree(arrange: Boolean): GoldenTriangleDecomposables_2Triangles_1Gnomon {
         return if (arrange) GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(
             goldenTriangle = this
-        ).decomposables()
+        )
         else GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(
             goldenTriangle = this
-        ).decomposables()
+        )
     }
-    private fun getUpToKiteAndDart(iteration: Int, arrange: Boolean): Array<Decomposable> {
-        return if (arrange) GoldenTriangleDecomposables_Dart_atBottom(this, iteration).decomposables()
-        else GoldenTriangleDecomposables_Kite_atBottom(this).decomposables()
+    private fun getUpToKiteAndDart(iteration: Int, arrange: Boolean): GoldenTriangleDecomposables_Kite_Dart {
+        return if (arrange) GoldenTriangleDecomposables_Dart_atBottom(this, iteration)
+        else GoldenTriangleDecomposables_Kite_atBottom(this)
     }
 
     fun symOfTopGoldenTriangleModel(goldenTriangle: GoldenTriangle, arrange: Boolean): DecomposablesModel {
