@@ -1,5 +1,6 @@
 package com.cjanie.pavages.logic
 
+import com.cjanie.pavages.logic.triangles.DecompositionState
 import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 import com.cjanie.pavages.logic.triangles.GoldenTriangle.Companion.create
@@ -12,6 +13,9 @@ class Graph2D(heigth: Double) {
     val symP1 = goldenTriangle.symP1
     val P1 = goldenTriangle.P1
 
+    fun arrangeSelectedModel(point: Point) {
+        val state = DecompositionState().arrangeSelectedModel(point)
+    }
     fun iterate(iteration: Int, arrange: Boolean): Array<Decomposable> {
         return goldenTriangle.iterate(iteration, arrange)
     }

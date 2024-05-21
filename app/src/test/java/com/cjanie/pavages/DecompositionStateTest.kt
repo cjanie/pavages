@@ -3,11 +3,8 @@ package com.cjanie.pavages
 import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.DecompositionState
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
-import com.cjanie.pavages.logic.triangles.decomposablemodels.DecomposablesModel
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2Triangles_1Gnomon
-import com.cjanie.pavages.tools.CheckPointInBounds
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -22,7 +19,7 @@ class DecompositionStateTest {
             GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(GoldenTriangle())
         ))
 
-        assertEquals(2, state.models.size)
+        assertEquals(2, state.getModels().size)
     }
 
     @Test

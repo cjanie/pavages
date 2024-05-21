@@ -6,8 +6,13 @@ import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecom
 import com.cjanie.pavages.tools.CheckPointInBounds
 
 class DecompositionState {
+    companion object {
+        private val models = mutableListOf<DecomposablesModel>()
+    }
 
-    val models = mutableListOf<DecomposablesModel>()
+    fun getModels(): List<DecomposablesModel> {
+        return models
+    }
 
     fun updateModels(newModels: List<DecomposablesModel>) {
         models.clear()
