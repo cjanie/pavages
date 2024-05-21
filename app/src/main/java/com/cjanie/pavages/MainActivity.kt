@@ -137,32 +137,8 @@ fun ConstraintLayoutContent() {
                 }
 
                 if(canvasAdapter.isPointInGoldenTriangle(tap)) {
-                    clickableRects = drawings.map { it.path.getBounds() }
-                    val rnd = Random.Default
-                    val colors = listOf(
-                        // Predefined colors like
-                        Color.Green,
-                        Color.Black,
-                        Color.Red,
-                        Color.Yellow,
-                        Color.Cyan,
-                        Color.Magenta,
-                        Color.White,
-                        //Custom color hex:
-                        Color(0xFFF0670A),
-                        //Custom color RGB
-                        Color(12, 154, 224, 255),
-                        Color(241, 7, 230, 255),
-                        Color(146, 130, 116, 255),
-                        Color(0, 255, 179, 255)
-                    )
-                        for (i in clickableRects.indices) {
-
-
-                            drawRect(colors[rnd.nextInt(colors.size - 1)], clickableRects[i].topLeft, clickableRects[i].size)
-
-                        }
-
+                    tap = Offset.Zero
+                    arrange = !arrange
                 }
 
             }
