@@ -2,6 +2,7 @@ package com.cjanie.pavages.tools
 
 import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
+import kotlin.math.abs
 
 class CheckPointInBounds {
     companion object {
@@ -14,9 +15,10 @@ class CheckPointInBounds {
             // we want to define x
             // use Trigonometry with right triangle, right angle in y = 0
             // we have the lenght of the opposite side to C
-            val oppositeSideLength = point.y
+            val oppositeSideLength = point.y - goldenTriangle.points[2].y
             val adjacentSideLength = Trigonometry.adjacentSideLengthFromOppositeSideAndAngle(oppositeSideLength, GoldenTriangle.angleAtBaseDegrees)
             val xLimit = goldenTriangle.points[2].x - adjacentSideLength
+            System.out.println("point.x ${point.x}, xLimit $xLimit")
             return point.x in -xLimit..xLimit
         }
 
