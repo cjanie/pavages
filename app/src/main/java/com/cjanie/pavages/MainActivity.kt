@@ -137,6 +137,7 @@ fun ConstraintLayoutContent() {
                 }
 
                 if(canvasAdapter.isPointInGoldenTriangle(tap)) {
+                    drawCircle(CanvasAdapter.backgroundColor, 200f, tap, 0.2f)
                     tap = Offset.Zero
                     arrange = !arrange
                 }
