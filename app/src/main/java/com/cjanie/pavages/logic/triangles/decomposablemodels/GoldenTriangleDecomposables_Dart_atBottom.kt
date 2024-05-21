@@ -5,17 +5,17 @@ import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
 class GoldenTriangleDecomposables_Dart_atBottom(
-    override var goldenTriangle: GoldenTriangle, val iteration: Int
+    override var goldenTriangle: GoldenTriangle
 ):
     GoldenTriangleDecomposables_Kite_Dart(goldenTriangle) {
-    override fun kite(): Array<GoldenTriangle> = arrayOf(
+    override fun kite(): Array<Decomposable> = arrayOf(
         // symP1 P5, P1
         GoldenTriangle(goldenTriangle.symP1, goldenTriangle.P5, goldenTriangle.P1),
         // symP1 P3 P5
         GoldenTriangle(goldenTriangle.symP1, goldenTriangle.P3, goldenTriangle.P5)
     )
 
-    override fun dart(): Array<GoldenGnomon> = arrayOf(
+    override fun dart(): Array<Decomposable> = arrayOf(
         // P5 P3 C
         GoldenGnomon(goldenTriangle.P5, goldenTriangle.P3, goldenTriangle.points[2]),
         // P5 C P1

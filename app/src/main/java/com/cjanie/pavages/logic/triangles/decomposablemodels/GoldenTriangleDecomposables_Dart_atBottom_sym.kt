@@ -23,20 +23,6 @@ class GoldenTriangleDecomposables_Dart_atBottom_sym(var goldenTriangle: GoldenTr
         // sym = symP5 P1sym B
         GoldenGnomon(goldenTriangle.symP5, goldenTriangle.symP1, goldenTriangle.points[1])
     )
-
-    fun topGoldenTriangleDecomposables(): Array<Decomposable> {
-        val bigGoldenTriangleTop = GoldenTriangle(goldenTriangle.points[0], goldenTriangle.symP1, goldenTriangle.P1)
-        val decomposeTop = GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon_sym(bigGoldenTriangleTop)
-        return arrayOf(*decomposeTop.goldenTriangles(), decomposeTop.goldenGnomon())
-    }
-    private val bottomGoldenTriangle =  GoldenTriangle(
-        // Original symP1 B P3
-        // sym = P1 symP3 C
-        goldenTriangle.P1,
-        goldenTriangle.symP3,
-        goldenTriangle.points[2]
-    )
-
     override fun goldenTriangle(): GoldenTriangle {
         return goldenTriangle
     }
@@ -46,7 +32,7 @@ class GoldenTriangleDecomposables_Dart_atBottom_sym(var goldenTriangle: GoldenTr
     }
 
     override fun decomposables() : Array<Decomposable> = arrayOf(
-        *kite(), *dart(), *topGoldenTriangleDecomposables(), bottomGoldenTriangle
+        *kite(), *dart()
     )
 
     init {

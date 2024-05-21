@@ -6,8 +6,8 @@ import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
 abstract class GoldenTriangleDecomposables_Kite_Dart(open var goldenTriangle: GoldenTriangle): DecomposablesModel {
 
-    abstract fun kite(): Array<GoldenTriangle>
-    abstract fun dart(): Array<GoldenGnomon>
+    abstract fun kite(): Array<Decomposable>
+    abstract fun dart(): Array<Decomposable>
 
     override fun decomposables(): Array<Decomposable> = arrayOf(
     *kite(), *dart()
