@@ -8,9 +8,6 @@ abstract class GoldenTriangleDecomposables_Kite_Dart(open var goldenTriangle: Go
 
     abstract fun kite(): Array<GoldenTriangle>
     abstract fun dart(): Array<GoldenGnomon>
-    // Big Golden Triangle A symP1 P1 over kite/dart losange
-    protected abstract fun topGoldenTriangleDecomposables() : Array<Decomposable>
-    protected abstract fun bottomGoldenTriangle(): GoldenTriangle
 
     override fun decomposables(): Array<Decomposable> = arrayOf(
     *kite(), *dart()

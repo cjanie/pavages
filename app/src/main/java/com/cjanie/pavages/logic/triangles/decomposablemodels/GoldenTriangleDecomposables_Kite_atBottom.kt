@@ -28,19 +28,6 @@ class GoldenTriangleDecomposables_Kite_atBottom(override var goldenTriangle: Gol
         )
     )
 
-     override fun topGoldenTriangleDecomposables(): Array<Decomposable> {
-        val bigGoldenTriangleTop = GoldenTriangle(goldenTriangle.points[0], goldenTriangle.symP1, goldenTriangle.P1)
-        val decomposeTop = GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(bigGoldenTriangleTop)
-        return arrayOf(*decomposeTop.goldenTriangles(), decomposeTop.goldenGnomon())
-
-    }
-
-    override fun bottomGoldenTriangle() =  GoldenTriangle(
-        goldenTriangle.symP1,
-        goldenTriangle.points[1],
-        goldenTriangle.P3
-    )
-
     init {
         assert_5Triangles_3Gnomons()
     }
