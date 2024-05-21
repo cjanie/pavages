@@ -7,14 +7,16 @@ import com.cjanie.pavages.logic.triangles.GoldenTriangle
 import com.cjanie.pavages.tools.Symmetry
 import com.cjanie.pavages.tools.Trigonometry
 
-abstract class GoldenTriangleDecomposables_2Triangles_1Gnomon {
+abstract class GoldenTriangleDecomposables_2Triangles_1Gnomon : DecomposablesModel {
 
 
     // At first iteration: 3 points P1 P1, symP1, P2 as 3 decomposables
 
     abstract fun goldenTriangles(): Array<GoldenTriangle>
     abstract fun goldenGnomon(): GoldenGnomon
-    abstract fun decomposables(): Array<Decomposable>
+    abstract override fun decomposables(): Array<Decomposable>
+
+    abstract fun arrange(): GoldenTriangleDecomposables_2Triangles_1Gnomon
 
     protected fun assert_2Triangles_1Gnomon() {
         assert(goldenTriangles().size == 2)
