@@ -178,7 +178,14 @@ class GoldenTriangle(
         return decomposables.toTypedArray()
     }
     fun iterate(iteration: Int, arrange: Boolean = false): Array<Decomposable> {
-        if(iteration > 0) {
+        // iteration 0
+        if(iteration <= 0) {
+            val model = DecompositionModel(this, arrayOf(this))
+            decompositionState.updateModels(listOf(model))
+            return decompositionState.decomposables()
+        } else {
+
+            iterate(iteration - 1, arrange)
 
             if(iteration == 1) {
                 val model = if (arrange) GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(
@@ -192,7 +199,6 @@ class GoldenTriangle(
             }
 
             if(iteration == 2) {
-                iterate(iteration - 1, arrange)
                 val bigGoldenTriangleTop = GoldenTriangle(points[0], symP1, P1)
                 val modelTop = decompositionState.getModels()[0]
                 modelTop.updateGoldenTriangle(bigGoldenTriangleTop)
@@ -226,15 +232,23 @@ class GoldenTriangle(
         }
 
         if(iteration == 3) {
-            // Pyramidion
-            iterate(iteration - 1, arrange)
-            val goldenTriangle_on_symP2_P2_base = GoldenTriangle(points[0], symP2, P2)
+
+            // Create the new container for the state at iteration - 1
+            val goldenTriangle_on_symP1_P1_base = GoldenTriangle(points[0], symP1, P1)
+
             val modelGoldenTriangleTop =
                 decompositionState.getModels()[0]
-            modelGoldenTriangleTop.updateGoldenTriangle(goldenTriangle_on_symP2_P2_base)
+
+            modelGoldenTriangleTop.updateGoldenTriangle(
+                GoldenTriangle(
+                    goldenTriangle_on_symP1_P1_base.points[0],
+                    goldenTriangle_on_symP1_P1_base.symP1,
+                    goldenTriangle_on_symP1_P1_base.P1
+                )
+            )
 
             // Kite Dart
-            val goldenTriangle_on_symP1_P1_base = GoldenTriangle(points[0], symP1, P1)
+
             val modelKiteDart =
                 if(arrange)
                         (decompositionState.getModels()[1] as GoldenTriangleDecomposables_Kite_Dart).sym()
@@ -294,7 +308,6 @@ class GoldenTriangle(
             return decompositionState.decomposables()
         }
         if(iteration == 4) {
-            iterate(iteration - 1, arrange)
             val actualModels = decompositionState.getModels()
             val newContainer = GoldenTriangle(points[0], symP1, P1)
             actualModels[0].updateGoldenTriangle(GoldenTriangle(newContainer.points[0], newContainer.symP2, newContainer.P2))
@@ -364,9 +377,7 @@ class GoldenTriangle(
         }
 
  */
-        // iteration 0
-        val model = DecompositionModel(this, arrayOf(this))
-        decompositionState.updateModels(listOf(model))
+
         return decompositionState.decomposables()
     }
 
