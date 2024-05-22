@@ -28,6 +28,10 @@ class GoldenTriangleDecomposables_Kite_atBottom(override var goldenTriangle: Gol
         )
     )
 
+    override fun sym(): GoldenTriangleDecomposables_Kite_Dart {
+        return GoldenTriangleDecomposables_Dart_atBottom_sym(goldenTriangle)
+    }
+
     init {
         assert_5Triangles_3Gnomons()
     }
