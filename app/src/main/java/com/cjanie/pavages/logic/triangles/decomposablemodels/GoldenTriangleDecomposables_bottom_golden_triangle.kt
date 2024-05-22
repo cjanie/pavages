@@ -15,7 +15,7 @@ class GoldenTriangleDecomposables_bottom_golden_triangle(var goldenTriangle: Gol
     }
 
     override fun decomposables(): Array<Decomposable> {
-      return arrayOf(GoldenTriangle(goldenTriangle.symP1, goldenTriangle.points[1], goldenTriangle.P3))
+      return arrayOf(goldenTriangle)
 
     }
 
