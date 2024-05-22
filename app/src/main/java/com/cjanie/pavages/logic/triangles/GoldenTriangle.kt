@@ -4,20 +4,13 @@ import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.Number
 import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.decomposablemodels.DecomposablesModel
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Dart_atBottom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Dart_atBottom_sym
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom_sym
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_RosaceUnit
-import com.cjanie.pavages.logic.triangles.decomposablemodels.StateBuilder
 import com.cjanie.pavages.logic.triangles.decomposablemodels.DecompositionModel
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon_sym
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2Triangles_1Gnomon
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_Dart
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_bottom_golden_triangle
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_kite_dart_10
 import com.cjanie.pavages.tools.Symmetry
 import com.cjanie.pavages.tools.Trigonometry
@@ -182,27 +175,29 @@ class GoldenTriangle(
         if(iteration <= 0) {
             val model = DecompositionModel(this, arrayOf(this))
             decompositionState.updateModels(listOf(model))
-            return decompositionState.decomposables()
         } else {
 
             iterate(iteration - 1, arrange)
 
             if(iteration == 1) {
-                val model = if (arrange) GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(
+                val model_2Triangles_1Gnomon = if (arrange) GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(
                     goldenTriangle = this
                 )
                 else GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(
                     goldenTriangle = this
                 )
-                decompositionState.updateModels(listOf(model))
-                return decompositionState.decomposables()
+                decompositionState.updateModels(listOf(model_2Triangles_1Gnomon))
             }
 
             if(iteration == 2) {
-                val bigGoldenTriangleTop = GoldenTriangle(points[0], symP1, P1)
+                // Over symP1 P1
+                // create the new container for the previous state
+                val newContainer = GoldenTriangle(points[0], symP1, P1)
                 val modelTop = decompositionState.getModels()[0]
-                modelTop.updateGoldenTriangle(bigGoldenTriangleTop)
+                modelTop.updateGoldenTriangle(newContainer)
 
+                // Under symP1 P1
+                // The container for the kite dart is the initial golden triangle
                 val kiteDartModel =
                     if (arrange)
                         GoldenTriangleDecomposables_Dart_atBottom_sym(this)
@@ -226,8 +221,6 @@ class GoldenTriangle(
                 val bottomGoldenTriangleModel = DecompositionModel(bottomGoldenTriangle, arrayOf(bottomGoldenTriangle))
 
                 decompositionState.updateModels(listOf(modelTop, kiteDartModel, bottomGoldenTriangleModel))
-
-                return decompositionState.decomposables()
             }
         }
 
@@ -305,7 +298,6 @@ class GoldenTriangle(
 
                 )
             )
-            return decompositionState.decomposables()
         }
         if(iteration == 4) {
             val actualModels = decompositionState.getModels()
@@ -320,8 +312,6 @@ class GoldenTriangle(
             actualModels[3].updateGoldenTriangle(newContainer)
 
             decompositionState.updateModels(listOf(actualModels[0], actualModels[1], bottomGoldenTriangleModel, actualModels[3]))
-            return decompositionState.decomposables()
-
         }
 /*
         if(iteration == 4) {
@@ -377,7 +367,6 @@ class GoldenTriangle(
         }
 
  */
-
         return decompositionState.decomposables()
     }
 
