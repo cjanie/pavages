@@ -247,8 +247,6 @@ class GoldenTriangle(
 
             val bottomGoldenTriangleModel = DecompositionModel(bottomGoldenTriangle, arrayOf(bottomGoldenTriangle))
 
-
-
             // Use symetry on symP1 P1 axis
 
             val AA = Symmetry.symmetryByHorizontalAxis(symP1.y, points[0])
@@ -294,6 +292,23 @@ class GoldenTriangle(
                 )
             )
             return decompositionState.decomposables()
+        }
+        if(iteration == 4) {
+            iterate(iteration - 1, arrange)
+            val actualModels = decompositionState.getModels()
+            val newContainer = GoldenTriangle(points[0], symP1, P1)
+            actualModels[0].updateGoldenTriangle(GoldenTriangle(newContainer.points[0], newContainer.symP2, newContainer.P2))
+            actualModels[1].updateGoldenTriangle(GoldenTriangle(newContainer.points[0], newContainer.symP1, newContainer.P1))
+
+            val smallContainer = GoldenTriangle(newContainer.points[0], newContainer.symP1, newContainer.P1)
+            val bottomGoldenTriangle = GoldenTriangle(smallContainer.symP1, smallContainer.points[1], smallContainer.P3)
+            val bottomGoldenTriangleModel = DecompositionModel(bottomGoldenTriangle, arrayOf(bottomGoldenTriangle))
+
+            actualModels[3].updateGoldenTriangle(newContainer)
+
+            decompositionState.updateModels(listOf(actualModels[0], actualModels[1], bottomGoldenTriangleModel, actualModels[3]))
+            return decompositionState.decomposables()
+
         }
 /*
         if(iteration == 4) {
