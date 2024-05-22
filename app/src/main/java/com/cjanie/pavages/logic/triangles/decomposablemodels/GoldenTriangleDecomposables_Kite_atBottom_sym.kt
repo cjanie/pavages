@@ -4,10 +4,10 @@ import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
-class GoldenTriangleDecomposables_Kite_atBottom_sym(var goldenTriangle: GoldenTriangle): DecomposablesModel {
+class GoldenTriangleDecomposables_Kite_atBottom_sym(override var goldenTriangle: GoldenTriangle): GoldenTriangleDecomposables_Kite_Dart(goldenTriangle), DecomposablesModel {
 
     // Original Kite and Dart P3 C P1 symP1
-     fun kite(): Array<GoldenTriangle> = arrayOf(
+    override fun kite(): Array<Decomposable> = arrayOf(
         // Original C P1 P4
         // sym B P4 P1
         GoldenTriangle(goldenTriangle.points[1], goldenTriangle.P4, goldenTriangle.symP1),
@@ -16,7 +16,7 @@ class GoldenTriangleDecomposables_Kite_atBottom_sym(var goldenTriangle: GoldenTr
         GoldenTriangle(goldenTriangle.points[1], goldenTriangle.symP3, goldenTriangle.P4)
     )
 
-    fun dart() = arrayOf(
+    override fun dart(): Array<Decomposable> = arrayOf(
         // Original P4 P1 symP1
         // sym = P4 symP1 P1
         GoldenGnomon(
@@ -32,6 +32,10 @@ class GoldenTriangleDecomposables_Kite_atBottom_sym(var goldenTriangle: GoldenTr
             goldenTriangle.P1 // P3
         )
     )
+
+    override fun sym(): GoldenTriangleDecomposables_Kite_Dart {
+        return GoldenTriangleDecomposables_Kite_atBottom(goldenTriangle)
+    }
 
     override fun goldenTriangle(): GoldenTriangle {
         return goldenTriangle
