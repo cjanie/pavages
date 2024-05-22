@@ -7,15 +7,22 @@ import com.cjanie.pavages.tools.Symmetry
 class GoldenTriangleDecomposables_bottom_golden_triangle(var goldenTriangle: GoldenTriangle): DecomposablesModel {
 
     override fun goldenTriangle(): GoldenTriangle {
-        TODO("Not yet implemented")
+        return goldenTriangle
     }
 
     override fun updateGoldenTriangle(goldenTriangle: GoldenTriangle) {
-        TODO("Not yet implemented")
+        this.goldenTriangle = goldenTriangle
     }
 
     override fun decomposables(): Array<Decomposable> {
-      return arrayOf(goldenTriangle)
+        return arrayOf(
+            GoldenTriangle(
+                goldenTriangle.symP1,
+                goldenTriangle.points[1],
+                goldenTriangle.P3
+            )
+        )
+
 
     }
 

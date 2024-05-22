@@ -11,6 +11,7 @@ import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom_sym
 import com.cjanie.pavages.logic.triangles.decomposablemodels.DecompositionModel
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_Dart
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_bottom_golden_triangle
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_kite_dart_10
 import com.cjanie.pavages.tools.Symmetry
 import com.cjanie.pavages.tools.Trigonometry
@@ -215,12 +216,7 @@ class GoldenTriangle(
                             points[2]
                         )
                     else
-                        GoldenTriangle(
-                            // Original symP1 B P3
-                            symP1, //symP1,
-                            points[1], // B
-                            P3 //P3
-                        )
+                        getBottomGoldenTriangle(this)
                 val bottomGoldenTriangleModel =
                     DecompositionModel(bottomGoldenTriangle, arrayOf(bottomGoldenTriangle))
 
@@ -235,15 +231,13 @@ class GoldenTriangle(
 
             if (iteration == 3) {
 
+                val smallContainer = getNextContainer(newContainer)
+
                 val modelGoldenTriangleTop =
                     decompositionState.getModels()[0]
 
                 modelGoldenTriangleTop.updateGoldenTriangle(
-                    GoldenTriangle(
-                        newContainer.points[0],
-                        newContainer.symP1,
-                        newContainer.P1
-                    )
+                    smallContainer
                 )
 
                 // Kite Dart
@@ -254,13 +248,8 @@ class GoldenTriangle(
                     else decompositionState.getModels()[1]
                 modelKiteDart.updateGoldenTriangle(newContainer)
 
-
-                val bottomGoldenTriangle =
-
-                    GoldenTriangle(newContainer.symP1, newContainer.points[1], newContainer.P3)
-
                 val bottomGoldenTriangleModel =
-                    DecompositionModel(bottomGoldenTriangle, arrayOf(bottomGoldenTriangle))
+                    GoldenTriangleDecomposables_bottom_golden_triangle(newContainer)
 
                 // Use symetry on symP1 P1 axis
 
@@ -296,7 +285,7 @@ class GoldenTriangle(
                     DecompositionModel(symBottomGoldenTriangle, arrayOf(symBottomGoldenTriangle))
 
 
-                val baseGoldenTriangle = GoldenTriangle(symP1, points[1], P3)
+                val baseGoldenTriangle = getBottomGoldenTriangle(this)
                 val baseGoldenTriangleModel =
                     if (arrange)
                         GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(baseGoldenTriangle).sym()
@@ -332,38 +321,25 @@ class GoldenTriangle(
             if (iteration == 4) {
                 val actualModels = decompositionState.getModels()
 
+                val nextContainer = getNextContainer(newContainer)
+                val smallerContainer = getNextContainer(nextContainer)
+
                 actualModels[0].updateGoldenTriangle(
-                    GoldenTriangle(
-                        newContainer.points[0],
-                        newContainer.symP2,
-                        newContainer.P2
-                    )
+                    smallerContainer
                 )
                 actualModels[1].updateGoldenTriangle(
-                    GoldenTriangle(
-                        newContainer.points[0],
-                        newContainer.symP1,
-                        newContainer.P1
-                    )
+                    nextContainer
                 )
 
-                val smallContainer =
-                    GoldenTriangle(newContainer.points[0], newContainer.symP1, newContainer.P1)
-                val bottomGoldenTriangle = GoldenTriangle(
-                    smallContainer.symP1,
-                    smallContainer.points[1],
-                    smallContainer.P3
-                )
-                val bottomGoldenTriangleModel =
-                    DecompositionModel(bottomGoldenTriangle, arrayOf(bottomGoldenTriangle))
+                actualModels[2].updateGoldenTriangle(nextContainer)
 
-                actualModels[3].updateGoldenTriangle(newContainer)
+                actualModels[3].updateGoldenTriangle(nextContainer)
 
                 decompositionState.updateModels(
                     listOf(
                         actualModels[0],
                         actualModels[1],
-                        bottomGoldenTriangleModel,
+                        actualModels[2],
                         actualModels[3]
                     )
                 )
@@ -424,7 +400,20 @@ class GoldenTriangle(
  */
         }
             return decompositionState.decomposables()
-        }
+    }
+
+    private fun getNextContainer(currentContainer: GoldenTriangle): GoldenTriangle {
+        return GoldenTriangle(
+            currentContainer.points[0],
+            currentContainer.symP1,
+            currentContainer.P1
+        )
+    }
+
+    private fun getBottomGoldenTriangle(parentContainer: GoldenTriangle): GoldenTriangle {
+        return GoldenTriangle(parentContainer.symP1, parentContainer.points[1], parentContainer.P3)
+    }
+
 
         fun symOfTopGoldenTriangleModel(
             goldenTriangle: GoldenTriangle,
