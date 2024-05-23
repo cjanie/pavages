@@ -2,9 +2,10 @@ package com.cjanie.pavages.logic.triangles.decomposablemodels
 
 import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.Point
+import com.cjanie.pavages.logic.enums.Position
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
-class GoldenTriangleDecomposables_bottom_golden_triangle(var goldenTriangle: GoldenTriangle, var models: Array<DecomposablesModel> = emptyArray()): DecomposablesModel {
+class GoldenTriangleDecomposables_bottom_golden_triangle(var goldenTriangle: GoldenTriangle, var models: Array<DecomposablesModel> = emptyArray(), var position: Position = Position.START): DecomposablesModel {
 
     override fun goldenTriangle(): GoldenTriangle {
         return goldenTriangle
@@ -12,9 +13,6 @@ class GoldenTriangleDecomposables_bottom_golden_triangle(var goldenTriangle: Gol
 
     override fun updateGoldenTriangle(goldenTriangle: GoldenTriangle) {
         this.goldenTriangle = goldenTriangle
-        for (model in models) {
-            updateGoldenTriangle(this.goldenTriangle)
-        }
     }
 
     override fun decomposables(): Array<Decomposable> {
@@ -24,7 +22,11 @@ class GoldenTriangleDecomposables_bottom_golden_triangle(var goldenTriangle: Gol
             )
         else {
             val decomposables = mutableListOf<Decomposable>()
-            for (model in models) decomposables.addAll(model.decomposables())
+            for (model in models) {
+                if(position == Position.START) model.updateGoldenTriangle(getBottomTriangle())
+                else model.updateGoldenTriangle(getSymBottomTriangle())
+                decomposables.addAll(model.decomposables())
+            }
             return decomposables.toTypedArray()
         }
     }
@@ -43,6 +45,10 @@ class GoldenTriangleDecomposables_bottom_golden_triangle(var goldenTriangle: Gol
             goldenTriangle.points[1],
             goldenTriangle.P3
         )
+    }
+
+    private fun getSymBottomTriangle(): GoldenTriangle{
+        return GoldenTriangle(goldenTriangle.P1, goldenTriangle.symP3, goldenTriangle.points[2])
     }
 
 

@@ -6,7 +6,7 @@ import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
 class GoldenTriangleDecomposables_kite_dart_10(
     goldenTriangle: GoldenTriangle,
-    val baseGoldenTriangleModel: GoldenTriangleDecomposables_2Triangles_1Gnomon,
+    val baseGoldenTriangleModel: GoldenTriangleDecomposables_bottom_golden_triangle,
     val symTopGoldenTriangleModel: GoldenTriangleDecomposables_2Triangles_1Gnomon,
     val symKiteDartModel: GoldenTriangleDecomposables_Kite_Dart,
     val symBottomGoldenTriangleModel: DecomposablesModel

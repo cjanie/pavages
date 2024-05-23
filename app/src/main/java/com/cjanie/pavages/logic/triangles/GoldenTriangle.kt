@@ -3,6 +3,7 @@ package com.cjanie.pavages.logic.triangles
 import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.Number
 import com.cjanie.pavages.logic.Point
+import com.cjanie.pavages.logic.enums.Position
 import com.cjanie.pavages.logic.triangles.decomposablemodels.DecomposablesModel
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon
@@ -10,9 +11,7 @@ import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom_sym
 import com.cjanie.pavages.logic.triangles.decomposablemodels.DecompositionModel
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_Dart
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_bottom_golden_triangle
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_bottom_golden_triangle_sym
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_kite_dart_10
 import com.cjanie.pavages.logic.triangles.decomposablemodels.Pyramidion
 import com.cjanie.pavages.tools.Symmetry
@@ -206,9 +205,9 @@ class GoldenTriangle(
 
                 val bottomGoldenTriangleModel =
                     if(arrange)
-                        GoldenTriangleDecomposables_bottom_golden_triangle(this).sym()
+                        GoldenTriangleDecomposables_bottom_golden_triangle(this, position = Position.END).sym()
                     else
-                        GoldenTriangleDecomposables_bottom_golden_triangle(this)
+                        GoldenTriangleDecomposables_bottom_golden_triangle(this, position = Position.END)
 
 
                 decompositionState.updateModels(
@@ -282,8 +281,18 @@ class GoldenTriangle(
                 val baseGoldenTriangle = getBottomGoldenTriangle(this)
                 val baseGoldenTriangleModel =
                     if (arrange)
-                        GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(baseGoldenTriangle).sym()
-                    else GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(baseGoldenTriangle).sym()
+                        GoldenTriangleDecomposables_bottom_golden_triangle(
+                            this,
+                            arrayOf(GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(this).sym()),
+                            Position.START
+                        )
+                    else
+                        GoldenTriangleDecomposables_bottom_golden_triangle(
+                            this,
+                            arrayOf(GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(this).sym()),
+                            Position.START
+                        )
+
 
 
                 val baseKiteDart10Model = GoldenTriangleDecomposables_kite_dart_10(
@@ -293,32 +302,26 @@ class GoldenTriangle(
                     symKiteDartModel = symKiteDartModel,
                     symBottomGoldenTriangleModel = symBottomGoldenTriangleModel
                 )
-                val symBaseGoldenTriangle = symBaseGoldenTriangle(this)
+
                 val symBaseGoldenTriangleModel =
                     if(arrange)
                         GoldenTriangleDecomposables_bottom_golden_triangle(
                             this,
                             arrayOf(
                                 GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(
-                                    symBaseGoldenTriangle
+                                    this
                                 )
-                            )
+                            ),
+                            Position.END
                         )
                 else GoldenTriangleDecomposables_bottom_golden_triangle(
                     this,
                     arrayOf(GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(
-                        symBaseGoldenTriangle
-                    ).sym())
+                        this
+                    ).sym()),
+                    Position.END
                 )
-                /*
-                if (arrange)
-                        GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(symBaseGoldenTriangle)
-                    else
-                        GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(
-                            symBaseGoldenTriangle
-                        ).sym()
 
-                 */
                 decompositionState.updateModels(
                     listOf(
                         pyramidionModel,
