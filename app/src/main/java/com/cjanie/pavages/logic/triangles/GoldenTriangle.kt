@@ -206,7 +206,7 @@ class GoldenTriangle(
 
                 val bottomGoldenTriangleModel =
                     if(arrange)
-                        GoldenTriangleDecomposables_bottom_golden_triangle_sym(this)
+                        GoldenTriangleDecomposables_bottom_golden_triangle(this).sym()
                     else
                         GoldenTriangleDecomposables_bottom_golden_triangle(this)
 
@@ -247,9 +247,6 @@ class GoldenTriangle(
                         decompositionState.getModels()[2].sym()
                     else decompositionState.getModels()[2]
                 bottomGoldenTriangleModel.updateGoldenTriangle(newContainer)
-                //val bottomGoldenTriangleModel = GoldenTriangleDecomposables_bottom_golden_triangle(newContainer)
-
-
 
 
                 // Use symetry on symP1 P1 axis
@@ -298,12 +295,30 @@ class GoldenTriangle(
                 )
                 val symBaseGoldenTriangle = symBaseGoldenTriangle(this)
                 val symBaseGoldenTriangleModel =
-                    if (arrange)
+                    if(arrange)
+                        GoldenTriangleDecomposables_bottom_golden_triangle(
+                            this,
+                            arrayOf(
+                                GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(
+                                    symBaseGoldenTriangle
+                                )
+                            )
+                        )
+                else GoldenTriangleDecomposables_bottom_golden_triangle(
+                    this,
+                    arrayOf(GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(
+                        symBaseGoldenTriangle
+                    ).sym())
+                )
+                /*
+                if (arrange)
                         GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(symBaseGoldenTriangle)
                     else
                         GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(
                             symBaseGoldenTriangle
                         ).sym()
+
+                 */
                 decompositionState.updateModels(
                     listOf(
                         pyramidionModel,
