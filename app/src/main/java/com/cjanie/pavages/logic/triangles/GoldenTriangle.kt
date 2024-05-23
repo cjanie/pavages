@@ -253,19 +253,19 @@ class GoldenTriangle(
 
                 // Use symetry on symP1 P1 axis
 
-                val symGoldenTriangle_under_symP1_P1_axis = getSymetricTriangle_under_symP1_P1_axis(
-                    this
+                val symNewContainerUnderOnNewContainerBaseAsAxis = getSymetricTriangle_under_symP1_P1_axis(
+                    newContainer
                 )
                 val symKiteDartModel =
                     if (arrange)
                         GoldenTriangleDecomposables_Dart_atBottom_sym(
-                            symGoldenTriangle_under_symP1_P1_axis
+                            symNewContainerUnderOnNewContainerBaseAsAxis
                         )
                     else GoldenTriangleDecomposables_Kite_atBottom_sym(
-                        symGoldenTriangle_under_symP1_P1_axis
+                        symNewContainerUnderOnNewContainerBaseAsAxis
                     )
 
-                val symTopGoldenTriangle = getNextContainer(symGoldenTriangle_under_symP1_P1_axis)
+                val symTopGoldenTriangle = getNextContainer(symNewContainerUnderOnNewContainerBaseAsAxis)
 
                 val symTopGoldenTriangleModel =
                     GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(symTopGoldenTriangle).sym()
@@ -273,8 +273,8 @@ class GoldenTriangle(
                 val symBottomGoldenTriangle =
                     GoldenTriangle(
                         Symmetry.symmetryByHorizontalAxis(symP1.y, symP2),
-                        symGoldenTriangle_under_symP1_P1_axis.symP3,
-                        symGoldenTriangle_under_symP1_P1_axis.points[2]
+                        symNewContainerUnderOnNewContainerBaseAsAxis.symP3,
+                        symNewContainerUnderOnNewContainerBaseAsAxis.points[2]
                     )
 
                 val symBottomGoldenTriangleModel =
@@ -420,7 +420,7 @@ class GoldenTriangle(
     }
 
     private fun getSymetricTriangle_under_symP1_P1_axis(parentContainer: GoldenTriangle): GoldenTriangle {
-        val AA = Symmetry.symmetryByHorizontalAxis(parentContainer.symP1.y, parentContainer.points[0])
+        val AA = Symmetry.symmetryByHorizontalAxis(parentContainer.points[1].y, parentContainer.points[0])
         return GoldenTriangle(AA, P1, symP1)
     }
 
