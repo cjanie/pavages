@@ -3,8 +3,7 @@ package com.cjanie.pavages.logic.triangles.decomposablemodels
 import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
-class GoldenTriangleDecomposables_bottom_golden_triangle(var goldenTriangle: GoldenTriangle): DecomposablesModel {
-
+class GoldenTriangleDecomposables_bottom_golden_triangle_sym(var goldenTriangle: GoldenTriangle): DecomposablesModel {
     override fun goldenTriangle(): GoldenTriangle {
         return goldenTriangle
     }
@@ -16,12 +15,10 @@ class GoldenTriangleDecomposables_bottom_golden_triangle(var goldenTriangle: Gol
     override fun decomposables(): Array<Decomposable> {
         return arrayOf(
             GoldenTriangle(
-                goldenTriangle.symP1,
-                goldenTriangle.points[1],
-                goldenTriangle.P3
+                this.goldenTriangle.P1,
+                this.goldenTriangle.symP3,
+                this.goldenTriangle.points[2]
             )
         )
     }
-
-
 }
