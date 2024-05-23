@@ -1,6 +1,7 @@
 package com.cjanie.pavages.logic.triangles.decomposablemodels
 
 import com.cjanie.pavages.logic.Decomposable
+import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
@@ -30,6 +31,10 @@ class GoldenTriangleDecomposables_Kite_atBottom(override var goldenTriangle: Gol
 
     override fun sym(): GoldenTriangleDecomposables_Kite_Dart {
         return GoldenTriangleDecomposables_Dart_atBottom_sym(goldenTriangle)
+    }
+
+    override fun arrangeModelContainingPoint(point: Point) {
+        TODO("Not yet implemented")
     }
 
     init {

@@ -10,6 +10,8 @@ interface DecomposablesModel {
     fun updateGoldenTriangle(goldenTriangle: GoldenTriangle)
     fun decomposables(): Array<Decomposable>
 
+    fun sym(): DecomposablesModel
 
+    fun arrangeModelContainingPoint(point: Point)
 
 }

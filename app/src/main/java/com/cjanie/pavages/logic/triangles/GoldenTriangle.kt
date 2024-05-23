@@ -238,13 +238,19 @@ class GoldenTriangle(
 
                 val modelKiteDart =
                     if (arrange)
-                        (decompositionState.getModels()[1] as GoldenTriangleDecomposables_Kite_Dart).sym()
+                        decompositionState.getModels()[1].sym()
                     else decompositionState.getModels()[1]
                 modelKiteDart.updateGoldenTriangle(newContainer)
 
-                val bottomGoldenTriangleModel = decompositionState.getModels()[2]
+                val bottomGoldenTriangleModel =
+                    if(arrange)
+                        decompositionState.getModels()[2].sym()
+                    else decompositionState.getModels()[2]
                 bottomGoldenTriangleModel.updateGoldenTriangle(newContainer)
-                    GoldenTriangleDecomposables_bottom_golden_triangle(newContainer)
+                //val bottomGoldenTriangleModel = GoldenTriangleDecomposables_bottom_golden_triangle(newContainer)
+
+
+
 
                 // Use symetry on symP1 P1 axis
 

@@ -1,6 +1,7 @@
 package com.cjanie.pavages.logic.triangles.decomposablemodels
 
 import com.cjanie.pavages.logic.Decomposable
+import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
 class Pyramidion(var goldenTriangle: GoldenTriangle, var arrange: Boolean = false): DecomposablesModel {
@@ -14,6 +15,14 @@ class Pyramidion(var goldenTriangle: GoldenTriangle, var arrange: Boolean = fals
 
     override fun decomposables(): Array<Decomposable> {
         return arrayOf(*model_2Triangles_1Gnomon().decomposables())
+    }
+
+    override fun sym(): DecomposablesModel {
+        TODO("Not yet implemented")
+    }
+
+    override fun arrangeModelContainingPoint(point: Point) {
+        TODO("Not yet implemented")
     }
 
     fun model_2Triangles_1Gnomon(): GoldenTriangleDecomposables_2Triangles_1Gnomon {

@@ -9,8 +9,6 @@ abstract class GoldenTriangleDecomposables_Kite_Dart(open var goldenTriangle: Go
     abstract fun kite(): Array<Decomposable>
     abstract fun dart(): Array<Decomposable>
 
-    abstract fun sym(): GoldenTriangleDecomposables_Kite_Dart
-
     override fun decomposables(): Array<Decomposable> = arrayOf(
     *kite(), *dart()
     )

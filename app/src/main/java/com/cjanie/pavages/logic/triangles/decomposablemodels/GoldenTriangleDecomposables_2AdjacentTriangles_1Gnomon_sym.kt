@@ -1,6 +1,7 @@
 package com.cjanie.pavages.logic.triangles.decomposablemodels
 
 import com.cjanie.pavages.logic.Decomposable
+import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
@@ -24,6 +25,14 @@ class GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(var goldenTrian
     }
 
     override fun decomposables(): Array<Decomposable> = arrayOf(*goldenTriangles(), goldenGnomon())
+    override fun sym(): DecomposablesModel {
+        TODO("Not yet implemented")
+    }
+
+    override fun arrangeModelContainingPoint(point: Point) {
+        TODO("Not yet implemented")
+    }
+
     override fun arrange(): GoldenTriangleDecomposables_2Triangles_1Gnomon {
         return GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(goldenTriangle)
     }

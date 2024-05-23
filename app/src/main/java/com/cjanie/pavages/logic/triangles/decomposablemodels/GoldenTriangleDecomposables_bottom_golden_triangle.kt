@@ -1,6 +1,7 @@
 package com.cjanie.pavages.logic.triangles.decomposablemodels
 
 import com.cjanie.pavages.logic.Decomposable
+import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
 class GoldenTriangleDecomposables_bottom_golden_triangle(var goldenTriangle: GoldenTriangle): DecomposablesModel {
@@ -21,6 +22,14 @@ class GoldenTriangleDecomposables_bottom_golden_triangle(var goldenTriangle: Gol
                 goldenTriangle.P3
             )
         )
+    }
+
+    override fun sym(): DecomposablesModel {
+        TODO("Not yet implemented")
+    }
+
+    override fun arrangeModelContainingPoint(point: Point) {
+        TODO("Not yet implemented")
     }
 
 
