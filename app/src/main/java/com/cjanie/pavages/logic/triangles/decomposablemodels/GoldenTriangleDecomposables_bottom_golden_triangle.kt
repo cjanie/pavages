@@ -22,17 +22,6 @@ class GoldenTriangleDecomposables_bottom_golden_triangle(var goldenTriangle: Gol
             )
         else {
             val decomposables = mutableListOf<Decomposable>()
-            /*
-            if(models.size == 1) if(position == Position.START) models[0].updateGoldenTriangle(getBottomTriangle())
-            else models[0].updateGoldenTriangle(getSymBottomTriangle())
-            decomposables.addAll(models[0].decomposables())
-            if(models.size > 1) {
-                if(position == Position.START) models[0].updateGoldenTriangle(getSymBottomTriangle())
-                else models[0].updateGoldenTriangle(getSymBottomTriangle().getNextContainer(getSymBottomTriangle()))
-                decomposables.addAll(models[0].decomposables())
-            }
-
-             */
             for (model in models) {
 
                     if(position == Position.START) {
@@ -42,7 +31,10 @@ class GoldenTriangleDecomposables_bottom_golden_triangle(var goldenTriangle: Gol
                         else model.updateGoldenTriangle(getBottomTriangle())
                     }
                     else {
-                        model.updateGoldenTriangle(getSymBottomTriangle())
+                        if(models.size > 1 && model is GoldenTriangleDecomposables_2Triangles_1Gnomon ) {
+                            model.updateGoldenTriangle(getSymBottomTriangle().getNextContainer(getSymBottomTriangle()))
+                        }
+                        else model.updateGoldenTriangle(getSymBottomTriangle())
                     }
                     decomposables.addAll(model.decomposables())
 

@@ -297,7 +297,11 @@ class GoldenTriangle(
 
                 val modelBaseTriangleSym = GoldenTriangleDecomposables_bottom_golden_triangle(
                     this,
-                    arrayOf(GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(this), GoldenTriangleDecomposables_Kite_atBottom_sym(this)),
+                    arrayOf(
+                        GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(this),
+                        GoldenTriangleDecomposables_Kite_atBottom(this),
+                        GoldenTriangleDecomposables_bottom_golden_triangle(GoldenTriangle(symP1, points[1], P3), position = Position.START),
+                        ),
                     Position.END
                 )
 
