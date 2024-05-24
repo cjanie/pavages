@@ -234,8 +234,6 @@ class GoldenTriangle(
                 bottomGoldenTriangleModel.updateGoldenTriangle(getMainContainer(iteration))
 
                 // Use symetry on symP1 P1 axis
-
-
                 val baseKiteDart10Model = GoldenTriangleDecomposables_kite_dart_10(
                     goldenTriangle = this,
                     arrange
@@ -278,9 +276,35 @@ class GoldenTriangle(
                 )
                 actualModels[2].updateGoldenTriangle(getMainContainer(iteration))
 
-                actualModels[3].updateGoldenTriangle(getMainContainer(iteration))
+                actualModels[3].updateGoldenTriangle(getMainContainer(iteration - 1))
+
 
                 actualModels[4].updateGoldenTriangle(getMainContainer(iteration - 1))
+
+                val modelKiteDart = GoldenTriangleDecomposables_kite_dart_10(this.getNextContainer(this), arrange)
+                //val modelBaseTriangle = actualModels[4]
+
+                val modelBaseTriangle = GoldenTriangleDecomposables_bottom_golden_triangle(
+                    this,
+                    arrayOf(
+                        GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(this),
+                        GoldenTriangleDecomposables_Kite_atBottom(this),
+                        GoldenTriangleDecomposables_bottom_golden_triangle(GoldenTriangle(symP1, points[1], P3), position = Position.START),
+                    ),
+
+                    Position.START
+                )
+
+                val modelBaseTriangleSym = GoldenTriangleDecomposables_bottom_golden_triangle(
+                    this,
+                    arrayOf(GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(this), GoldenTriangleDecomposables_Kite_atBottom_sym(this)),
+                    Position.END
+                )
+
+
+
+
+                //val bottom = GoldenTriangleDecomposables_bottom_golden_triangle(this, arrayOf(modelBaseTriangle), position = Position.START)
 
                 decompositionState.updateModels(
                     listOf(
@@ -288,7 +312,9 @@ class GoldenTriangle(
                         actualModels[1],
                         actualModels[2],
                         actualModels[3],
-                        actualModels[4]
+                        actualModels[4],
+                        modelBaseTriangle,
+                        modelBaseTriangleSym
                     )
                 )
             }

@@ -21,21 +21,21 @@ class GoldenTriangleDecomposables_kite_dart_10(
 
     override fun kite(): Array<Decomposable> {
         return arrayOf(
-            *symKiteDartModel.decomposables(),
-            symTopGoldenTriangleModel.goldenTriangles()[0],
-            *symBottomGoldenTriangleModel.decomposables()
+            *symKiteDartModel().decomposables(),
+            symTopGoldenTriangleModel().goldenTriangles()[0],
+            *symBottomGoldenTriangleModel().decomposables()
         )
     }
 
     override fun dart(): Array<Decomposable> {
         return arrayOf(
-            *baseGoldenTriangleModel.decomposables(),
-            symTopGoldenTriangleModel.goldenGnomon()
+            *baseGoldenTriangleModel().decomposables(),
+            symTopGoldenTriangleModel().goldenGnomon()
         )
     }
 
     override fun sym(): GoldenTriangleDecomposables_Kite_Dart {
-        TODO("Not yet implemented")
+        return GoldenTriangleDecomposables_Dart_atBottom_sym(container)
     }
 
     override fun arrangeModelContainingPoint(point: Point) {
@@ -46,50 +46,50 @@ class GoldenTriangleDecomposables_kite_dart_10(
         return arrayOf(*kite(), *dart())
     }
 
-    var symNewContainerUnderBaseAxis = getSymNewContainerUnderBaseAxis(
-        goldenTriangle.getNextContainer(goldenTriangle)
+    private fun symNewContainerUnderBaseAxis() = getSymNewContainerUnderBaseAxis(
+        container.getNextContainer(container)
     )
-    var symKiteDartModel =
+    private fun symKiteDartModel() =
         if (arrange)
             GoldenTriangleDecomposables_Dart_atBottom_sym(
-                symNewContainerUnderBaseAxis
+                symNewContainerUnderBaseAxis()
             )
         else GoldenTriangleDecomposables_Kite_atBottom_sym(
-            symNewContainerUnderBaseAxis
+            symNewContainerUnderBaseAxis()
         )
 
-    var symTopGoldenTriangle = getNextContainer(symNewContainerUnderBaseAxis)
+    private fun symTopGoldenTriangle() = getNextContainer(symNewContainerUnderBaseAxis())
 
-    var symTopGoldenTriangleModel =
-        GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(symTopGoldenTriangle).sym()
+    private fun symTopGoldenTriangleModel() =
+        GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(symTopGoldenTriangle()).sym()
 
-    var symBottomGoldenTriangle =
+    private fun symBottomGoldenTriangle() =
         GoldenTriangle(
-            Symmetry.symmetryByHorizontalAxis(goldenTriangle.symP1.y, goldenTriangle.symP2),
-            symNewContainerUnderBaseAxis.symP3,
-            symNewContainerUnderBaseAxis.points[2]
+            Symmetry.symmetryByHorizontalAxis(container.symP1.y, container.symP2),
+            symNewContainerUnderBaseAxis().symP3,
+            symNewContainerUnderBaseAxis().points[2]
         )
 
-    var symBottomGoldenTriangleModel =
-        DecompositionModel(symBottomGoldenTriangle, arrayOf(symBottomGoldenTriangle))
+    private fun symBottomGoldenTriangleModel() =
+        DecompositionModel(symBottomGoldenTriangle(), arrayOf(symBottomGoldenTriangle()))
 
-    var baseGoldenTriangleModel =
+    private fun baseGoldenTriangleModel() =
         if (arrange)
             GoldenTriangleDecomposables_bottom_golden_triangle(
-                goldenTriangle,
-                arrayOf(GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(goldenTriangle).sym()),
+                container,
+                arrayOf(GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(container).sym()),
                 Position.START
             )
         else
             GoldenTriangleDecomposables_bottom_golden_triangle(
-                goldenTriangle = goldenTriangle,
-                arrayOf(GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(goldenTriangle = goldenTriangle).sym()),
+                goldenTriangle = container,
+                arrayOf(GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(goldenTriangle = container).sym()),
                 Position.START
             )
 
     fun getSymNewContainerUnderBaseAxis(parentContainer: GoldenTriangle): GoldenTriangle {
         val AA = Symmetry.symmetryByHorizontalAxis(parentContainer.points[1].y, parentContainer.points[0])
-        return GoldenTriangle(AA, goldenTriangle.P1, goldenTriangle.symP1)
+        return GoldenTriangle(AA, parentContainer.points[2], parentContainer.points[1])
     }
 
     fun getNextContainer(currentContainer: GoldenTriangle): GoldenTriangle {
