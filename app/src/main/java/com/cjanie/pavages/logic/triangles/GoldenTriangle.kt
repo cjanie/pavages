@@ -11,8 +11,6 @@ import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom_sym
 import com.cjanie.pavages.logic.triangles.decomposablemodels.DecompositionModel
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2Triangles_1Gnomon
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Dart_atBottom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_bottom_golden_triangle
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_kite_dart_10
 import com.cjanie.pavages.logic.triangles.decomposablemodels.Pyramidion
@@ -189,10 +187,12 @@ class GoldenTriangle(
             val pyramidionModel = decompositionState.getModels()[0]
             pyramidionModel.updateGoldenTriangle(getPyramidionContainer(iteration))
 
+            val containerForPreviousState = makeContainerForPreviousState(iteration)
+
 
 
             if (iteration == 1) {
-                val pyramidionModel = Pyramidion(getMainContainer(iteration), arrange)
+                val pyramidionModel = Pyramidion(containerForPreviousState, arrange)
                 decompositionState.updateModels(listOf(pyramidionModel))
             }
 
@@ -201,15 +201,21 @@ class GoldenTriangle(
                 // The container for the kite dart is the initial golden triangle
                 val kiteDartModel =
                     if (arrange)
-                        GoldenTriangleDecomposables_Dart_atBottom_sym(getMainContainer(iteration))
+                        GoldenTriangleDecomposables_Dart_atBottom_sym(containerForPreviousState)
                     else
-                        GoldenTriangleDecomposables_Kite_atBottom(getMainContainer(iteration))
+                        GoldenTriangleDecomposables_Kite_atBottom(containerForPreviousState)
 
                 val bottomGoldenTriangleModel =
                     if(arrange)
-                        GoldenTriangleDecomposables_bottom_golden_triangle(getMainContainer(iteration), position = Position.END).sym()
+                        GoldenTriangleDecomposables_bottom_golden_triangle(
+                            containerForPreviousState,
+                            position = Position.END
+                        ).sym()
                     else
-                        GoldenTriangleDecomposables_bottom_golden_triangle(getMainContainer(iteration), position = Position.END)
+                        GoldenTriangleDecomposables_bottom_golden_triangle(
+                            containerForPreviousState,
+                            position = Position.END
+                        )
 
 
                 decompositionState.updateModels(
@@ -227,13 +233,13 @@ class GoldenTriangle(
                     if (arrange)
                         decompositionState.getModels()[1].sym()
                     else decompositionState.getModels()[1]
-                modelKiteDart.updateGoldenTriangle(getMainContainer(iteration))
+                modelKiteDart.updateGoldenTriangle(makeContainerForPreviousState(iteration))
 
                 val bottomGoldenTriangleModel =
                     if(arrange)
                         decompositionState.getModels()[2].sym()
                     else decompositionState.getModels()[2]
-                bottomGoldenTriangleModel.updateGoldenTriangle(getMainContainer(iteration))
+                bottomGoldenTriangleModel.updateGoldenTriangle(makeContainerForPreviousState(iteration))
 
                 // Use symetry on symP1 P1 axis
                 val baseKiteDart10Model = GoldenTriangleDecomposables_kite_dart_10(
@@ -273,10 +279,10 @@ class GoldenTriangle(
             }
             if (iteration >= 4) {
 
-                actualModels[1].updateGoldenTriangle(getMainContainer(iteration))
-                actualModels[2].updateGoldenTriangle(getMainContainer(iteration))
-                actualModels[3].updateGoldenTriangle(getMainContainer(iteration - 1))
-                actualModels[4].updateGoldenTriangle(getMainContainer(iteration - 1))
+                actualModels[1].updateGoldenTriangle(makeContainerForPreviousState(iteration))
+                actualModels[2].updateGoldenTriangle(makeContainerForPreviousState(iteration))
+                actualModels[3].updateGoldenTriangle(makeContainerForPreviousState(iteration - 1))
+                actualModels[4].updateGoldenTriangle(makeContainerForPreviousState(iteration - 1))
 
                 val modelBaseTriangle = GoldenTriangleDecomposables_bottom_golden_triangle(
                     this,
@@ -349,7 +355,7 @@ class GoldenTriangle(
         return container
     }
 
-    private fun getMainContainer(iteration: Int): GoldenTriangle {
+    private fun makeContainerForPreviousState(iteration: Int): GoldenTriangle {
         var i = 2
         var container = this
         i++
