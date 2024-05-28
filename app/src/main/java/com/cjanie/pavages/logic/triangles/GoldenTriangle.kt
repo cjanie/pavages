@@ -201,19 +201,19 @@ class GoldenTriangle(
                 // The container for the kite dart is the initial golden triangle
                 val kiteDartModel =
                     if (arrange)
-                        GoldenTriangleDecomposables_Dart_atBottom_sym(containerForPreviousState)
+                        GoldenTriangleDecomposables_Dart_atBottom_sym(this)
                     else
-                        GoldenTriangleDecomposables_Kite_atBottom(containerForPreviousState)
+                        GoldenTriangleDecomposables_Kite_atBottom(this)
 
                 val bottomGoldenTriangleModel =
                     if(arrange)
                         GoldenTriangleDecomposables_bottom_golden_triangle(
-                            containerForPreviousState,
+                            this,
                             position = Position.END
                         ).sym()
                     else
                         GoldenTriangleDecomposables_bottom_golden_triangle(
-                            containerForPreviousState,
+                            this,
                             position = Position.END
                         )
 
@@ -233,13 +233,13 @@ class GoldenTriangle(
                     if (arrange)
                         decompositionState.getModels()[1].sym()
                     else decompositionState.getModels()[1]
-                modelKiteDart.updateGoldenTriangle(makeContainerForPreviousState(iteration))
+                modelKiteDart.updateGoldenTriangle(containerForPreviousState)
 
                 val bottomGoldenTriangleModel =
                     if(arrange)
                         decompositionState.getModels()[2].sym()
                     else decompositionState.getModels()[2]
-                bottomGoldenTriangleModel.updateGoldenTriangle(makeContainerForPreviousState(iteration))
+                bottomGoldenTriangleModel.updateGoldenTriangle(containerForPreviousState)
 
                 // Use symetry on symP1 P1 axis
                 val baseKiteDart10Model = GoldenTriangleDecomposables_kite_dart_10(
