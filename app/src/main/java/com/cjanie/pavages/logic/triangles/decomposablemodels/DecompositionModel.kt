@@ -5,6 +5,7 @@ import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
 class DecompositionModel(var goldenTriangle: GoldenTriangle, var decomposables: Array<Decomposable> = emptyArray()): DecomposablesModel {
+
     override fun goldenTriangle(): GoldenTriangle {
         return goldenTriangle
     }

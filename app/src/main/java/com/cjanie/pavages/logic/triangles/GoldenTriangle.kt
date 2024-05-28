@@ -300,7 +300,6 @@ class GoldenTriangle(
                 )
 
                 val symTriangleOnSymP1_P1Base = getSymNewContainerUnderBaseAxis(getNextContainer(this))
-                val symTopModel = GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(getNextContainer(getNextContainer(symTriangleOnSymP1_P1Base)))
                 val initialKiteDartSym = if(actualModels[1] is GoldenTriangleDecomposables_Kite_atBottom_sym)
                     GoldenTriangleDecomposables_Kite_atBottom_sym(symTriangleOnSymP1_P1Base.getNextContainer(symTriangleOnSymP1_P1Base))
                     else GoldenTriangleDecomposables_Kite_atBottom(symTriangleOnSymP1_P1Base.getNextContainer(symTriangleOnSymP1_P1Base))
