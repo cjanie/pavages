@@ -13,11 +13,10 @@ import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.DecompositionModel
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon_sym
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Dart_atBottom
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_Dart
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_bottom_golden_triangle
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_kite_dart_10
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleModel
-import com.cjanie.pavages.logic.triangles.decomposablemodels.KyteDartModel
 import com.cjanie.pavages.logic.triangles.decomposablemodels.Pyramidion
 import com.cjanie.pavages.tools.Symmetry
 import com.cjanie.pavages.tools.Trigonometry
@@ -206,17 +205,9 @@ class GoldenTriangle(
                 // The container for the kite dart is the initial golden triangle
                 val pyramidionModel: Pyramidion = decompositionState.getModels()[0] as Pyramidion
 
-                val kiteDartModelType = pyramidionModel.getAdjacentModel_kite_dart()
-                val kiteDartModel = when(kiteDartModelType) {
-                    KyteDartModel.KITE_AT_BOTTOM
-                        -> GoldenTriangleDecomposables_Kite_atBottom(this)
-                    KyteDartModel.KITE_AT_BOTTOM_SYM
-                        -> GoldenTriangleDecomposables_Kite_atBottom_sym(this)
-                    KyteDartModel.DART_AT_BOTTOM
-                        -> GoldenTriangleDecomposables_Dart_atBottom(this)
-                    KyteDartModel.DART_AT_BOTTOM_SYM
-                        -> GoldenTriangleDecomposables_Dart_atBottom_sym(this)
-                }
+                val kiteDartModelType = pyramidionModel.getSousjacentModel_kite_dart_type()
+
+                val kiteDartModel = GoldenTriangleDecomposables_Kite_Dart.createModel(kiteDartModelType, this)
 
                 val bottomGoldenTriangleModelType = pyramidionModel.getContigueBaseGoldenTriangle()
                 val bottomGoldenTriangleModel = when(bottomGoldenTriangleModelType) {

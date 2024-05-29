@@ -36,7 +36,7 @@ class Pyramidion(var goldenTriangle: GoldenTriangle, var arrange: Boolean = fals
         return model_2Triangles_1Gnomon
     }
 
-    fun getAdjacentModel_kite_dart(): KyteDartModel {
+    fun getSousjacentModel_kite_dart_type(): KyteDartModel {
         return getModel_2Triangles_1Gnomon().getAdjacentKiteDartModel()
     }
 
