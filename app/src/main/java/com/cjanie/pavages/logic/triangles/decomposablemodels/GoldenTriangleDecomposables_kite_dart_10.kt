@@ -49,21 +49,16 @@ class GoldenTriangleDecomposables_kite_dart_10(
     }
 
     override fun decomposables(): Array<Decomposable> {
-        return (models[0] as GoldenTriangleDecomposables_Kite_Dart).createModel(symNewContainerUnderBaseAxis(), arrange).decomposables()
-        //return arrayOf(*kite(), *dart())
+        //return (models[0] as GoldenTriangleDecomposables_Kite_Dart).createModel(symNewContainerUnderBaseAxis(), arrange).decomposables()
+        return arrayOf(*kite(), *dart())
     }
 
     private fun symNewContainerUnderBaseAxis() = getSymUnderBaseAxis(
         container.getNextContainer(container)
     )
     private fun symKiteDartModel() =
-        if (arrange)
-            GoldenTriangleDecomposables_Dart_atBottom_sym(
-                symNewContainerUnderBaseAxis()
-            )
-        else GoldenTriangleDecomposables_Kite_atBottom_sym(
-            symNewContainerUnderBaseAxis()
-        )
+        (models[0] as GoldenTriangleDecomposables_Kite_Dart).createModel(symNewContainerUnderBaseAxis(), arrange)
+
 
     private fun symTopGoldenTriangle() = getScaledGoldenTriangle(symNewContainerUnderBaseAxis())
 
