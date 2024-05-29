@@ -29,8 +29,14 @@ class GoldenTriangleDecomposables_Kite_atBottom(override var goldenTriangle: Gol
         )
     )
 
+    override fun createModel(goldenTriangle: GoldenTriangle, arrange: Boolean): GoldenTriangleDecomposables_Kite_Dart {
+        if(arrange)
+        return GoldenTriangleDecomposables_Kite_atBottom(goldenTriangle)
+        else return GoldenTriangleDecomposables_Kite_atBottom_sym(goldenTriangle)
+    }
+
     override fun sym(): GoldenTriangleDecomposables_Kite_Dart {
-        return GoldenTriangleDecomposables_Dart_atBottom_sym(goldenTriangle)
+        return GoldenTriangleDecomposables_Kite_atBottom_sym(goldenTriangle)
     }
 
     override fun arrangeModelContainingPoint(point: Point) {

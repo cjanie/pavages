@@ -25,6 +25,12 @@ class GoldenTriangleDecomposables_Dart_atBottom_sym(override var goldenTriangle:
         GoldenGnomon(goldenTriangle.symP5, goldenTriangle.symP1, goldenTriangle.points[1])
     )
 
+    override fun createModel(goldenTriangle: GoldenTriangle, arrange: Boolean): GoldenTriangleDecomposables_Kite_Dart {
+        if(arrange)
+        return  GoldenTriangleDecomposables_Dart_atBottom_sym(goldenTriangle)
+        else return GoldenTriangleDecomposables_Kite_atBottom_sym(goldenTriangle)
+    }
+
     override fun sym(): GoldenTriangleDecomposables_Kite_Dart {
         return GoldenTriangleDecomposables_Dart_atBottom(goldenTriangle)
     }
@@ -44,6 +50,7 @@ class GoldenTriangleDecomposables_Dart_atBottom_sym(override var goldenTriangle:
     override fun decomposables() : Array<Decomposable> = arrayOf(
         *kite(), *dart()
     )
+
 
     init {
         //assert_5Triangles_3Gnomons()

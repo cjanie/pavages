@@ -7,8 +7,10 @@ import com.cjanie.pavages.logic.triangles.GoldenTriangle
 import com.cjanie.pavages.tools.Symmetry
 
 class GoldenTriangleDecomposables_kite_dart_10(
-    goldenTriangle: GoldenTriangle, var arrange: Boolean
-) : GoldenTriangleDecomposables_Kite_Dart(goldenTriangle), DecomposablesModel {
+    goldenTriangle: GoldenTriangle,
+    var models: Array<DecomposablesModel> = emptyArray(),
+    var arrange: Boolean
+) : GoldenTriangleDecomposables_Kite_Dart(goldenTriangle) {
 
     var container = goldenTriangle
     override fun goldenTriangle(): GoldenTriangle {
@@ -34,6 +36,10 @@ class GoldenTriangleDecomposables_kite_dart_10(
         )
     }
 
+    override fun createModel(goldenTriangle: GoldenTriangle, arrange: Boolean): GoldenTriangleDecomposables_Kite_Dart {
+        TODO("Not yet implemented")
+    }
+
     override fun sym(): GoldenTriangleDecomposables_Kite_Dart {
         return GoldenTriangleDecomposables_Dart_atBottom_sym(container)
     }
@@ -43,10 +49,11 @@ class GoldenTriangleDecomposables_kite_dart_10(
     }
 
     override fun decomposables(): Array<Decomposable> {
-        return arrayOf(*kite(), *dart())
+        return (models[0] as GoldenTriangleDecomposables_Kite_Dart).createModel(symNewContainerUnderBaseAxis(), arrange).decomposables()
+        //return arrayOf(*kite(), *dart())
     }
 
-    private fun symNewContainerUnderBaseAxis() = getSymNewContainerUnderBaseAxis(
+    private fun symNewContainerUnderBaseAxis() = getSymUnderBaseAxis(
         container.getNextContainer(container)
     )
     private fun symKiteDartModel() =
@@ -58,7 +65,7 @@ class GoldenTriangleDecomposables_kite_dart_10(
             symNewContainerUnderBaseAxis()
         )
 
-    private fun symTopGoldenTriangle() = getNextContainer(symNewContainerUnderBaseAxis())
+    private fun symTopGoldenTriangle() = getScaledGoldenTriangle(symNewContainerUnderBaseAxis())
 
     private fun symTopGoldenTriangleModel() =
         GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(symTopGoldenTriangle()).sym()
@@ -87,16 +94,16 @@ class GoldenTriangleDecomposables_kite_dart_10(
                 Position.START
             )
 
-    fun getSymNewContainerUnderBaseAxis(parentContainer: GoldenTriangle): GoldenTriangle {
-        val AA = Symmetry.symmetryByHorizontalAxis(parentContainer.points[1].y, parentContainer.points[0])
-        return GoldenTriangle(AA, parentContainer.points[2], parentContainer.points[1])
+    fun getSymUnderBaseAxis(goldenTriangle: GoldenTriangle): GoldenTriangle {
+        val AA = Symmetry.symmetryByHorizontalAxis(goldenTriangle.points[1].y, goldenTriangle.points[0])
+        return GoldenTriangle(AA, goldenTriangle.points[2], goldenTriangle.points[1])
     }
 
-    fun getNextContainer(currentContainer: GoldenTriangle): GoldenTriangle {
+    fun getScaledGoldenTriangle(initial: GoldenTriangle): GoldenTriangle {
         return GoldenTriangle(
-            currentContainer.points[0],
-            currentContainer.symP1,
-            currentContainer.P1
+            initial.points[0],
+            initial.symP1,
+            initial.P1
         )
     }
 

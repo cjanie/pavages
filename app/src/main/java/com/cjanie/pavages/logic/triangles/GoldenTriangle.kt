@@ -244,7 +244,8 @@ class GoldenTriangle(
                 // Use symetry on symP1 P1 axis
                 val baseKiteDart10Model = GoldenTriangleDecomposables_kite_dart_10(
                     goldenTriangle = this,
-                    arrange
+                    models = arrayOf(modelKiteDart),
+                    arrange = arrange
                 )
 
                 val symBaseGoldenTriangleModel =
@@ -323,7 +324,7 @@ class GoldenTriangle(
 
                 val kiteDart = GoldenTriangleDecomposables_kite_dart_10(
                     symTriangleOnSymP1_P1Base,
-                    arrange
+                    arrange = arrange
                 )
                 decompositionState.updateModels(
                     listOf(

@@ -5,7 +5,11 @@ import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.enums.Position
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
-class GoldenTriangleDecomposables_bottom_golden_triangle(var goldenTriangle: GoldenTriangle, var models: Array<DecomposablesModel> = emptyArray(), var position: Position = Position.START): DecomposablesModel {
+class GoldenTriangleDecomposables_bottom_golden_triangle(
+    var goldenTriangle: GoldenTriangle,
+    var models: Array<DecomposablesModel> = emptyArray(),
+    var position: Position = Position.START
+): DecomposablesModel {
 
     override fun goldenTriangle(): GoldenTriangle {
         return goldenTriangle

@@ -34,6 +34,12 @@ class GoldenTriangleDecomposables_Kite_atBottom_sym(override var goldenTriangle:
         )
     )
 
+    override fun createModel(goldenTriangle: GoldenTriangle, arrange: Boolean): GoldenTriangleDecomposables_Kite_Dart {
+        if(arrange)
+            return GoldenTriangleDecomposables_Kite_atBottom_sym(goldenTriangle)
+        else return GoldenTriangleDecomposables_Dart_atBottom_sym(goldenTriangle)
+    }
+
     override fun sym(): GoldenTriangleDecomposables_Kite_Dart {
         return GoldenTriangleDecomposables_Kite_atBottom(goldenTriangle)
     }
