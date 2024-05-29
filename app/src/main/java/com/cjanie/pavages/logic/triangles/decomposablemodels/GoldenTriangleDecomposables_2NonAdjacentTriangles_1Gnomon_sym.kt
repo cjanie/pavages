@@ -42,6 +42,14 @@ class GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon_sym(
     }
 
     override fun decomposables(): Array<Decomposable> = arrayOf(*goldenTriangles(), goldenGnomon())
+    override fun getAdjacentKiteDartModel(): KyteDartModel {
+        return KyteDartModel.KITE_AT_BOTTOM_SYM
+    }
+
+    override fun getContigueBaseGoldenTriangleModel(): GoldenTriangleModel {
+        return GoldenTriangleModel.PLEIN
+    }
+
     override fun sym(): DecomposablesModel {
         TODO("Not yet implemented")
     }

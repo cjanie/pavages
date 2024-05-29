@@ -1,11 +1,8 @@
 package com.cjanie.pavages.logic.triangles.decomposablemodels
 
 import com.cjanie.pavages.logic.Decomposable
-import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
-import com.cjanie.pavages.tools.Symmetry
-import com.cjanie.pavages.tools.Trigonometry
 
 abstract class GoldenTriangleDecomposables_2Triangles_1Gnomon : DecomposablesModel {
 
@@ -15,6 +12,10 @@ abstract class GoldenTriangleDecomposables_2Triangles_1Gnomon : DecomposablesMod
     abstract fun goldenTriangles(): Array<GoldenTriangle>
     abstract fun goldenGnomon(): GoldenGnomon
     abstract override fun decomposables(): Array<Decomposable>
+
+    abstract fun getAdjacentKiteDartModel(): KyteDartModel
+
+    abstract fun getContigueBaseGoldenTriangleModel(): GoldenTriangleModel
 
     abstract fun arrange(): GoldenTriangleDecomposables_2Triangles_1Gnomon
 

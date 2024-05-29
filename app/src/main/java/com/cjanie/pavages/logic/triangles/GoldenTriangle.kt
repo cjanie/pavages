@@ -11,8 +11,13 @@ import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom_sym
 import com.cjanie.pavages.logic.triangles.decomposablemodels.DecompositionModel
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon_sym
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Dart_atBottom
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_bottom_golden_triangle
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_kite_dart_10
+import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleModel
+import com.cjanie.pavages.logic.triangles.decomposablemodels.KyteDartModel
 import com.cjanie.pavages.logic.triangles.decomposablemodels.Pyramidion
 import com.cjanie.pavages.tools.Symmetry
 import com.cjanie.pavages.tools.Trigonometry
@@ -199,23 +204,56 @@ class GoldenTriangle(
             if (iteration == 2) {
                 // Under symP1 P1
                 // The container for the kite dart is the initial golden triangle
-                val kiteDartModel =
-                    if (arrange)
-                        GoldenTriangleDecomposables_Dart_atBottom_sym(this)
-                    else
-                        GoldenTriangleDecomposables_Kite_atBottom(this)
+                val pyramidionModel: Pyramidion = decompositionState.getModels()[0] as Pyramidion
 
-                val bottomGoldenTriangleModel =
-                    if(arrange)
-                        GoldenTriangleDecomposables_bottom_golden_triangle(
+                val kiteDartModelType = pyramidionModel.getAdjacentModel_kite_dart()
+                val kiteDartModel = when(kiteDartModelType) {
+                    KyteDartModel.KITE_AT_BOTTOM
+                        -> GoldenTriangleDecomposables_Kite_atBottom(this)
+                    KyteDartModel.KITE_AT_BOTTOM_SYM
+                        -> GoldenTriangleDecomposables_Kite_atBottom_sym(this)
+                    KyteDartModel.DART_AT_BOTTOM
+                        -> GoldenTriangleDecomposables_Dart_atBottom(this)
+                    KyteDartModel.DART_AT_BOTTOM_SYM
+                        -> GoldenTriangleDecomposables_Dart_atBottom_sym(this)
+                }
+
+                val bottomGoldenTriangleModelType = pyramidionModel.getContigueBaseGoldenTriangle()
+                val bottomGoldenTriangleModel = when(bottomGoldenTriangleModelType) {
+                    GoldenTriangleModel.PLEIN
+                            -> if(arrange) GoldenTriangleDecomposables_bottom_golden_triangle(
+                        this,
+                        position = Position.END ).sym()
+                            else
+                                GoldenTriangleDecomposables_bottom_golden_triangle(
+                                    this,
+                                    position = Position.END
+                                )
+
+                    GoldenTriangleModel.NON_ADJACENT
+                            -> GoldenTriangleDecomposables_bottom_golden_triangle(
+                        this,
+                                arrayOf(GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(this)),
+                                Position.START
+                            )
+                    GoldenTriangleModel.NON_ADJACENT_SYM
+                        -> GoldenTriangleDecomposables_bottom_golden_triangle(
                             this,
-                            position = Position.END
-                        ).sym()
-                    else
-                        GoldenTriangleDecomposables_bottom_golden_triangle(
+                            arrayOf(GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon_sym(this)),
+                            Position.END
+                            )
+                    GoldenTriangleModel.ADJACENT
+                        -> GoldenTriangleDecomposables_bottom_golden_triangle(
                             this,
-                            position = Position.END
+                            arrayOf(GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(this)),
+                            Position.START
                         )
+                    GoldenTriangleModel.ADJACENT_SYM -> GoldenTriangleDecomposables_bottom_golden_triangle(
+                        this,
+                        arrayOf(GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym(this)),
+                        Position.END
+                    )
+                }
 
 
                 decompositionState.updateModels(

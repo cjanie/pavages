@@ -14,7 +14,7 @@ class Pyramidion(var goldenTriangle: GoldenTriangle, var arrange: Boolean = fals
     }
 
     override fun decomposables(): Array<Decomposable> {
-        return arrayOf(*get_model_2Triangles_1Gnomon().decomposables())
+        return arrayOf(*getModel_2Triangles_1Gnomon().decomposables())
     }
 
     override fun sym(): DecomposablesModel {
@@ -25,7 +25,7 @@ class Pyramidion(var goldenTriangle: GoldenTriangle, var arrange: Boolean = fals
         TODO("Not yet implemented")
     }
 
-    fun get_model_2Triangles_1Gnomon(): GoldenTriangleDecomposables_2Triangles_1Gnomon {
+    fun getModel_2Triangles_1Gnomon(): GoldenTriangleDecomposables_2Triangles_1Gnomon {
         val model_2Triangles_1Gnomon =
             if (arrange) GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(
                 goldenTriangle = goldenTriangle
@@ -34,6 +34,14 @@ class Pyramidion(var goldenTriangle: GoldenTriangle, var arrange: Boolean = fals
                 goldenTriangle = goldenTriangle
             )
         return model_2Triangles_1Gnomon
+    }
+
+    fun getAdjacentModel_kite_dart(): KyteDartModel {
+        return getModel_2Triangles_1Gnomon().getAdjacentKiteDartModel()
+    }
+
+    fun getContigueBaseGoldenTriangle(): GoldenTriangleModel {
+        return getModel_2Triangles_1Gnomon().getContigueBaseGoldenTriangleModel()
     }
 
 }

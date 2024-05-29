@@ -26,6 +26,14 @@ data class GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon(
     }
 
     override fun decomposables(): Array<Decomposable> = arrayOf(*goldenTriangles(), goldenGnomon())
+    override fun getAdjacentKiteDartModel(): KyteDartModel {
+        return KyteDartModel.DART_AT_BOTTOM_SYM
+    }
+
+    override fun getContigueBaseGoldenTriangleModel(): GoldenTriangleModel {
+        return GoldenTriangleModel.PLEIN
+    }
+
     override fun arrange(): GoldenTriangleDecomposables_2Triangles_1Gnomon {
         return GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon(goldenTriangle)
     }
