@@ -351,10 +351,14 @@ class GoldenTriangle(
                         position = Position.END)
 
 
-                val kiteDart = GoldenTriangleDecomposables_kite_dart_10(
+                val kiteDart =
+                    (decompositionState.getModels()[3] as GoldenTriangleDecomposables_Kite_Dart).createModel(symTriangleOnSymP1_P1Base, arrange)
+
+                    /*GoldenTriangleDecomposables_kite_dart_10(
                     symTriangleOnSymP1_P1Base,
                     arrange = arrange
                 )
+                */
                 decompositionState.updateModels(
                     listOf(
                         actualModels[0],

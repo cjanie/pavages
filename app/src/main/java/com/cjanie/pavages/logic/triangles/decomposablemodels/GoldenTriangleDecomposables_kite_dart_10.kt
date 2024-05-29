@@ -37,7 +37,7 @@ class GoldenTriangleDecomposables_kite_dart_10(
     }
 
     override fun createModel(goldenTriangle: GoldenTriangle, arrange: Boolean): GoldenTriangleDecomposables_Kite_Dart {
-        TODO("Not yet implemented")
+        return GoldenTriangleDecomposables_kite_dart_10(goldenTriangle, this.models, arrange)
     }
 
     override fun sym(): GoldenTriangleDecomposables_Kite_Dart {
