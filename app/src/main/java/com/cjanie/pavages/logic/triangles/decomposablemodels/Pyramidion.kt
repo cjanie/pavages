@@ -5,16 +5,32 @@ import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 
 class Pyramidion(var goldenTriangle: GoldenTriangle, var arrange: Boolean = false): DecomposablesModel {
+
+
+    val models = mutableListOf<DecomposablesModel>(getModel_2Triangles_1Gnomon())
+
+
+    fun addModel(model: DecomposablesModel) {
+        models.add(model)
+    }
     override fun goldenTriangle(): GoldenTriangle {
         return goldenTriangle
     }
-
     override fun updateGoldenTriangle(goldenTriangle: GoldenTriangle) {
         this.goldenTriangle = goldenTriangle
+        val pyramidionContainer = goldenTriangle.getNextContainer(goldenTriangle)
+        models[0].updateGoldenTriangle(pyramidionContainer)
+        for (i in 1..models.size - 1) {
+            models[i].updateGoldenTriangle(goldenTriangle)
+        }
     }
 
     override fun decomposables(): Array<Decomposable> {
-        return arrayOf(*getModel_2Triangles_1Gnomon().decomposables())
+        val decomposables = mutableListOf<Decomposable>()
+        for (model in models) {
+            decomposables.addAll(model.decomposables())
+        }
+        return decomposables.toTypedArray()//arrayOf(*getModel_2Triangles_1Gnomon().decomposables())
     }
 
     override fun sym(): DecomposablesModel {

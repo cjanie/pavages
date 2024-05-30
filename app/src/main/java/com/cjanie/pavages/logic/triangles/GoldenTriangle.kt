@@ -187,10 +187,11 @@ class GoldenTriangle(
             iterate(iteration - 1, arrange)
 
             val actualModels = decompositionState.getModels()
-
+            // push up Pyramidion
             val pyramidionModel = decompositionState.getModels()[0]
-            pyramidionModel.updateGoldenTriangle(getPyramidionContainer(iteration))
+            pyramidionModel.updateGoldenTriangle(makeContainerForPreviousState(iteration))
 
+            // get the parent container for previous state
             val containerForPreviousState = makeContainerForPreviousState(iteration)
 
 
@@ -207,7 +208,10 @@ class GoldenTriangle(
 
                 val kiteDartModelType = pyramidionModel.getSousjacentModel_kite_dart_type()
 
-                val kiteDartModel = GoldenTriangleDecomposables_Kite_Dart.createModel(kiteDartModelType, this)
+                val kiteDartModel = GoldenTriangleDecomposables_Kite_Dart.createModel(
+                    kiteDartModelType,
+                    this)
+                //pyramidionModel.addModel(kiteDartModel)
 
                 val bottomGoldenTriangleModelType = pyramidionModel.getContigueBaseGoldenTriangle()
                 val bottomGoldenTriangleModel = when(bottomGoldenTriangleModelType) {
@@ -352,7 +356,8 @@ class GoldenTriangle(
 
 
                 val kiteDart =
-                    (decompositionState.getModels()[3] as GoldenTriangleDecomposables_Kite_Dart).createModel(symTriangleOnSymP1_P1Base, arrange)
+                    (decompositionState.getModels()[3] as GoldenTriangleDecomposables_Kite_Dart)
+                        .createModel(symTriangleOnSymP1_P1Base, arrange)
 
                     /*GoldenTriangleDecomposables_kite_dart_10(
                     symTriangleOnSymP1_P1Base,
