@@ -211,7 +211,7 @@ class GoldenTriangle(
                 val kiteDartModel = GoldenTriangleDecomposables_Kite_Dart.createModel(
                     kiteDartModelType,
                     this)
-                //pyramidionModel.addModel(kiteDartModel)
+                pyramidionModel.addModel(kiteDartModel)
 
                 val bottomGoldenTriangleModelType = pyramidionModel.getContigueBaseGoldenTriangle()
                 val bottomGoldenTriangleModel = when(bottomGoldenTriangleModelType) {
@@ -249,6 +249,7 @@ class GoldenTriangle(
                         Position.END
                     )
                 }
+                pyramidionModel.addModel(bottomGoldenTriangleModel)
 
 
                 decompositionState.updateModels(
