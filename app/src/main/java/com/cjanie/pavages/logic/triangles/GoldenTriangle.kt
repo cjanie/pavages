@@ -93,16 +93,43 @@ class GoldenTriangle(
 
     }
 
+    val A = points[0]
+    val B = points[1]
+    val C = points[2]
+
     override fun decompose(): Array<Decomposable> {
-        val A = points[0]
-        val B = points[1]
+
         val (pX, pY) = A.complex + (B.complex - A.complex) / goldenRatio
         val P = Point("P", pX, pY)
 
-        // Two golden triangle
+        // 1 triangle + 1 gnomon
         // C P B
-        val C = points[2]
-        return arrayOf(GoldenTriangle(C, P, B), GoldenGnomon(P, C, A))
+        return arrayOf(
+            GoldenTriangle(C, P, B),
+            GoldenGnomon(P, C, A)
+        )
+    }
+
+    // 2 triangles + 1 gnomon
+    override fun decompose(arrange: Boolean): Array<Decomposable> {
+        val (pX, pY) = A.complex + (B.complex - A.complex) / goldenRatio
+        val P = Point("P", pX, pY)
+
+        if (arrange) {
+            return arrayOf(
+                GoldenTriangle(C, P, B),
+                *GoldenGnomon(P, C, A).decompose(arrange)
+            )
+        }
+
+        val (sympX, sympY) = A.complex + (C.complex - A.complex) / goldenRatio
+        val symP = Point("P'", sympX, sympY)
+
+        return arrayOf(
+            GoldenTriangle(C, P, B),
+            GoldenTriangle(A, symP, P),
+            GoldenGnomon(symP, C, P)
+        )
     }
 
     // iteration 1 returns P1, symP1, P2
@@ -114,6 +141,8 @@ class GoldenTriangle(
         x = points[1].x + Trigonometry.adjacentSideLengthFromHypotenuseAndAngle(duplicatedSidesLength, 36.0),
         y = points[1].y + Trigonometry.oppositeSideLengthFromHypotenuseAndAngle(duplicatedSidesLength, 36.0)
     )
+
+
 
     // Sym P1
     val symP1 = Symmetry.symmetryByVerticalAxis(points[0].x, P1)
@@ -172,7 +201,7 @@ class GoldenTriangle(
 
         val updatedList = mutableListOf<Decomposable>()
         for (d in decompose) {
-            updatedList.addAll(d.decompose())
+            updatedList.addAll(d.decompose(arrange))
         }
         return updatedList.toTypedArray()
     }
