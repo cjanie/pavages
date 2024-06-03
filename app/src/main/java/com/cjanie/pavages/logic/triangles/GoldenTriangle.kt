@@ -3,27 +3,11 @@ package com.cjanie.pavages.logic.triangles
 import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.Number
 import com.cjanie.pavages.logic.Point
-import com.cjanie.pavages.logic.complex.Complex
-import com.cjanie.pavages.logic.enums.Position
-import com.cjanie.pavages.logic.triangles.decomposablemodels.DecomposablesModel
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Dart_atBottom_sym
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_atBottom_sym
-import com.cjanie.pavages.logic.triangles.decomposablemodels.DecompositionModel
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2AdjacentTriangles_1Gnomon_sym
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2NonAdjacentTriangles_1Gnomon_sym
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_Kite_Dart
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_bottom_golden_triangle
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_kite_dart_10
-import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleModel
-import com.cjanie.pavages.logic.triangles.decomposablemodels.Pyramidion
+import com.cjanie.pavages.logic.triangles.decomposablemodels.DecomposableModel
 import com.cjanie.pavages.tools.Symmetry
 import com.cjanie.pavages.tools.Trigonometry
 import java.math.BigDecimal
 import java.math.RoundingMode
-import kotlin.math.abs
 
 class GoldenTriangle(
     oppositeToBase: Point = Point(name = "A", x = 0.0, y = height),
@@ -182,27 +166,90 @@ class GoldenTriangle(
 
     val symP5 = Symmetry.symmetryByVerticalAxis(points[0].x, P5)
 
+    fun iterate(iteration: Int, model: DecomposableModel): Array<Decomposable> {
+        when (model) {
+            DecomposableModel.NON_ADJACENT_TRIANGLE_2_GNOMON_1 -> return iterateDecompose2NonAdjacentTriangles1Gnomon(iteration)
+            DecomposableModel.ADJACENT_TRIANGLE_2_GNOMON_1 -> return iterateDecompose2NonAdjacentTriangles1Gnomon(iteration, true)
+            else -> return iterate(iteration)
+        }
+    }
 
+    fun decompose2NonAdjacentTriangles1Gnomon(): Array<Decomposable> {
+        val decomposables = decompose()
+        val triangles: Array<GoldenTriangle> = (decomposables.filter { it is GoldenTriangle } as List<GoldenTriangle>).toTypedArray()
 
-    fun iterate(iteration: Int, arrange: Boolean = false): Array<Decomposable> {
+        val gnomons = decomposables.filter { it is GoldenGnomon }
+        val decomposeGnomons = mutableListOf<Decomposable>()
+        for (g in gnomons) {
+            decomposeGnomons.addAll(g.decompose(true))
+        }
 
+        return arrayOf(*triangles, *decomposeGnomons.toTypedArray())
+
+    }
+
+    fun iterateDecompose2NonAdjacentTriangles1Gnomon(iteration: Int, arrange: Boolean = false): Array<Decomposable> {
         var i = 0
         val decompose = mutableListOf<Decomposable>(this)
+        if (iteration == 0) return decompose.toTypedArray()
 
         while (i < iteration) {
-            val decomposeI = mutableListOf<Decomposable>()
+            val decomposePrepare = mutableListOf<Decomposable>()
             for (d in decompose) {
-                decomposeI.addAll(d.decompose())
+                decomposePrepare.addAll(d.decompose())
             }
             decompose.clear()
-            decompose.addAll(decomposeI)
+            decompose.addAll(decomposePrepare)
             i++
         }
 
         val updatedList = mutableListOf<Decomposable>()
         for (d in decompose) {
-            updatedList.addAll(d.decompose(arrange))
+            if (d is GoldenTriangle) updatedList.add(d)
+            if (d is GoldenGnomon) {
+                if (arrange) {
+                    updatedList.addAll(d.decompose1Triangle1Gnomon())
+                } else {
+                    updatedList.addAll(d.decompose1Triangle1GnomonSym())
+                }
+            }
+
+        }
+        return updatedList.toTypedArray()
+
+    }
+
+    fun iterate(iteration: Int): Array<Decomposable> {
+        var i = 0
+        val decompose = mutableListOf<Decomposable>(this)
+        if(iteration == 0) return decompose.toTypedArray()
+
+        while (i  < iteration) {
+            val decomposePrepare = mutableListOf<Decomposable>()
+            for (d in decompose) {
+                decomposePrepare.addAll(d.decompose())
+            }
+            decompose.clear()
+            decompose.addAll(decomposePrepare)
+            i++
+        }
+
+        val updatedList = mutableListOf<Decomposable>()
+        for (d in decompose) {
+            updatedList.addAll(d.decompose())
         }
         return updatedList.toTypedArray()
     }
+
+
+
+    fun iterate(iteration: Int, arrange: Boolean = false): Array<Decomposable> {
+
+        if(arrange) {
+            return iterate(iteration, DecomposableModel.ADJACENT_TRIANGLE_2_GNOMON_1)
+        }
+
+        return iterate(iteration, DecomposableModel.NON_ADJACENT_TRIANGLE_2_GNOMON_1)
+    }
+
     }
