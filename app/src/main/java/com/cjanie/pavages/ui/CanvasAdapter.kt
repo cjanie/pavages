@@ -12,10 +12,18 @@ import com.cjanie.pavages.ui.tools.DrawTools
 
 class CanvasAdapter(val canvasHeight: Float, val canvasWidth: Float, val triangleHeight: Float) {
     companion object {
-        val goldenTriangleColor = Color(android.graphics.Color.parseColor("#FFD700"))
-        val goldenGnomonColor = Color(android.graphics.Color.parseColor("#C0C0C0"))
-        val topBackgroundColor = Color(android.graphics.Color.parseColor("#26619c"))
-        val backgroundColor = Color(android.graphics.Color.parseColor("#6e0b14"))
+        val goldenColor = Color(android.graphics.Color.parseColor("#F5BD02"))
+        val silverColor = Color(android.graphics.Color.parseColor("#DBDBDB"))
+        val lapisColor = Color(android.graphics.Color.parseColor("#0060FF"))
+        val jasperColor = Color(android.graphics.Color.parseColor("#d73b3e"))
+
+        val goldenTriangleColor = goldenColor
+
+        val goldenGnomonColor = silverColor
+
+        val topBackgroundColor = lapisColor
+
+        val backgroundColor = jasperColor
     }
 
     // Center
