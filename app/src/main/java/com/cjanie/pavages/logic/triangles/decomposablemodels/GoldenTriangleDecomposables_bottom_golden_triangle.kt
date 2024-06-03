@@ -27,7 +27,7 @@ class GoldenTriangleDecomposables_bottom_golden_triangle(
         else {
             val decomposables = mutableListOf<Decomposable>()
             for (model in models) {
-
+/*
                     if(position == Position.START) {
                         if(models.size > 1 && model is GoldenTriangleDecomposables_2Triangles_1Gnomon ) {
                             model.updateGoldenTriangle(getBottomTriangle().getNextContainer(getBottomTriangle()))
@@ -42,7 +42,7 @@ class GoldenTriangleDecomposables_bottom_golden_triangle(
                     }
                     decomposables.addAll(model.decomposables())
 
-
+*/
             }
             return decomposables.toTypedArray()
         }

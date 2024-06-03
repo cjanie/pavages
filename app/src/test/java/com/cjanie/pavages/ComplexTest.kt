@@ -1,6 +1,6 @@
 package com.cjanie.pavages
 
-import com.cjanie.pavages.logic.Complex
+import com.cjanie.pavages.logic.complex.Complex
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

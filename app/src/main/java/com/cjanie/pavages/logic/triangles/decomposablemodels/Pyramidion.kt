@@ -16,13 +16,14 @@ class Pyramidion(var goldenTriangle: GoldenTriangle, var arrange: Boolean = fals
     override fun goldenTriangle(): GoldenTriangle {
         return goldenTriangle
     }
-    override fun updateGoldenTriangle(goldenTriangle: GoldenTriangle) {
+    override fun updateGoldenTriangle(goldenTriangle: GoldenTriangle) {/*
         this.goldenTriangle = goldenTriangle
         val pyramidionContainer = goldenTriangle.getNextContainer(goldenTriangle)
         models[0].updateGoldenTriangle(pyramidionContainer)
         for (i in 1..models.size - 1) {
             models[i].updateGoldenTriangle(goldenTriangle)
         }
+        */
     }
 
     override fun decomposables(): Array<Decomposable> {

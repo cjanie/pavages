@@ -54,7 +54,7 @@ class GoldenTriangleDecomposables_kite_dart_10(
     }
 
     private fun symNewContainerUnderBaseAxis() = getSymUnderBaseAxis(
-        container.getNextContainer(container)
+        container//.getNextContainer(container)
     )
     private fun symKiteDartModel() =
         (models[0] as GoldenTriangleDecomposables_Kite_Dart).createModel(symNewContainerUnderBaseAxis(), arrange)

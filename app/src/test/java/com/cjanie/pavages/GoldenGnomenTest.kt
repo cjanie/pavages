@@ -18,12 +18,4 @@ class GoldenGnomenTest {
         GoldenGnomon(A, B, C)
     }
 
-    @Test
-    fun `golden gnomon`() {
-        val pentagon = PentagonBuilder(
-            Cercle(Point("O", 0.0, 0.0), 2.0)
-        ).build()
-        val gnomon = pentagon.goldenGnomons[0]
-        assertEquals((1 / Number.GOLDEN_NUMBER_PHI).toFloat(), (gnomon.duplicatedSideLength() / gnomon.baseSideLength()).toFloat(), 0.0f)
-    }
 }

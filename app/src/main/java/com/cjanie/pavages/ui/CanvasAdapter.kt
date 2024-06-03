@@ -50,7 +50,7 @@ class CanvasAdapter(val canvasHeight: Float, val canvasWidth: Float, val triangl
             )
         }
     }
-
+/*
     fun arrange(offset: Offset): List<Drawing> {
         return graph2D.arrangeSelectedModel(point(offset)).decomposables().map {
             Drawing(
@@ -60,6 +60,8 @@ class CanvasAdapter(val canvasHeight: Float, val canvasWidth: Float, val triangl
             )
         }
     }
+
+ */
 
     inner class Drawing(val path: Path, val color: Color)
 

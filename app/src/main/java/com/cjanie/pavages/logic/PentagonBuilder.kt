@@ -4,7 +4,7 @@ import com.cjanie.pavages.tools.Symmetry
 import com.cjanie.pavages.tools.Trigonometry
 
 class PentagonBuilder(private val enclosure: Cercle) {
-
+/*
     // circle enclosure of center O
     private val O = enclosure.center.copy(name = "O")
 
@@ -43,4 +43,6 @@ class PentagonBuilder(private val enclosure: Cercle) {
     fun build(): Pentagon {
         return Pentagon(arrayOf(A, B, C, D, E))
     }
+
+ */
 }

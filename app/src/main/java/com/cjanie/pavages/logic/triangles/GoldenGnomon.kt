@@ -2,7 +2,6 @@ package com.cjanie.pavages.logic.triangles
 
 import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.Number
-import com.cjanie.pavages.logic.Pentagon
 import com.cjanie.pavages.logic.Point
 
 class GoldenGnomon(
@@ -12,10 +11,29 @@ class GoldenGnomon(
 ): IsoscelesTriangle(pointOppositeToBase, basePoint1, basePoint2),
     Decomposable {
 
+    val A = points[0]
+    val B = points[1]
+    val C = points[2]
     companion object {
-        fun createGoldenGnomons(pentagon: Pentagon): Array<GoldenGnomon> {
-            return pentagon.goldenGnomons
-        }
+        val goldenRatio = Number.GOLDEN_NUMBER_PHI
+    }
+
+
+    override fun decompose() : Array<Decomposable> {
+        val (qX, qY) = B.complex + (A.complex - B.complex) / goldenRatio
+        val (rX, rY) = B.complex + (C.complex - B.complex) / goldenRatio
+        val Q = Point("Q", qX, qY)
+        var R = Point("R", rX, rY)
+
+        // GoldenTriangle
+        // RAQ
+        // 2 Golden Gnomons
+        // QBR, RCA
+        return arrayOf(
+            GoldenTriangle(R, Q, A),
+            GoldenGnomon(Q, R, B),
+            GoldenGnomon(R, C, A)
+        )
     }
 
     init {

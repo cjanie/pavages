@@ -24,15 +24,6 @@ class GoldenTriangleTest {
     }
 
     @Test
-    fun `golden triangle`() {
-        val pentagon = PentagonBuilder(
-            Cercle(Point("O", 0.0, 0.0), 2.0)
-        ).build()
-        val triangle = pentagon.goldenTriangle
-        assertEquals(Number.GOLDEN_NUMBER_PHI.toFloat(), (triangle.duplicatedSideLength() / triangle.baseSideLength()).toFloat(), 0.0f)
-    }
-
-    @Test
     fun `golden ratio checked`() {
         GoldenTriangle()
     }
