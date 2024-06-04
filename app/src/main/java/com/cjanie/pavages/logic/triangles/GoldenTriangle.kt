@@ -82,7 +82,6 @@ class GoldenTriangle(
     val C = points[2]
 
     override fun decompose(): Array<Decomposable> {
-
         val (pX, pY) = A.complex + (B.complex - A.complex) / goldenRatio
         val P = Point("P", pX, pY)
 
@@ -146,13 +145,13 @@ class GoldenTriangle(
 
     fun iterate(iteration: Int, model: DecomposableModel): Array<Decomposable> {
         when (model) {
-            DecomposableModel.NON_ADJACENT_TRIANGLE_2_GNOMON_1 -> return iterateDecompose2NonAdjacentTriangles1Gnomon(iteration)
-            DecomposableModel.ADJACENT_TRIANGLE_2_GNOMON_1 -> return iterateDecompose2NonAdjacentTriangles1Gnomon(iteration, true)
+            DecomposableModel.NON_ADJACENT_TRIANGLE_2_GNOMON_1 -> return iterateDecompose2NonAdjacentTriangles1Gnomon(iteration, DecomposableModel.NON_ADJACENT_TRIANGLE_2_GNOMON_1)
+            DecomposableModel.ADJACENT_TRIANGLE_2_GNOMON_1 -> return iterateDecompose2NonAdjacentTriangles1Gnomon(iteration, DecomposableModel.ADJACENT_TRIANGLE_2_GNOMON_1)
             else -> return iterate(iteration)
         }
     }
 
-    fun iterateDecompose2NonAdjacentTriangles1Gnomon(iteration: Int, arrange: Boolean = false): Array<Decomposable> {
+    fun iterateDecompose2NonAdjacentTriangles1Gnomon(iteration: Int, arrange: DecomposableModel): Array<Decomposable> {
         var i = 0
         val decompose = mutableListOf<Decomposable>(this)
         if (iteration == 0) return decompose.toTypedArray()
@@ -171,7 +170,7 @@ class GoldenTriangle(
         for (d in decompose) {
             if (d is GoldenTriangle) updatedList.add(d)
             if (d is GoldenGnomon) {
-                if (arrange) {
+                if (arrange == DecomposableModel.ADJACENT_TRIANGLE_2_GNOMON_1) {
                     updatedList.addAll(d.decompose(GoldenGnomon.DecompositionModel.ONE_TRIANGLE_ONE_GNOMON))
                 } else {
                     updatedList.addAll(d.decompose(GoldenGnomon.DecompositionModel.ONE_TRIANGLE_ONE_GNOMON_SYM))
