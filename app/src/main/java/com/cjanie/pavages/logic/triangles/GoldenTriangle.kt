@@ -103,45 +103,9 @@ class GoldenTriangle(
         y = points[1].y + Trigonometry.oppositeSideLengthFromHypotenuseAndAngle(duplicatedSidesLength, 36.0)
     )
 
-
-
     // Sym P1
     val symP1 = Symmetry.symmetryByVerticalAxis(points[0].x, P1)
 
-    // triangle symP1, P1, P2: base = P1 P2, duplicated sides = symP1 P1 and sym P1 P2
-    val duplicatedSideSymP1_P1Length = P1.x - symP1.x
-    // P2 coordinates
-    val P2 = Point(
-        x = symP1.x
-                + Trigonometry.adjacentSideLengthFromHypotenuseAndAngle(duplicatedSideSymP1_P1Length, 36.0),
-        y = symP1.y
-                + Trigonometry.oppositeSideLengthFromHypotenuseAndAngle(
-            duplicatedSideSymP1_P1Length, 36.0
-        )
-    )
-
-    val symP2 = Symmetry.symmetryByVerticalAxis(points[0].x, P2)
-    val P3 = Point(
-        x = points[1].x + P2.x - symP2.x,
-        y = points[1].y
-    )
-    val symP3 = Symmetry.symmetryByVerticalAxis(points[0].x, P3)
-
-
-    // Kite and Dart from losange P3 C P1 symP1
-    val P4 = Point(
-        x = points[0].x,
-        y = points[2].y + P2.y - P1.y
-    )
-
-    // P5 Sym of P2 on horizontal axis P1 symP1
-    // val P5 = Symmetry.symmetryByHorizontalAxis(P1.y, P2)
-    val P5 = Point(
-        x = P2.x,
-        y = P1.y - (P2.y - P1.y)
-    )
-
-    val symP5 = Symmetry.symmetryByVerticalAxis(points[0].x, P5)
 
     fun iterate(iteration: Int, arrange: DecomposableModel): Array<Decomposable> {
         var i = 0
