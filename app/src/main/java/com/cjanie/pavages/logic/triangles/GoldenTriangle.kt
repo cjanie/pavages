@@ -3,7 +3,6 @@ package com.cjanie.pavages.logic.triangles
 import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.Number
 import com.cjanie.pavages.logic.Point
-import com.cjanie.pavages.logic.triangles.decomposablemodels.DecomposableModel
 import com.cjanie.pavages.tools.Symmetry
 import com.cjanie.pavages.tools.Trigonometry
 import java.math.BigDecimal
@@ -81,6 +80,11 @@ class GoldenTriangle(
     val B = points[1]
     val C = points[2]
 
+    enum class DecomposableModel {
+        TRIANGLE_1_GNOMON_1,
+        NON_ADJACENT_TRIANGLE_2_GNOMON_1,
+        ADJACENT_TRIANGLE_2_GNOMON_1
+    }
     override fun decompose(): Array<Decomposable> {
         val (pX, pY) = A.complex + (B.complex - A.complex) / goldenRatio
         val P = Point("P", pX, pY)
@@ -106,6 +110,9 @@ class GoldenTriangle(
     // Sym P1
     val symP1 = Symmetry.symmetryByVerticalAxis(points[0].x, P1)
 
+    fun iterate(iteration: Int, arrange: CustomModel) {
+
+    }
 
     fun iterate(iteration: Int, arrange: DecomposableModel): Array<Decomposable> {
         var i = 0
@@ -136,7 +143,7 @@ class GoldenTriangle(
                 for (d in decompose) {
                     if (d is GoldenTriangle) updatedList.add(d)
                     if (d is GoldenGnomon) {
-                        updatedList.addAll(d.decompose(GoldenGnomon.DecompositionModel.ONE_TRIANGLE_ONE_GNOMON_SYM))
+                        updatedList.addAll(d.decompose(GoldenGnomon.DecomposableModel.ONE_TRIANGLE_ONE_GNOMON_SYM))
                     }
                 }
             }
@@ -145,7 +152,7 @@ class GoldenTriangle(
                 for (d in decompose) {
                     if (d is GoldenTriangle) updatedList.add(d)
                     if (d is GoldenGnomon) {
-                        updatedList.addAll(d.decompose(GoldenGnomon.DecompositionModel.ONE_TRIANGLE_ONE_GNOMON))
+                        updatedList.addAll(d.decompose(GoldenGnomon.DecomposableModel.ONE_TRIANGLE_ONE_GNOMON))
                     }
 
                 }

@@ -27,10 +27,9 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.cjanie.pavages.logic.triangles.decomposablemodels.DecomposableModel
+import com.cjanie.pavages.logic.triangles.GoldenTriangle
 import com.cjanie.pavages.ui.theme.PavagesTheme
 import com.cjanie.pavages.ui.CanvasAdapter
-import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +60,7 @@ fun ConstraintLayoutContent() {
         }
 
         var arrange by remember {
-            mutableStateOf(DecomposableModel.TRIANGLE_1_GNOMON_1)
+            mutableStateOf(GoldenTriangle.DecomposableModel.TRIANGLE_1_GNOMON_1)
         }
 
         // For column size depending on screen size
@@ -180,8 +179,8 @@ fun ConstraintLayoutContent() {
                 Text("+")
             }
 
-            fun changeModel(actual: DecomposableModel): DecomposableModel {
-                val models = DecomposableModel.values()
+            fun changeModel(actual: GoldenTriangle.DecomposableModel): GoldenTriangle.DecomposableModel {
+                val models = GoldenTriangle.DecomposableModel.values()
                 var next = models[0]
                 for(i in 0..models.size - 1) {
                     if (models[i] == actual) {

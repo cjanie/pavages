@@ -7,7 +7,6 @@ import com.cjanie.pavages.logic.Graph2D
 import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 import com.cjanie.pavages.logic.triangles.Triangle
-import com.cjanie.pavages.logic.triangles.decomposablemodels.DecomposableModel
 import com.cjanie.pavages.tools.CheckPointInBounds
 import com.cjanie.pavages.ui.tools.DrawTools
 
@@ -49,7 +48,7 @@ class CanvasAdapter(val canvasHeight: Float, val canvasWidth: Float, val triangl
     // Graph 2D containing shapes
     private val graph2D = Graph2D(heigth = triangleHeight.toDouble())
 
-    fun decompose(iteration: Int, arrange: DecomposableModel) : List<Drawing> {
+    fun decompose(iteration: Int, arrange: GoldenTriangle.DecomposableModel) : List<Drawing> {
         return graph2D.iterate(iteration, arrange).map {
             Drawing(
                 path = path(it as Triangle),
