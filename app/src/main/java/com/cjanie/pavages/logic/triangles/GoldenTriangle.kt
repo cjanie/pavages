@@ -110,8 +110,32 @@ class GoldenTriangle(
     // Sym P1
     val symP1 = Symmetry.symmetryByVerticalAxis(points[0].x, P1)
 
-    fun iterate(iteration: Int, arrange: CustomModel) {
+    fun iterate(iteration: Int, arrange: CustomModel): Array<Decomposable> {
+        var i = 0
+        val decompose = mutableListOf<Decomposable>(this)
+        if(iteration == 0) return decompose.toTypedArray()
 
+        while (i < iteration) {
+            val decomposePrepare = mutableListOf<Decomposable>()
+            for (d in decompose) {
+                decomposePrepare.addAll(d.decompose())
+            }
+            decompose.clear()
+            decompose.addAll(decomposePrepare)
+            i++
+        }
+
+        val updatedList = mutableListOf<Decomposable>()
+
+
+        for (d in decompose) {
+            if (d is GoldenTriangle) updatedList.addAll(d.decompose())
+            if (d is GoldenGnomon) {
+                updatedList.addAll(d.decompose(arrange.gnomonModel))
+            }
+        }
+
+        return updatedList.toTypedArray()
     }
 
     fun iterate(iteration: Int, arrange: DecomposableModel): Array<Decomposable> {

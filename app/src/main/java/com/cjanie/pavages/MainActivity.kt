@@ -27,6 +27,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.cjanie.pavages.logic.triangles.CustomModel
+import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 import com.cjanie.pavages.ui.theme.PavagesTheme
 import com.cjanie.pavages.ui.CanvasAdapter
@@ -61,6 +63,10 @@ fun ConstraintLayoutContent() {
 
         var arrange by remember {
             mutableStateOf(GoldenTriangle.DecomposableModel.TRIANGLE_1_GNOMON_1)
+        }
+
+        var arrangeCustom by remember {
+            mutableStateOf<CustomModel?>(null)
         }
 
         // For column size depending on screen size
@@ -131,7 +137,9 @@ fun ConstraintLayoutContent() {
                 drawPath(square.path, square.color)
 
                 // Drawings
-                val drawings = canvasAdapter.decompose(decomposeIteration, arrange)
+                var drawings = if(arrangeCustom == null)
+                    canvasAdapter.decompose(decomposeIteration, arrange)
+                else canvasAdapter.decompose(decomposeIteration, arrangeCustom!!)
                 for (drawing in drawings) {
                     drawPath(drawing.path, drawing.color)
                 }
@@ -198,6 +206,16 @@ fun ConstraintLayoutContent() {
             Button(onClick = { arrange = changeModel(arrange) },
                 modifier = Modifier.padding(8.dp)) {
                 Text("Arrange")
+            }
+
+            Button(onClick = { arrangeCustom = CustomModel(
+                //GoldenTriangle.DecomposableModel.ADJACENT_TRIANGLE_2_GNOMON_1,
+                GoldenTriangle.DecomposableModel.NON_ADJACENT_TRIANGLE_2_GNOMON_1,
+                //GoldenGnomon.DecomposableModel.ONE_TRIANGLE_TWO_GNOMONS,
+                GoldenGnomon.DecomposableModel.ONE_TRIANGLE_ONE_GNOMON_SYM
+            ) },
+                modifier = Modifier.padding(8.dp)) {
+                Text("Custom")
             }
         }
     }
