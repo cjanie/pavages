@@ -65,23 +65,9 @@ class GoldenGnomon(
             GoldenGnomon(R, A, B),
         )
     }
-    override fun decompose(arrange: Boolean): Array<Decomposable> {
-        val (rX, rY) = B.complex + (C.complex - B.complex) / goldenRatio
-        var R = Point("R", rX, rY)
-
-        if(arrange)
-            // 1 triangle + 1 gnomon
-            return arrayOf(
-                GoldenTriangle(B, R, A),
-                GoldenGnomon(R, C, A)
-            )
-
-        else return decompose(DecompositionModel.ONE_TRIANGLE_TWO_GNOMONS)
-
-    }
 
     init {
         // check that the duplicated side is in the golden ration 1 / phi to the base side
-        //assert((duplicatedSideLength() / baseSideLength()).toFloat() == (1 / Number.GOLDEN_NUMBER_PHI).toFloat())
+        assert((duplicatedSideLength() / baseSideLength()).toFloat() == (1 / Number.GOLDEN_NUMBER_PHI).toFloat())
     }
 }

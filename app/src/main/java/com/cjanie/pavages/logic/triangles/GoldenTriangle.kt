@@ -94,28 +94,6 @@ class GoldenTriangle(
         )
     }
 
-    // 2 triangles + 1 gnomon
-    override fun decompose(arrange: Boolean): Array<Decomposable> {
-        val (pX, pY) = A.complex + (B.complex - A.complex) / goldenRatio
-        val P = Point("P", pX, pY)
-
-        if (arrange) {
-            return arrayOf(
-                GoldenTriangle(C, P, B),
-                *GoldenGnomon(P, C, A).decompose(arrange)
-            )
-        }
-
-        val (sympX, sympY) = A.complex + (C.complex - A.complex) / goldenRatio
-        val symP = Point("P'", sympX, sympY)
-
-        return arrayOf(
-            GoldenTriangle(C, P, B),
-            GoldenTriangle(A, symP, P),
-            GoldenGnomon(symP, C, P)
-        )
-    }
-
     // iteration 1 returns P1, symP1, P2
     // Golden triangle BCP : base = CP, duplicated sides = BC and BP
     val duplicatedSidesLength = points[2].x - points[1].x
