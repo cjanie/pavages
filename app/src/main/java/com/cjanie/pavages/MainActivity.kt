@@ -179,7 +179,24 @@ fun ConstraintLayoutContent() {
                 modifier = Modifier.padding(8.dp)) {
                 Text("+")
             }
-            Button(onClick = { arrange = DecomposableModel.NON_ADJACENT_TRIANGLE_2_GNOMON_1 },
+
+            fun changeModel(actual: DecomposableModel): DecomposableModel {
+                val models = DecomposableModel.values()
+                var next = models[0]
+                for(i in 0..models.size - 1) {
+                    if (models[i] == actual) {
+                        if(i == models.size - 1) {
+                            next = models[0]
+                        } else {
+                            next = models[i + 1]
+                        }
+                        break
+                    }
+                }
+                return next
+            }
+
+            Button(onClick = { arrange = changeModel(arrange) },
                 modifier = Modifier.padding(8.dp)) {
                 Text("Arrange")
             }

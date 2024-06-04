@@ -174,20 +174,6 @@ class GoldenTriangle(
         }
     }
 
-    fun decompose2NonAdjacentTriangles1Gnomon(): Array<Decomposable> {
-        val decomposables = decompose()
-        val triangles: Array<GoldenTriangle> = (decomposables.filter { it is GoldenTriangle } as List<GoldenTriangle>).toTypedArray()
-
-        val gnomons = decomposables.filter { it is GoldenGnomon }
-        val decomposeGnomons = mutableListOf<Decomposable>()
-        for (g in gnomons) {
-            decomposeGnomons.addAll(g.decompose(true))
-        }
-
-        return arrayOf(*triangles, *decomposeGnomons.toTypedArray())
-
-    }
-
     fun iterateDecompose2NonAdjacentTriangles1Gnomon(iteration: Int, arrange: Boolean = false): Array<Decomposable> {
         var i = 0
         val decompose = mutableListOf<Decomposable>(this)
@@ -239,17 +225,6 @@ class GoldenTriangle(
             updatedList.addAll(d.decompose())
         }
         return updatedList.toTypedArray()
-    }
-
-
-
-    fun iterate(iteration: Int, arrange: Boolean = false): Array<Decomposable> {
-
-        if(arrange) {
-            return iterate(iteration, DecomposableModel.ADJACENT_TRIANGLE_2_GNOMON_1)
-        }
-
-        return iterate(iteration, DecomposableModel.NON_ADJACENT_TRIANGLE_2_GNOMON_1)
     }
 
     }
