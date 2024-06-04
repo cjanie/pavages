@@ -18,6 +18,18 @@ class GoldenGnomon(
         val goldenRatio = Number.GOLDEN_NUMBER_PHI
     }
 
+    enum class DecompositionModel {
+        ONE_TRIANGLE_TWO_GNOMONS,
+        ONE_TRIANGLE_ONE_GNOMON,
+        ONE_TRIANGLE_ONE_GNOMON_SYM,
+    }
+    fun decompose(model: DecompositionModel): Array<Decomposable> {
+        when (model) {
+            DecompositionModel.ONE_TRIANGLE_TWO_GNOMONS -> return decompose()
+            DecompositionModel.ONE_TRIANGLE_ONE_GNOMON -> return decompose1Triangle1Gnomon()
+            DecompositionModel.ONE_TRIANGLE_ONE_GNOMON_SYM -> return decompose1Triangle1GnomonSym()
+        }
+    }
 
     override fun decompose() : Array<Decomposable> {
         val (qX, qY) = B.complex + (A.complex - B.complex) / goldenRatio
@@ -36,7 +48,7 @@ class GoldenGnomon(
         )
     }
 
-    fun decompose1Triangle1Gnomon(): Array<Decomposable> {
+    private fun decompose1Triangle1Gnomon(): Array<Decomposable> {
         val (rX, rY) = B.complex + (C.complex - B.complex) / goldenRatio
         var R = Point("R", rX, rY)
         return arrayOf(
@@ -45,7 +57,7 @@ class GoldenGnomon(
         )
     }
 
-    fun decompose1Triangle1GnomonSym(): Array<Decomposable> {
+    private fun decompose1Triangle1GnomonSym(): Array<Decomposable> {
         val (rX, rY) = C.complex + (B.complex - C.complex) / goldenRatio
         var R = Point("R", rX, rY)
         return arrayOf(
@@ -64,7 +76,7 @@ class GoldenGnomon(
                 GoldenGnomon(R, C, A)
             )
 
-        else return decompose()
+        else return decompose(DecompositionModel.ONE_TRIANGLE_TWO_GNOMONS)
 
     }
 

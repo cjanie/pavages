@@ -194,9 +194,9 @@ class GoldenTriangle(
             if (d is GoldenTriangle) updatedList.add(d)
             if (d is GoldenGnomon) {
                 if (arrange) {
-                    updatedList.addAll(d.decompose1Triangle1Gnomon())
+                    updatedList.addAll(d.decompose(GoldenGnomon.DecompositionModel.ONE_TRIANGLE_ONE_GNOMON))
                 } else {
-                    updatedList.addAll(d.decompose1Triangle1GnomonSym())
+                    updatedList.addAll(d.decompose(GoldenGnomon.DecompositionModel.ONE_TRIANGLE_ONE_GNOMON_SYM))
                 }
             }
 
