@@ -24,46 +24,40 @@ class GoldenGnomon(
         ONE_TRIANGLE_ONE_GNOMON_SYM,
     }
     fun decompose(model: DecompositionModel): Array<Decomposable> {
+        val (rX, rY) = B.complex + (C.complex - B.complex) / goldenRatio
+        var R = Point("R", rX, rY)
+
         when (model) {
-            DecompositionModel.ONE_TRIANGLE_TWO_GNOMONS -> return decompose()
-            DecompositionModel.ONE_TRIANGLE_ONE_GNOMON -> return decompose1Triangle1Gnomon()
-            DecompositionModel.ONE_TRIANGLE_ONE_GNOMON_SYM -> return decompose1Triangle1GnomonSym()
+            DecompositionModel.ONE_TRIANGLE_TWO_GNOMONS -> {
+                val (qX, qY) = B.complex + (A.complex - B.complex) / goldenRatio
+                val Q = Point("Q", qX, qY)
+                // GoldenTriangle
+                // RAQ
+                // 2 Golden Gnomons
+                // QBR, RCA
+                return arrayOf(
+                    GoldenTriangle(R, Q, A),
+                    GoldenGnomon(Q, R, B),
+                    GoldenGnomon(R, C, A)
+                )
+            }
+            DecompositionModel.ONE_TRIANGLE_ONE_GNOMON -> return arrayOf(
+                GoldenTriangle(B, R, A),
+                GoldenGnomon(R, C, A),
+            )
+            DecompositionModel.ONE_TRIANGLE_ONE_GNOMON_SYM -> {
+                val (rSymX, rSymY) = C.complex + (B.complex - C.complex) / goldenRatio
+                val symR = Point("R'", rSymX, rSymY)
+                return arrayOf(
+                    GoldenTriangle(C, A, symR),
+                    GoldenGnomon(symR, A, B),
+                )
+            }
         }
     }
 
     override fun decompose() : Array<Decomposable> {
-        val (qX, qY) = B.complex + (A.complex - B.complex) / goldenRatio
-        val (rX, rY) = B.complex + (C.complex - B.complex) / goldenRatio
-        val Q = Point("Q", qX, qY)
-        var R = Point("R", rX, rY)
-
-        // GoldenTriangle
-        // RAQ
-        // 2 Golden Gnomons
-        // QBR, RCA
-        return arrayOf(
-            GoldenTriangle(R, Q, A),
-            GoldenGnomon(Q, R, B),
-            GoldenGnomon(R, C, A)
-        )
-    }
-
-    private fun decompose1Triangle1Gnomon(): Array<Decomposable> {
-        val (rX, rY) = B.complex + (C.complex - B.complex) / goldenRatio
-        var R = Point("R", rX, rY)
-        return arrayOf(
-            GoldenTriangle(B, R, A),
-            GoldenGnomon(R, C, A),
-        )
-    }
-
-    private fun decompose1Triangle1GnomonSym(): Array<Decomposable> {
-        val (rX, rY) = C.complex + (B.complex - C.complex) / goldenRatio
-        var R = Point("R", rX, rY)
-        return arrayOf(
-            GoldenTriangle(C, A, R),
-            GoldenGnomon(R, A, B),
-        )
+        return decompose(DecompositionModel.ONE_TRIANGLE_TWO_GNOMONS)
     }
 
     init {
