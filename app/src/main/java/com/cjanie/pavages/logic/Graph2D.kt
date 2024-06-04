@@ -5,6 +5,7 @@ import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 import com.cjanie.pavages.logic.triangles.GoldenTriangle.Companion.create
 import com.cjanie.pavages.logic.triangles.GoldenTriangle.Companion.createByHeight
+import com.cjanie.pavages.logic.triangles.decomposablemodels.DecomposableModel
 import com.cjanie.pavages.logic.triangles.decomposablemodels.GoldenTriangleDecomposables_2Triangles_1Gnomon
 
 class Graph2D(heigth: Double) {
@@ -14,7 +15,7 @@ class Graph2D(heigth: Double) {
     val symP1 = goldenTriangle.symP1
     val P1 = goldenTriangle.P1
 
-    fun iterate(iteration: Int, arrange: Boolean): Array<Decomposable> {
+    fun iterate(iteration: Int, arrange: DecomposableModel): Array<Decomposable> {
         return goldenTriangle.iterate(iteration, arrange)
     }
 }

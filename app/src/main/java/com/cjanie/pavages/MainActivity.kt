@@ -27,6 +27,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.cjanie.pavages.logic.triangles.decomposablemodels.DecomposableModel
 import com.cjanie.pavages.ui.theme.PavagesTheme
 import com.cjanie.pavages.ui.CanvasAdapter
 import kotlin.random.Random
@@ -60,7 +61,7 @@ fun ConstraintLayoutContent() {
         }
 
         var arrange by remember {
-            mutableStateOf(false)
+            mutableStateOf(DecomposableModel.TRIANGLE_1_GNOMON_1)
         }
 
         // For column size depending on screen size
@@ -138,7 +139,7 @@ fun ConstraintLayoutContent() {
 
                 if(canvasAdapter.isPointInGoldenTriangle(tap)) {
                     drawCircle(CanvasAdapter.backgroundColor, 200f, tap, 0.2f)
-                    arrange = !arrange
+                    //arrange = !arrange
                     //canvasAdapter.arrange(tap)
                     tap = Offset.Zero
                 }
@@ -178,7 +179,7 @@ fun ConstraintLayoutContent() {
                 modifier = Modifier.padding(8.dp)) {
                 Text("+")
             }
-            Button(onClick = { arrange = !arrange },
+            Button(onClick = { arrange = DecomposableModel.NON_ADJACENT_TRIANGLE_2_GNOMON_1 },
                 modifier = Modifier.padding(8.dp)) {
                 Text("Arrange")
             }

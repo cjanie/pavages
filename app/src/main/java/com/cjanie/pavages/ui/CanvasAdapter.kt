@@ -7,29 +7,29 @@ import com.cjanie.pavages.logic.Graph2D
 import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 import com.cjanie.pavages.logic.triangles.Triangle
+import com.cjanie.pavages.logic.triangles.decomposablemodels.DecomposableModel
 import com.cjanie.pavages.tools.CheckPointInBounds
 import com.cjanie.pavages.ui.tools.DrawTools
 
 class CanvasAdapter(val canvasHeight: Float, val canvasWidth: Float, val triangleHeight: Float) {
     companion object {
         val goldenColor = Color(android.graphics.Color.parseColor("#F5BD02"))
-        val silverColor = Color(android.graphics.Color.parseColor("#DBDBDB"))
-        val lapisColor = Color(android.graphics.Color.parseColor("#0060FF"))
-        val jasperColor = Color(android.graphics.Color.parseColor("#d73b3e"))
-
         val goldenTriangleColor = goldenColor
 
+        val silverColor = Color(android.graphics.Color.parseColor("#DBDBDB"))
         val goldenGnomonColor = silverColor
 
+        val lapisColor = Color(android.graphics.Color.parseColor("#0060FF"))
         val topBackgroundColor = lapisColor
 
-        val backgroundColor = jasperColor
+        val grenatColor = Color(android.graphics.Color.parseColor("#6e0b14"))
+        val backgroundColor = grenatColor
     }
 
     // Center
     fun center(): Offset {
         return Offset(
-            canvasWidth / 2f,//canvasSize / 2f,
+            canvasWidth / 2f,
             canvasHeight
         )
     }
@@ -49,7 +49,7 @@ class CanvasAdapter(val canvasHeight: Float, val canvasWidth: Float, val triangl
     // Graph 2D containing shapes
     private val graph2D = Graph2D(heigth = triangleHeight.toDouble())
 
-    fun decompose(iteration: Int, arrange: Boolean) : List<Drawing> {
+    fun decompose(iteration: Int, arrange: DecomposableModel) : List<Drawing> {
         return graph2D.iterate(iteration, arrange).map {
             Drawing(
                 path = path(it as Triangle),
