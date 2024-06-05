@@ -5,12 +5,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,7 +34,9 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.cjanie.pavages.logic.triangles.CustomModel
 import com.cjanie.pavages.logic.triangles.GoldenGnomon
@@ -218,27 +225,46 @@ fun ConstraintLayoutContent() {
             val openAlertDialog = remember { mutableStateOf(false) }
             Button(onClick = {
                 openAlertDialog.value = !openAlertDialog.value
-                arrangeCustom = CustomModel(
-                //GoldenTriangle.DecomposableModel.ADJACENT_TRIANGLE_2_GNOMON_1,
-                GoldenTriangle.DecomposableModel.NON_ADJACENT_TRIANGLE_2_GNOMON_1,
-                //GoldenGnomon.DecomposableModel.ONE_TRIANGLE_TWO_GNOMONS,
-                GoldenGnomon.DecomposableModel.ONE_TRIANGLE_ONE_GNOMON_SYM
-            ) },
+                 },
                 modifier = Modifier.padding(8.dp)) {
                 Text("Try")
             }
 
-            CustomDialog(openAlertDialog.value)
+            val dialogInterface = object: DialogInterface {
+                override fun dismiss() {
+                    openAlertDialog.value = false
+                }
+
+                override fun apply(
+                    arrangeGoldenTriangle: GoldenTriangle.DecomposableModel,
+                    arrangeGoldenGnomon: GoldenGnomon.DecomposableModel
+                ) {
+                    arrangeCustom = CustomModel(
+                        arrangeGoldenTriangle,
+                        arrangeGoldenGnomon
+                        )
+                    dismiss()
+                }
+
+            }
+
+            CustomDialog(openAlertDialog.value, dialogInterface)
         }
-
-
     }
 
 }
 
+interface DialogInterface {
+    fun dismiss()
+    fun apply(
+        arrangeGoldenTriangle: GoldenTriangle.DecomposableModel,
+        arrangeGoldenGnomon: GoldenGnomon.DecomposableModel
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomAlertDialog() {
+fun CustomAlertDialog(dialogInterface: DialogInterface) {
     AlertDialog(
         onDismissRequest = {  },
         modifier = Modifier
@@ -246,22 +272,50 @@ fun CustomAlertDialog() {
             .fillMaxSize()
 
     ) {
+        var triangleModel by remember {
+            mutableStateOf(GoldenTriangle.DecomposableModel.TRIANGLE_1_GNOMON_1)
+
+        }
+        var gnomonModel by remember {
+            mutableStateOf(GoldenGnomon.DecomposableModel.ONE_TRIANGLE_TWO_GNOMONS)
+        }
 
             Column(
+
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(20.dp)
 
             ) {
-                Text(text = "Select a decomposition model for Golden Triangles")
-                Row {
+
+                Text(
+                    text = "Select decomposition models",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    modifier = Modifier.padding(8.dp)
+                )
+
+        Text(
+            text = "Golden Triangle decomposition models",
+            fontSize = 12.sp,
+            modifier = Modifier.padding(8.dp)
+        )
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     for (model in GoldenTriangle.DecomposableModel.entries) {
                         Canvas(modifier = Modifier
-                            .size(80.dp)
+                            .size(70.dp)
                             .padding(8.dp)
-                            .background(Color.Magenta)) {
+                            .background(Color.Magenta)
+                            .clickable {
+                                triangleModel = model
+                            }
 
-                            val canvasAdapter = CanvasAdapter(size.height, size.width, size.height/2)
+                        ) {
+
+                            val canvasAdapter = CanvasAdapter(size.height, size.width, size.height)
 
                             val drawings = canvasAdapter.decompose(1, model)
                             for (drawing in drawings) {
@@ -270,13 +324,24 @@ fun CustomAlertDialog() {
                         }
                     }
                 }
-                Text(text = "Select a decomposition model for Golden Gnomons")
-                Row {
+                Text(
+                    text = "Golden Gnomon decomposition models",
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(8.dp)
+                    )
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     for (model in GoldenGnomon.DecomposableModel.entries) {
                         Canvas(modifier = Modifier
-                            .size(80.dp)
+                            .size(70.dp)
                             .padding(8.dp)
-                            .background(Color.Red)) {
+                            .background(Color.Red)
+                            .clickable {
+                                gnomonModel = model
+                            }
+                        ) {
                             val canvasAdapter = CanvasAdapter(size.height, size.width, size.height/2)
                             val drawings = canvasAdapter.decomposeGoldenGnomon(model)
                             for (drawing in drawings) {
@@ -286,11 +351,19 @@ fun CustomAlertDialog() {
                         }
                     }
                 }
-                Row {
-                    Button(onClick = { /*TODO*/ }) {
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp)
+                ) {
+                    Button(onClick = { dialogInterface.dismiss() },
+                        modifier = Modifier.padding(8.dp)) {
                         Text(text = "Cancel")
                     }
-                    Button(onClick = { /*TODO*/ }) {
+
+                    Button(onClick = { dialogInterface.apply(triangleModel, gnomonModel) },
+                        modifier = Modifier.padding(8.dp)) {
                         Text(text = "Apply")
                     }
                 }
@@ -300,13 +373,10 @@ fun CustomAlertDialog() {
 }
 
 @Composable
-fun CustomDialog(openAlertDialog: Boolean) {
-
-
+fun CustomDialog(openAlertDialog: Boolean, dialogInterface: DialogInterface) {
     when {
-        // ...
         openAlertDialog -> {
-            CustomAlertDialog()
+            CustomAlertDialog(dialogInterface)
         }
     }
 }
