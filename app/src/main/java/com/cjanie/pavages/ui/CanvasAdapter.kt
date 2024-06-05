@@ -3,9 +3,11 @@ package com.cjanie.pavages.ui
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.Graph2D
 import com.cjanie.pavages.logic.Point
 import com.cjanie.pavages.logic.triangles.CustomModel
+import com.cjanie.pavages.logic.triangles.GoldenGnomon
 import com.cjanie.pavages.logic.triangles.GoldenTriangle
 import com.cjanie.pavages.logic.triangles.Triangle
 import com.cjanie.pavages.tools.CheckPointInBounds
@@ -59,6 +61,15 @@ class CanvasAdapter(val canvasHeight: Float, val canvasWidth: Float, val triangl
         }
     }
 
+    fun decomposeGoldenGnomon(model: GoldenGnomon.DecomposableModel): List<Drawing>{
+        return graph2D.decomposeGnomon(model).map {
+            Drawing(
+                path = path(it as Triangle),
+                color = if (it is GoldenTriangle) goldenTriangleColor
+                else goldenGnomonColor
+            )
+        }
+    }
     fun decompose(iteration: Int, arrange: GoldenTriangle.DecomposableModel) : List<Drawing> {
         return graph2D.iterate(iteration, arrange).map {
             Drawing(

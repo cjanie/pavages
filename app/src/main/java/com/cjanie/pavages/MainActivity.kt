@@ -4,12 +4,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,12 +48,14 @@ class MainActivity : ComponentActivity() {
                     color = CanvasAdapter.backgroundColor,
                 ) {
                     ConstraintLayoutContent()
+
                 }
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConstraintLayoutContent() {
     ConstraintLayout(
@@ -62,7 +68,7 @@ fun ConstraintLayoutContent() {
         }
 
         var arrange by remember {
-            mutableStateOf(GoldenTriangle.DecomposableModel.TRIANGLE_1_GNOMON_1)
+            mutableStateOf(GoldenTriangle.DecomposableModel.TRIANGLE_2_GNOMON_3)
         }
 
         var arrangeCustom by remember {
@@ -118,6 +124,7 @@ fun ConstraintLayoutContent() {
                     canvasWidthPx = columnWidthPx
                 }
         ) {
+
             Canvas(modifier = Modifier
                 .fillMaxSize() // Same as surface for the click to work
                 // https://dev.to/lex_fury/touch-interactions-in-jetpack-compose-5be9
@@ -208,15 +215,98 @@ fun ConstraintLayoutContent() {
                 Text("Arrange")
             }
 
-            Button(onClick = { arrangeCustom = CustomModel(
+            val openAlertDialog = remember { mutableStateOf(false) }
+            Button(onClick = {
+                openAlertDialog.value = !openAlertDialog.value
+                arrangeCustom = CustomModel(
                 //GoldenTriangle.DecomposableModel.ADJACENT_TRIANGLE_2_GNOMON_1,
                 GoldenTriangle.DecomposableModel.NON_ADJACENT_TRIANGLE_2_GNOMON_1,
                 //GoldenGnomon.DecomposableModel.ONE_TRIANGLE_TWO_GNOMONS,
                 GoldenGnomon.DecomposableModel.ONE_TRIANGLE_ONE_GNOMON_SYM
             ) },
                 modifier = Modifier.padding(8.dp)) {
-                Text("Custom")
+                Text("Try")
             }
+
+            CustomDialog(openAlertDialog.value)
+        }
+
+
+    }
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CustomAlertDialog() {
+    AlertDialog(
+        onDismissRequest = {  },
+        modifier = Modifier
+            .background(Color.White)
+            .fillMaxSize()
+
+    ) {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp)
+
+            ) {
+                Text(text = "Select a decomposition model for Golden Triangles")
+                Row {
+                    for (model in GoldenTriangle.DecomposableModel.entries) {
+                        Canvas(modifier = Modifier
+                            .size(80.dp)
+                            .padding(8.dp)
+                            .background(Color.Magenta)) {
+
+                            val canvasAdapter = CanvasAdapter(size.height, size.width, size.height/2)
+
+                            val drawings = canvasAdapter.decompose(1, model)
+                            for (drawing in drawings) {
+                                drawPath(drawing.path, drawing.color)
+                            }
+                        }
+                    }
+                }
+                Text(text = "Select a decomposition model for Golden Gnomons")
+                Row {
+                    for (model in GoldenGnomon.DecomposableModel.entries) {
+                        Canvas(modifier = Modifier
+                            .size(80.dp)
+                            .padding(8.dp)
+                            .background(Color.Red)) {
+                            val canvasAdapter = CanvasAdapter(size.height, size.width, size.height/2)
+                            val drawings = canvasAdapter.decomposeGoldenGnomon(model)
+                            for (drawing in drawings) {
+                                drawPath(drawing.path, drawing.color)
+                            }
+
+                        }
+                    }
+                }
+                Row {
+                    Button(onClick = { /*TODO*/ }) {
+                        Text(text = "Cancel")
+                    }
+                    Button(onClick = { /*TODO*/ }) {
+                        Text(text = "Apply")
+                    }
+                }
+            }
+
+    }
+}
+
+@Composable
+fun CustomDialog(openAlertDialog: Boolean) {
+
+
+    when {
+        // ...
+        openAlertDialog -> {
+            CustomAlertDialog()
         }
     }
 }

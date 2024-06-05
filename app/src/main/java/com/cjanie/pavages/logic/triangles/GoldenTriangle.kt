@@ -81,7 +81,8 @@ class GoldenTriangle(
     val C = points[2]
 
     enum class DecomposableModel {
-        TRIANGLE_1_GNOMON_1,
+                                 TRIANGLE_1_GNOMON_1,
+        TRIANGLE_2_GNOMON_3,
         NON_ADJACENT_TRIANGLE_2_GNOMON_1,
         ADJACENT_TRIANGLE_2_GNOMON_1
     }
@@ -157,6 +158,9 @@ class GoldenTriangle(
 
         when (arrange) {
             DecomposableModel.TRIANGLE_1_GNOMON_1 -> {
+                updatedList.addAll(this.decompose())
+            }
+            DecomposableModel.TRIANGLE_2_GNOMON_3 -> {
                 for (d in decompose) {
                     updatedList.addAll(d.decompose())
                 }
