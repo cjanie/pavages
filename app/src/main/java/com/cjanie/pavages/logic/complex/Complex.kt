@@ -1,7 +1,13 @@
 package com.cjanie.pavages.logic.complex
 
 import com.cjanie.pavages.logic.isEven
+import com.cjanie.pavages.tools.Trigonometry
 import kotlin.Number
+import kotlin.math.acos
+import kotlin.math.cos
+import kotlin.math.exp
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 // https://medium.com/software-science/showcasing-kotlin-with-complex-numbers-e62417442081
 open class Complex(val real: Double, val img: Double) {
@@ -22,6 +28,23 @@ open class Complex(val real: Double, val img: Double) {
          * Complex unit = 0 + i
          */
         val i = Complex(0.0, 1.0)
+
+        /**
+         * Complex norm
+         */
+        fun abs(c: Complex): Double = c.abs()
+
+        /**
+         * Complex exponential
+         */
+        fun exponential(c: Complex): Complex {
+            val e: Double = exp(c.real)
+            return Complex(cos(c.img), e * sin(c.img))
+        }
+
+        fun cosine(c: Complex): Complex = (exponential(i * c) + exponential(-i * c)) / 2.0
+
+
 
     }
     operator fun unaryMinus() = Complex(-real, -img)
@@ -54,6 +77,11 @@ open class Complex(val real: Double, val img: Double) {
         val num = this * c.conjugate()
         return num / den
     }
+
+    // abs() équivalent to
+    // Trigonometry.hypotenuseLengthFromPythagoreanTheorem(real, img)
+    fun abs(): Double =
+        sqrt(this.normSquared())
 
     fun normSquared() = real * real + img * img
 

@@ -31,11 +31,12 @@ class GoldenTriangle(
         val duplicatedSidesRatio = Number.GOLDEN_NUMBER_PHI
         val baseRatio = 1.0
         val angleAtBaseDegrees = 72.0
+        val angleAtTopDegrees = 36.0
         val height = Trigonometry.oppositeSideLengthFromHypotenuseAndAngle(
             duplicatedSidesRatio,
             angleAtBaseDegrees)
 
-        fun create(baseLength: Double): GoldenTriangle {
+        fun createFromDuplicatedSidePoints(baseLength: Double): GoldenTriangle {
 
             // Golden ratio
             val duplicatedSidesLength = duplicatedSidesRatio * baseLength
@@ -62,7 +63,7 @@ class GoldenTriangle(
             // From angle = B = 72° = angleAtBaseDegrees
             val adjacent = Trigonometry.adjacentSideLengthFromHypotenuseAndAngle(hypothenuse, angleAtBaseDegrees)
             val baseLength = adjacent * 2
-            create(baseLength)
+            createFromDuplicatedSidePoints(baseLength)
 
             // Set points coordinates
             // A, opposite to base, on vertical Axis
@@ -72,6 +73,32 @@ class GoldenTriangle(
             val C = Point(x = baseLength / 2, y = 0.0)
 
             return GoldenTriangle(A, B, C)
+        }
+
+        fun createFromDuplicatedSidePoints(oppositeToBase: Point, basePoint1: Point): GoldenTriangle {
+            // One of the duplicated sides AB
+            val A = oppositeToBase
+            val B = basePoint1
+            val duplicatedSideLength = B.complex.minus(A.complex).abs()
+            val ACLength = duplicatedSideLength
+            // Base
+            // define C
+            val rotationAngleDegrees = Trigonometry.angleDegreesFromOppositeAndAdjacentLengths(
+                B.x,
+                B.y
+            )
+                //Trigonometry.angleDegreesFromHypothenuseAndOppositeLengths(duplicatedSideLength, B.x)
+            val cX = Trigonometry.oppositeSideLengthFromHypotenuseAndAngle(
+                ACLength, angleAtTopDegrees + rotationAngleDegrees
+            )
+            val cY = Trigonometry.adjacentSideLengthFromOppositeSideAndAngle(
+                cX, angleAtTopDegrees + rotationAngleDegrees
+            )
+
+            val C = Point("C", cX, cY)
+
+            val goldenTriangle = GoldenTriangle(A, B, C)
+            return goldenTriangle
         }
 
     }

@@ -13,7 +13,12 @@ class Trigonometry {
 
     companion object {
         private fun degreeToRadian(angleInDegrees: Double): Double {
-            return angleInDegrees * Math.PI / 180
+            return angleInDegrees * Math.PI / 180.0
+        }
+
+         fun radianToDegree(angleInRadian: Double): Double {
+            // angleInRadian × 180°/π
+            return angleInRadian * 180.0 / Math.PI
         }
 
         private fun cosine(angleInDegrees: Double): Double {
@@ -60,17 +65,17 @@ class Trigonometry {
 
         fun angleDegreesFromHypothenuseAndAdjacentLengths(hypothenuseLength: Double, adjacentLength: Double): Double {
             val cosOfAngle = adjacentLength / hypothenuseLength
-            return acos(cosOfAngle)
+            return radianToDegree(acos(cosOfAngle))
         }
 
         fun angleDegreesFromHypothenuseAndOppositeLengths(hypothenuseLength: Double, oppositeLength: Double): Double {
             val sinOfAngle = oppositeLength / hypothenuseLength
-            return asin(sinOfAngle)
+            return radianToDegree(asin(sinOfAngle))
         }
 
         fun angleDegreesFromOppositeAndAdjacentLengths(oppositeLength: Double, adjacentLength: Double): Double {
             val tanOfAngle = oppositeLength / adjacentLength
-            return atan(tanOfAngle)
+            return radianToDegree(atan(tanOfAngle))
         }
 
 

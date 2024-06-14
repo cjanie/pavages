@@ -16,11 +16,12 @@ class Graph2D(heigth: Double) {
         return goldenTriangle.iterate(iteration, arrange)
     }
 
+    fun iterate(iteration: Int, arrange: CustomModel): Array<Decomposable> {
+        return goldenTriangle.iterate(iteration, arrange)
+    }
+
     fun decomposeGnomon(model: GoldenGnomon.DecomposableModel): Array<Decomposable> {
         return goldenGnomon.decompose(model)
     }
 
-    fun iterate(iteration: Int, arrange: CustomModel): Array<Decomposable> {
-        return goldenTriangle.iterate(iteration, arrange)
-    }
 }
