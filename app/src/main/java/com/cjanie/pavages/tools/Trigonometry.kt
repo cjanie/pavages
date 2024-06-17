@@ -21,11 +21,11 @@ class Trigonometry {
             return angleInRadian * 180.0 / Math.PI
         }
 
-        private fun cosine(angleInDegrees: Double): Double {
+        fun cosine(angleInDegrees: Double): Double {
             return cos(degreeToRadian(angleInDegrees))
         }
 
-        private fun sine(angleInDegrees: Double): Double {
+        fun sine(angleInDegrees: Double): Double {
             return sin(degreeToRadian(angleInDegrees))
         }
 

@@ -4,8 +4,10 @@ import com.cjanie.pavages.logic.isEven
 import com.cjanie.pavages.tools.Trigonometry
 import kotlin.Number
 import kotlin.math.acos
+import kotlin.math.atan
 import kotlin.math.cos
 import kotlin.math.exp
+import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
 
@@ -27,7 +29,8 @@ open class Complex(val real: Double, val img: Double) {
         /**
          * Complex unit = 0 + i
          */
-        val i = Complex(0.0, 1.0)
+        val iUnit = 1.0
+        val i = Complex(0.0, iUnit)
 
         /**
          * Complex norm
@@ -45,6 +48,11 @@ open class Complex(val real: Double, val img: Double) {
         fun cosine(c: Complex): Complex = (exponential(i * c) + exponential(-i * c)) / 2.0
 
 
+        fun rotate(angle: Double, c: Complex, r: Double): Complex {
+
+
+            return Complex(Trigonometry.cosine(angle)*r, Trigonometry.sine(angle)*r)
+        }
 
     }
     operator fun unaryMinus() = Complex(-real, -img)
@@ -100,6 +108,18 @@ open class Complex(val real: Double, val img: Double) {
             half * half * this
         }
     }
+
+    fun rotate() {
+        val z = real + iUnit*img
+        val r = sqrt(real.pow(2) + img.pow(2))
+        val theta = atan(img/real)
+        val trigonometricForm = r*(cos(theta)) + iUnit* sin(theta)
+        val c = Complex(r*(cos(theta)), r*(iUnit* sin(theta)))
+    }
+
+    // https://www.geeksforgeeks.org/complex-numbers-in-python-set-3-trigonometric-and-hyperbolic-functions/
+
+
 
     // To use destructuring in pair: val (x, y) = Complex(real = 1, img = 2)
     operator fun component1(): Double {

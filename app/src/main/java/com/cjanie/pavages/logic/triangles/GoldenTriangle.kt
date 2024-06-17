@@ -3,6 +3,7 @@ package com.cjanie.pavages.logic.triangles
 import com.cjanie.pavages.logic.Decomposable
 import com.cjanie.pavages.logic.Number
 import com.cjanie.pavages.logic.Point
+import com.cjanie.pavages.logic.complex.Complex
 import com.cjanie.pavages.tools.Symmetry
 import com.cjanie.pavages.tools.Trigonometry
 import java.math.BigDecimal
@@ -94,6 +95,8 @@ class GoldenTriangle(
             val cY = Trigonometry.adjacentSideLengthFromOppositeSideAndAngle(
                 cX, angleAtTopDegrees + rotationAngleDegrees
             )
+
+            //val (x, y) = Complex.rotate(angleAtTopDegrees, duplicatedSideLength)
 
             val C = Point("C", cX, cY)
 
