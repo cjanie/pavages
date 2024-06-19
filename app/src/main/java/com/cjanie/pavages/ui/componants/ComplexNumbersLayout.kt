@@ -370,18 +370,31 @@ fun Calculator(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Comple
         }
 
         Row(
-            modifier = Modifier.constrainAs(operators) {
-                top.linkTo(screen.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            },
+            horizontalArrangement = Arrangement.SpaceAround,
+            modifier = Modifier
+                .fillMaxWidth()
+                .constrainAs(operators) {
+                    top.linkTo(screen.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                },
         ) {
             val setOperations = object : SetOperations {
                 override fun set(operators: List<String>) {
                     operations = operators
                 }
             }
-            Operators(setOperations = setOperations, operations = operations, setComplexNumbers, complexNumbers)
+            Row(
+                modifier = Modifier.weight(4f)
+            ) {
+                Operators(setOperations = setOperations, operations = operations)
+            }
+
+            Row(
+                modifier = Modifier.weight(1f)
+            ) {
+                EnterButton(setComplexNumbers, complexNumbers, operations)
+            }
         }
         Row(
             modifier = Modifier.constrainAs(edition) {
@@ -415,7 +428,7 @@ fun Screen(text: String) {
 }
 
 @Composable
-fun Operators(setOperations: SetOperations, operations: List<String>, setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>) {
+fun Operators(setOperations: SetOperations, operations: List<String>) {
     val operators = listOf("+", "-", "*", "/")
 
     val updatedOperations = mutableListOf<String>()
@@ -425,7 +438,7 @@ fun Operators(setOperations: SetOperations, operations: List<String>, setComplex
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.Yellow)
-            .padding(16.dp),
+            .padding(0.dp, 16.dp, 0.dp, 16.dp)
     ) {
         for (operator in operators) {
             Button(
@@ -441,39 +454,38 @@ fun Operators(setOperations: SetOperations, operations: List<String>, setComplex
                     fontSize = 32.sp)
             }
         }
-
-        Row(
-            modifier = Modifier.weight(1f)
-        ) {
-            EnterButton(setComplexNumbers, complexNumbers, operations)
-        }
-
-
     }
 }
 
 @Composable
 fun EnterButton(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>, operations: List<String>) {
-    Button(
-        onClick = {
-            if (complexNumbers.size > 1 && operations.isNotEmpty()) {
-                val first = complexNumbers[complexNumbers.lastIndex - 1]
-                val second = complexNumbers.last()
-
-                if (operations.last() == "+") {
-                    val updatedComplexNumbers = mutableListOf<Complex>()
-                    updatedComplexNumbers.addAll(complexNumbers)
-                    updatedComplexNumbers.add(first + second)
-                    setComplexNumbers.set(updatedComplexNumbers.toList())
-                }
-            }
-        },
-        modifier = Modifier
-            .padding(8.dp)
+    Row(
+        Modifier
+            .background(Color.Magenta)
+            .padding(0.dp, 16.dp, 0.dp, 16.dp)
     ) {
-        Text(
-            "=",
-            fontSize = 32.sp
-        )
+        Button(
+            onClick = {
+                if (complexNumbers.size > 1 && operations.isNotEmpty()) {
+                    val first = complexNumbers[complexNumbers.lastIndex - 1]
+                    val second = complexNumbers.last()
+
+                    if (operations.last() == "+") {
+                        val updatedComplexNumbers = mutableListOf<Complex>()
+                        updatedComplexNumbers.addAll(complexNumbers)
+                        updatedComplexNumbers.add(first + second)
+                        setComplexNumbers.set(updatedComplexNumbers.toList())
+                    }
+                }
+            },
+            modifier = Modifier
+                .padding(8.dp)
+        ) {
+            Text(
+                "=",
+                fontSize = 32.sp
+            )
+        }
     }
+
 }
