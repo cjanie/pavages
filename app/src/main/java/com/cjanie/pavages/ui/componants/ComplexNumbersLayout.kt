@@ -50,7 +50,6 @@ fun ComplexNumbersComposable() {
         color = Color.White,
     ) {
 
-
         var complexNumbers by remember {
             mutableStateOf(emptyList<Complex>())
         }
@@ -94,11 +93,21 @@ fun ComplexNumbersLayout(setComplexNumbers: SetComplexNumbers, complexNumbers: L
                     mutableStateOf("")
                 }
 
-                for (c in complexNumbers) {
-                    val (x, y) = c
-                    val text = "(${coordinateAsString(x)}, ${coordinateAsString(y)})"
-                    calculationText += text
+                var operations by remember {
+                    mutableStateOf(emptyList<String>())
                 }
+
+                var updatedText = ""
+
+                for (i in complexNumbers.indices) {
+                    val (x, y) = complexNumbers[i]
+                    val text = "(${coordinateAsString(x)}, ${coordinateAsString(y)})"
+                    updatedText += text
+                    if(operations.isNotEmpty() && operations.size > i)
+                     updatedText += " ${operations[i]} "
+                }
+
+                calculationText = updatedText
 
                 ConstraintLayout {
                     val (screen, operators, edition) = createRefs()
@@ -120,9 +129,14 @@ fun ComplexNumbersLayout(setComplexNumbers: SetComplexNumbers, complexNumbers: L
                         },
                     ) {
                         val operators = listOf("+", "-", "*", "/")
+
+                        val updatedOperations = mutableListOf<String>()
+                        updatedOperations.addAll(operations)
                         for (operator in operators) {
                             Button(
-                                onClick = { calculationText += " $operator"},
+                                onClick = {
+                                    updatedOperations.add(operator)
+                                    operations = updatedOperations },
                                 modifier = Modifier
                                     .padding(8.dp)
                                     .weight(1f)
@@ -201,7 +215,6 @@ fun ComplexNumbersLayout(setComplexNumbers: SetComplexNumbers, complexNumbers: L
             Canvas(modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp)) {
-                val i = 1
 
                 val scale = 300f
 
@@ -306,6 +319,19 @@ fun EditComplexNumber(setComplexNumbers: SetComplexNumbers, complexNumbers: List
             var xValue by rememberSaveable { mutableStateOf("") }
             var yValue by rememberSaveable { mutableStateOf("") }
 
+            fun updateComplexNumbers() {
+                if(xValue.isNotEmpty() && yValue.isNotEmpty()) {
+                    val list = mutableListOf<Complex>()
+                    list.addAll(complexNumbers)
+                    list.add(Complex(xValue.toDouble(), yValue.toDouble()))
+                    setComplexNumbers.set(list.toList())
+                    xValue = ""
+                    yValue = ""
+                }
+            }
+
+            updateComplexNumbers()
+
             //
             val keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
 
@@ -370,12 +396,8 @@ fun EditComplexNumber(setComplexNumbers: SetComplexNumbers, complexNumbers: List
                     keyboardOptions = keyboardOptions,
                 )
 
-                if(xValue.isNotEmpty() && yValue.isNotEmpty()) {
-                    val list = mutableListOf<Complex>()
-                    list.addAll(complexNumbers)
-                    list.add(Complex(xValue.toDouble(), yValue.toDouble()))
-                    setComplexNumbers.set(list.toList())
-                }
+
+
 
             }
 
