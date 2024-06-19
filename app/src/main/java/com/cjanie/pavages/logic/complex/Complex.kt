@@ -2,6 +2,7 @@ package com.cjanie.pavages.logic.complex
 
 import com.cjanie.pavages.logic.isEven
 import com.cjanie.pavages.tools.Trigonometry
+import com.cjanie.pavages.ui.componants.SetComplexNumbers
 import kotlin.Number
 import kotlin.math.acos
 import kotlin.math.atan
@@ -52,6 +53,19 @@ open class Complex(val real: Double, val img: Double) {
 
 
             return Complex(Trigonometry.cosine(angle)*r, Trigonometry.sine(angle)*r)
+        }
+
+        fun calc(complexNumbers: List<Complex>, operations : List<String>): Complex {
+            if (complexNumbers.size > 1 && operations.size == complexNumbers.size - 1) {
+                val first = complexNumbers[complexNumbers.lastIndex - 1]
+                val second = complexNumbers.last()
+
+                when (operations.last()) {
+                    "+" -> return first + second
+                }
+            }
+            return ONE
+
         }
 
     }

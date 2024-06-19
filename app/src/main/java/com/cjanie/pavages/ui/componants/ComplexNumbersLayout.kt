@@ -400,14 +400,8 @@ fun EnterButton(setCalculationResult: SetCalculationResult, complexNumbers: List
     ) {
         Button(
             onClick = {
-                if (complexNumbers.size > 1 && operations.isNotEmpty()) {
-                    val first = complexNumbers[complexNumbers.lastIndex - 1]
-                    val second = complexNumbers.last()
-
-                    if (operations.last() == "+") {
-                        setCalculationResult.set(first + second)
-                    }
-                }
+                val calculationResult = Complex.calc(complexNumbers, operations)
+                setCalculationResult.set(calculationResult)
             },
             modifier = Modifier
                 .padding(8.dp)
