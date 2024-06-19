@@ -57,15 +57,19 @@ open class Complex(val real: Double, val img: Double) {
 
         fun calc(complexNumbers: List<Complex>, operations : List<String>): Complex {
             if (complexNumbers.size > 1 && operations.size == complexNumbers.size - 1) {
-                val first = complexNumbers[complexNumbers.lastIndex - 1]
-                val second = complexNumbers.last()
+                    val mutableOperations = operations.toMutableList()
+                    val mutableComplexNumbers = complexNumbers.toMutableList()
 
-                when (operations.last()) {
-                    "+" -> return first + second
-                }
+                    var result: Complex? = null
+
+                    for (i in mutableOperations.indices) {
+                        var first = if (result == null)
+                            mutableComplexNumbers[i] else result
+                        result = first + mutableComplexNumbers[i + 1]
+                    }
+                    if(result != null) return result
             }
-            return ONE
-
+            throw Exception("calculation parsing error")
         }
 
     }

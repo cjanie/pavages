@@ -12,4 +12,22 @@ class ComplexTest {
         assertEquals(1.0, x, 0.0)
         assertEquals(2.0, y, 0.0)
     }
+
+    @Test
+    fun addition() {
+        // Prepare
+        val complexNumbers = listOf(Complex.ONE, Complex.ONE)
+        val operators = listOf("+")
+        val calcResult = Complex.calc(complexNumbers, operators)
+        assertEquals(2.0, calcResult.real, 0.0)
+    }
+
+    @Test
+    fun calculations() {
+        // Prepare
+        val complexNumbers = listOf(Complex.ONE, Complex.ONE, Complex.ONE)
+        val operators = listOf("+", "+")
+        val calcResult = Complex.calc(complexNumbers, operators)
+        assertEquals(3.0, calcResult.real, 0.0)
+    }
 }
