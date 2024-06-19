@@ -46,6 +46,10 @@ interface SetComplexNumbers {
 interface SetOperations {
     fun set(operators: List<String>)
 }
+
+interface SetCalculationResult {
+    fun set(c: Complex)
+}
 @Composable
 fun ComplexNumbersComposable() {
     // A surface container using the 'background' color from the theme
@@ -64,18 +68,28 @@ fun ComplexNumbersComposable() {
             }
         }
 
-        ComplexNumbersLayout(setComplexNumbers, complexNumbers)
+        var calculationResult by remember {
+            mutableStateOf<Complex?>(null)
+        }
+
+        val setCalculationResult = object: SetCalculationResult {
+            override fun set(c: Complex) {
+                calculationResult = c
+            }
+
+        }
+
+        ComplexNumbersLayout(setComplexNumbers, complexNumbers, setCalculationResult, calculationResult)
     }
 }
 @Composable
-fun ComplexNumbersLayout(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>) {
+fun ComplexNumbersLayout(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>, setCalculationResult: SetCalculationResult, calculationResult: Complex?) {
     
     ConstraintLayout(
         modifier = Modifier.fillMaxSize(),
 
     ) {
 
-        // Create references for the composables to constrain
         val (board, graph) = createRefs()
 
         Row(
@@ -86,22 +100,10 @@ fun ComplexNumbersLayout(setComplexNumbers: SetComplexNumbers, complexNumbers: L
                     end.linkTo(graph.end)
                 }
         ) {
-            Board(setComplexNumbers = setComplexNumbers, complexNumbers = complexNumbers)
+            Board(setComplexNumbers = setComplexNumbers, complexNumbers = complexNumbers, setCalculationResult = setCalculationResult, calculationResult = calculationResult)
         }
 
-        // For column size depending on screen size
-        var columnHeightPx by remember {
-            mutableFloatStateOf(0f)
-        }
-        var columnWidthPx by remember {
-            mutableFloatStateOf(0f)
-        }
-
-        var canvasWidthPx by remember {
-            mutableFloatStateOf(0f)
-        }
-
-        Column(
+        Row(
             modifier = Modifier
                 .constrainAs(graph) {
                     top.linkTo(board.bottom)
@@ -109,110 +111,24 @@ fun ComplexNumbersLayout(setComplexNumbers: SetComplexNumbers, complexNumbers: L
                     end.linkTo(parent.end)
                     bottom.linkTo(parent.bottom)
                 }
-                // Set the column size using the layout coordinates
-                .onGloballyPositioned {
-                    columnHeightPx = it.size.height.toFloat()
-                    columnWidthPx = it.size.width.toFloat()
-                    canvasWidthPx = columnWidthPx
-                }
         ) {
-            val textMeasurer = rememberTextMeasurer()
-
-            val commonComplexNumbers = listOf(Complex.ZERO, Complex.ONE, Complex.i)
-
-            val style = TextStyle(
-                fontSize = 32.sp,
-                color = Color.Black,
-            )
-
-            val mapComplexToTextResultLayout = mutableMapOf<Complex, TextLayoutResult>()
-            for (c in commonComplexNumbers) {
-
-                val (x, y) = c
-                val text = "(${coordinateAsString(x)}, ${coordinateAsString(y)})"
-                val textLayoutResult = remember(text, style) {
-                    textMeasurer.measure(text, style)
-                }
-                mapComplexToTextResultLayout.put(c, textLayoutResult)
-            }
-
-            // Canvas
-            Canvas(modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp)) {
-
-                val scale = 300f
-
-                drawPoints(
-                    points = listOf(
-                        complexToOffset(Complex.i, scale, center),
-                        complexToOffset(Complex.ZERO, scale, center),
-                        complexToOffset(Complex.ONE, scale, center)
-                    ),
-                    pointMode = PointMode.Points,
-                    cap = StrokeCap.Round,
-                    color = Color.Red,
-                    strokeWidth = 25f
-                )
-
-                for (complex in mapComplexToTextResultLayout.keys) {
-                    val offset = complexToOffset(complex, scale, center)
-                    val textLayoutResult = mapComplexToTextResultLayout.get(complex)
-                    if(textLayoutResult != null) {
-                        drawText(
-                            textLayoutResult = textLayoutResult,
-                            topLeft = offset
-                        )
-
-                    }
-                }
-
-                for (c in complexNumbers) {
-                    // Point
-                    drawPoints(
-                        listOf(complexToOffset(c, scale, center)),
-                        pointMode = PointMode.Points,
-                        cap = StrokeCap.Round,
-                        color = Color.Green,
-                        strokeWidth = 25f
-                    )
-
-                    // Text
-                    val (x, y) = c
-                    val text = "(${coordinateAsString(x)}, ${coordinateAsString(y)})"
-                    var textLayoutResult = textMeasurer.measure(text, style)
-                    drawText(textLayoutResult,
-                        topLeft = complexToOffset(c, scale, center))
-                }
-
-            }
+            Graph(complexNumbers, calculationResult)
         }
     }
 
 }
 
-fun coordinateAsString(double: Double): String {
-    return if(double.toInt().compareTo(double) == 0)
-        double.toInt().toString()
-    else double.toString()
-}
-fun complexToOffset(c: Complex, scale: Float, center: Offset): Offset {
-    // unit 1 = scale
-    val (x, y) = c
-    return Offset(center.x + x.toFloat() * scale, center.y - y.toFloat() * scale)
-}
-
 @Composable
-fun Board(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>) {
+fun Board(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>, setCalculationResult: SetCalculationResult, calculationResult: Complex?) {
     if(complexNumbers.isEmpty()) {
-        EditComplexNumber(setComplexNumbers, complexNumbers)
+        ComplexNumberEditor(setComplexNumbers, complexNumbers)
     } else {
-        Calculator(setComplexNumbers, complexNumbers)
+        Calculator(setComplexNumbers, complexNumbers, setCalculationResult, calculationResult)
     }
 }
 
 @Composable
-fun EditComplexNumber(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>) {
+fun ComplexNumberEditor(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>) {
     ConstraintLayout(
         modifier = Modifier.background(Color.Green)
     ) {
@@ -334,7 +250,7 @@ fun EditComplexNumber(setComplexNumbers: SetComplexNumbers, complexNumbers: List
 }
 
 @Composable
-fun Calculator(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>) {
+fun Calculator(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>, setCalculationResult: SetCalculationResult, calculationResult: Complex?) {
     var calculationText by remember {
         mutableStateOf("")
     }
@@ -354,10 +270,15 @@ fun Calculator(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Comple
         }
     }
 
+    if(calculationResult != null) {
+        val (x, y) = calculationResult
+        updatedText += " = (${coordinateAsString(x)}, ${coordinateAsString(y)})"
+    }
+
     calculationText = updatedText
 
     ConstraintLayout {
-        val (screen, operators, edition) = createRefs()
+        val (screen, keyboard) = createRefs()
 
         Row(Modifier
             .constrainAs(screen) {
@@ -370,10 +291,9 @@ fun Calculator(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Comple
         }
 
         Row(
-            horizontalArrangement = Arrangement.SpaceAround,
             modifier = Modifier
                 .fillMaxWidth()
-                .constrainAs(operators) {
+                .constrainAs(keyboard) {
                     top.linkTo(screen.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
@@ -384,29 +304,7 @@ fun Calculator(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Comple
                     operations = operators
                 }
             }
-            Row(
-                modifier = Modifier.weight(4f)
-            ) {
-                Operators(setOperations = setOperations, operations = operations)
-            }
-
-            Row(
-                modifier = Modifier.weight(1f)
-            ) {
-                EnterButton(setComplexNumbers, complexNumbers, operations)
-            }
-        }
-        Row(
-            modifier = Modifier.constrainAs(edition) {
-                top.linkTo(operators.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                bottom.linkTo(parent.bottom)
-            }
-        ) {
-
-            EditComplexNumber(setComplexNumbers = setComplexNumbers, complexNumbers = complexNumbers)
-
+            Keyboard(setOperations = setOperations, operations = operations, setComplexNumbers = setComplexNumbers, complexNumbers = complexNumbers, setCalculationResult = setCalculationResult)
         }
     }
 }
@@ -427,6 +325,35 @@ fun Screen(text: String) {
     }
 }
 
+@Composable
+fun Keyboard(setOperations: SetOperations, operations: List<String>, setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>, setCalculationResult: SetCalculationResult) {
+    if(operations.size < complexNumbers.size) {
+        OperatorsAndEnterButtonsBar(setOperations, operations, complexNumbers, setCalculationResult)
+    } else {
+        ComplexNumberEditor(setComplexNumbers = setComplexNumbers, complexNumbers = complexNumbers)
+    }
+}
+@Composable
+fun OperatorsAndEnterButtonsBar(setOperations: SetOperations, operations: List<String>, complexNumbers: List<Complex>, setCalculationResult: SetCalculationResult) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceAround,
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+
+        Row(
+            modifier = Modifier.weight(4f)
+        ) {
+            Operators(setOperations = setOperations, operations = operations)
+        }
+
+        Row(
+            modifier = Modifier.weight(1f)
+        ) {
+            EnterButton(setCalculationResult, complexNumbers, operations)
+        }
+    }
+}
 @Composable
 fun Operators(setOperations: SetOperations, operations: List<String>) {
     val operators = listOf("+", "-", "*", "/")
@@ -458,7 +385,7 @@ fun Operators(setOperations: SetOperations, operations: List<String>) {
 }
 
 @Composable
-fun EnterButton(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>, operations: List<String>) {
+fun EnterButton(setCalculationResult: SetCalculationResult, complexNumbers: List<Complex>, operations: List<String>) {
     Row(
         Modifier
             .background(Color.Magenta)
@@ -471,10 +398,7 @@ fun EnterButton(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Compl
                     val second = complexNumbers.last()
 
                     if (operations.last() == "+") {
-                        val updatedComplexNumbers = mutableListOf<Complex>()
-                        updatedComplexNumbers.addAll(complexNumbers)
-                        updatedComplexNumbers.add(first + second)
-                        setComplexNumbers.set(updatedComplexNumbers.toList())
+                        setCalculationResult.set(first + second)
                     }
                 }
             },
@@ -487,5 +411,112 @@ fun EnterButton(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Compl
             )
         }
     }
+}
 
+@Composable
+fun Graph(complexNumbers: List<Complex>, calculationResult: Complex?) {
+    val textMeasurer = rememberTextMeasurer()
+
+    val commonComplexNumbers = listOf(Complex.ZERO, Complex.ONE, Complex.i)
+
+    val style = TextStyle(
+        fontSize = 32.sp,
+        color = Color.Black,
+    )
+
+    val mapComplexToTextResultLayout = mutableMapOf<Complex, TextLayoutResult>()
+    for (c in commonComplexNumbers) {
+
+        val (x, y) = c
+        val text = "(${coordinateAsString(x)}, ${coordinateAsString(y)})"
+        val textLayoutResult = remember(text, style) {
+            textMeasurer.measure(text, style)
+        }
+        mapComplexToTextResultLayout.put(c, textLayoutResult)
+    }
+
+    Canvas(modifier = Modifier
+        .fillMaxWidth()
+        .padding(20.dp)) {
+
+        val scale = 300f
+
+        drawPoints(
+            points = listOf(
+                complexToOffset(Complex.i, scale, center),
+                complexToOffset(Complex.ZERO, scale, center),
+                complexToOffset(Complex.ONE, scale, center)
+            ),
+            pointMode = PointMode.Points,
+            cap = StrokeCap.Round,
+            color = Color.Red,
+            strokeWidth = 25f
+        )
+
+        for (complex in mapComplexToTextResultLayout.keys) {
+            val offset = complexToOffset(complex, scale, center)
+            val textLayoutResult = mapComplexToTextResultLayout.get(complex)
+            if(textLayoutResult != null) {
+                drawText(
+                    textLayoutResult = textLayoutResult,
+                    topLeft = offset
+                )
+
+            }
+        }
+
+        for (c in complexNumbers) {
+            // Point
+            drawPoints(
+                listOf(complexToOffset(c, scale, center)),
+                pointMode = PointMode.Points,
+                cap = StrokeCap.Round,
+                color = Color.Green,
+                strokeWidth = 25f
+            )
+
+            // Text
+            val (x, y) = c
+            val text = "(${coordinateAsString(x)}, ${coordinateAsString(y)})"
+            var textLayoutResult = textMeasurer.measure(text, style)
+            drawText(textLayoutResult,
+                topLeft = complexToOffset(c, scale, center))
+        }
+
+        if(calculationResult != null) {
+            // Point
+            drawPoints(
+                listOf(complexToOffset(calculationResult, scale, center)),
+                pointMode = PointMode.Points,
+                cap = StrokeCap.Round,
+                color = Color.Magenta,
+                strokeWidth = 25f
+            )
+            // Text
+            val (x, y) = calculationResult
+            val text = "(${coordinateAsString(x)}, ${coordinateAsString(y)})"
+
+            val resultTextStyle = TextStyle(
+                fontSize = 32.sp,
+                color = Color.Magenta,
+            )
+
+            var textLayoutResult = textMeasurer.measure(text, resultTextStyle)
+            drawText(textLayoutResult,
+                topLeft = complexToOffset(calculationResult, scale, center))
+        }
+
+
+    }
+}
+
+fun coordinateAsString(double: Double): String {
+    return if(double.toInt().compareTo(double) == 0)
+        double.toInt().toString()
+    else double.toString()
+}
+fun complexToOffset(c: Complex, scale: Float, center: Offset): Offset {
+    // unit 1 = scale
+    val (x, y) = c
+    return Offset(center.x + x.toFloat() * scale, center.y - y.toFloat() * scale)
 }
