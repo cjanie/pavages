@@ -1,6 +1,8 @@
 package com.cjanie.pavages.ui.componants
 
+import android.icu.util.IslamicCalendar.CalculationType
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -83,85 +85,7 @@ fun ComplexNumbersLayout(setComplexNumbers: SetComplexNumbers, complexNumbers: L
                 }
                 .padding(20.dp)
         ) {
-
-
-            if(complexNumbers.isEmpty()) {
-                EditComplexNumber(setComplexNumbers, complexNumbers)
-            } else {
-
-                var calculationText by remember {
-                    mutableStateOf("")
-                }
-
-                var operations by remember {
-                    mutableStateOf(emptyList<String>())
-                }
-
-                var updatedText = ""
-
-                for (i in complexNumbers.indices) {
-                    val (x, y) = complexNumbers[i]
-                    val text = "(${coordinateAsString(x)}, ${coordinateAsString(y)})"
-                    updatedText += text
-                    if(operations.isNotEmpty() && operations.size > i)
-                     updatedText += " ${operations[i]} "
-                }
-
-                calculationText = updatedText
-
-                ConstraintLayout {
-                    val (screen, operators, edition) = createRefs()
-
-                    Text(calculationText,
-                        Modifier.constrainAs(screen) {
-                            top.linkTo(parent.top)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                        },
-                        fontSize = 32.sp
-                        )
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceAround,
-                        modifier = Modifier.constrainAs(operators) {
-                            top.linkTo(screen.bottom)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                        },
-                    ) {
-                        val operators = listOf("+", "-", "*", "/")
-
-                        val updatedOperations = mutableListOf<String>()
-                        updatedOperations.addAll(operations)
-                        for (operator in operators) {
-                            Button(
-                                onClick = {
-                                    updatedOperations.add(operator)
-                                    operations = updatedOperations },
-                                modifier = Modifier
-                                    .padding(8.dp)
-                                    .weight(1f)
-                                ) {
-                                Text(operator)
-                            }
-                        }
-                    }
-                    Row(
-                        modifier = Modifier.constrainAs(edition) {
-                            top.linkTo(operators.bottom)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                            bottom.linkTo(parent.bottom)
-                        }
-                    ) {
-
-                        EditComplexNumber(setComplexNumbers = setComplexNumbers, complexNumbers = complexNumbers)
-
-                    }
-                }
-            }
-
-
-
+            Board(setComplexNumbers = setComplexNumbers, complexNumbers = complexNumbers)
         }
 
         // For column size depending on screen size
@@ -277,7 +201,14 @@ fun complexToOffset(c: Complex, scale: Float, center: Offset): Offset {
     return Offset(center.x + x.toFloat() * scale, center.y - y.toFloat() * scale)
 }
 
-
+@Composable
+fun Board(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>) {
+    if(complexNumbers.isEmpty()) {
+        EditComplexNumber(setComplexNumbers, complexNumbers)
+    } else {
+        Calculator(setComplexNumbers, complexNumbers)
+    }
+}
 
 @Composable
 fun EditComplexNumber(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>) {
@@ -294,9 +225,7 @@ fun EditComplexNumber(setComplexNumbers: SetComplexNumbers, complexNumbers: List
                     end.linkTo(parent.end)
             }
         )
-
         // Example
-
         Text("x + yi",
             fontSize = 32.sp,
             modifier = Modifier
@@ -395,15 +324,99 @@ fun EditComplexNumber(setComplexNumbers: SetComplexNumbers, complexNumbers: List
                         .weight(1.5f),
                     keyboardOptions = keyboardOptions,
                 )
-
-
-
-
             }
 
         }
     }
+}
 
+@Composable
+fun Calculator(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>) {
+    var calculationText by remember {
+        mutableStateOf("")
+    }
 
+    var operations by remember {
+        mutableStateOf(emptyList<String>())
+    }
+
+    var updatedText = ""
+
+    for (i in complexNumbers.indices) {
+        val (x, y) = complexNumbers[i]
+        val text = "(${coordinateAsString(x)}, ${coordinateAsString(y)})"
+        updatedText += text
+        if(operations.isNotEmpty() && operations.size > i) {
+            updatedText += " ${operations[i]} "
+        }
+    }
+
+    calculationText = updatedText
+
+    ConstraintLayout {
+        val (screen, operators, edition) = createRefs()
+
+        Row(Modifier.constrainAs(screen) {
+            top.linkTo(parent.top)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+        },) {
+            Screen(text = calculationText)
+        }
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceAround,
+            modifier = Modifier.constrainAs(operators) {
+                top.linkTo(screen.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            },
+        ) {
+            val operators = listOf("+", "-", "*", "/")
+
+            val updatedOperations = mutableListOf<String>()
+            updatedOperations.addAll(operations)
+            for (operator in operators) {
+                Button(
+                    onClick = {
+                        updatedOperations.add(operator)
+                        operations = updatedOperations },
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .weight(1f)
+                ) {
+                    Text(operator)
+                }
+            }
+        }
+        Row(
+            modifier = Modifier.constrainAs(edition) {
+                top.linkTo(operators.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                bottom.linkTo(parent.bottom)
+            }
+        ) {
+
+            EditComplexNumber(setComplexNumbers = setComplexNumbers, complexNumbers = complexNumbers)
+
+        }
+    }
+}
+
+@Composable
+fun Screen(text: String) {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Blue)
+    ) {
+        Text(text,
+            fontSize = 32.sp,
+            color = Color.White,
+            modifier = Modifier.padding(8.dp)
+            )
+    }
 
 }
