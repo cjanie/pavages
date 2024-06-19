@@ -48,7 +48,7 @@ interface SetOperations {
 }
 
 interface SetCalculationResult {
-    fun set(c: Complex)
+    fun set(c: Complex?)
 }
 @Composable
 fun ComplexNumbersComposable() {
@@ -73,7 +73,7 @@ fun ComplexNumbersComposable() {
         }
 
         val setCalculationResult = object: SetCalculationResult {
-            override fun set(c: Complex) {
+            override fun set(c: Complex?) {
                 calculationResult = c
             }
 
@@ -304,7 +304,7 @@ fun Calculator(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Comple
                     operations = operators
                 }
             }
-            Keyboard(setOperations = setOperations, operations = operations, setComplexNumbers = setComplexNumbers, complexNumbers = complexNumbers, setCalculationResult = setCalculationResult)
+            Keyboard(setOperations = setOperations, operations = operations, setComplexNumbers = setComplexNumbers, complexNumbers = complexNumbers, setCalculationResult = setCalculationResult, calculationResult = calculationResult)
         }
     }
 }
@@ -326,15 +326,16 @@ fun Screen(text: String) {
 }
 
 @Composable
-fun Keyboard(setOperations: SetOperations, operations: List<String>, setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>, setCalculationResult: SetCalculationResult) {
+fun Keyboard(setOperations: SetOperations, operations: List<String>, setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>, setCalculationResult: SetCalculationResult, calculationResult: Complex?) {
     if(operations.size < complexNumbers.size) {
-        OperatorsAndEnterButtonsBar(setOperations, operations, complexNumbers, setCalculationResult)
+        OperatorsAndEnterButtonsBar(setOperations, operations, setComplexNumbers, complexNumbers, setCalculationResult, calculationResult)
     } else {
         ComplexNumberEditor(setComplexNumbers = setComplexNumbers, complexNumbers = complexNumbers)
     }
 }
 @Composable
-fun OperatorsAndEnterButtonsBar(setOperations: SetOperations, operations: List<String>, complexNumbers: List<Complex>, setCalculationResult: SetCalculationResult) {
+fun OperatorsAndEnterButtonsBar(setOperations: SetOperations, operations: List<String>, setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>,
+                                setCalculationResult: SetCalculationResult, calculationResult: Complex?) {
     Row(
         horizontalArrangement = Arrangement.SpaceAround,
         modifier = Modifier
@@ -344,7 +345,7 @@ fun OperatorsAndEnterButtonsBar(setOperations: SetOperations, operations: List<S
         Row(
             modifier = Modifier.weight(4f)
         ) {
-            Operators(setOperations = setOperations, operations = operations)
+            Operators(setOperations = setOperations, operations = operations, setCalculationResult = setCalculationResult, calculationResult = calculationResult, setComplexNumbers = setComplexNumbers)
         }
 
         Row(
@@ -355,7 +356,7 @@ fun OperatorsAndEnterButtonsBar(setOperations: SetOperations, operations: List<S
     }
 }
 @Composable
-fun Operators(setOperations: SetOperations, operations: List<String>) {
+fun Operators(setOperations: SetOperations, operations: List<String>,setComplexNumbers: SetComplexNumbers, setCalculationResult: SetCalculationResult, calculationResult: Complex?) {
     val operators = listOf("+", "-", "*", "/")
 
     val updatedOperations = mutableListOf<String>()
@@ -370,9 +371,15 @@ fun Operators(setOperations: SetOperations, operations: List<String>) {
         for (operator in operators) {
             Button(
                 onClick = {
-                    updatedOperations.add(operator)
-                    setOperations.set(updatedOperations)
-                    },
+                    if(calculationResult != null) {
+                        setComplexNumbers.set(listOf(calculationResult))
+                        setCalculationResult.set(null)
+                        setOperations.set(listOf(operator))
+                    } else {
+                        updatedOperations.add(operator)
+                        setOperations.set(updatedOperations)
+                    }
+                          },
                 modifier = Modifier
                     .padding(8.dp)
                     .weight(1f)
