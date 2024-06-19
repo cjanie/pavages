@@ -1,6 +1,5 @@
 package com.cjanie.pavages.ui.componants
 
-import android.icu.util.IslamicCalendar.CalculationType
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -44,6 +43,9 @@ interface SetComplexNumbers {
     fun set(numbers: List<Complex>)
 }
 
+interface SetOperations {
+    fun set(operators: List<String>)
+}
 @Composable
 fun ComplexNumbersComposable() {
     // A surface container using the 'background' color from the theme
@@ -83,7 +85,6 @@ fun ComplexNumbersLayout(setComplexNumbers: SetComplexNumbers, complexNumbers: L
                     start.linkTo(graph.start)
                     end.linkTo(graph.end)
                 }
-                .padding(20.dp)
         ) {
             Board(setComplexNumbers = setComplexNumbers, complexNumbers = complexNumbers)
         }
@@ -212,7 +213,9 @@ fun Board(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>) {
 
 @Composable
 fun EditComplexNumber(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>) {
-    ConstraintLayout {
+    ConstraintLayout(
+        modifier = Modifier.background(Color.Green)
+    ) {
         val (title, example, edit) = createRefs()
         // Title
         Text("Complex Number",
@@ -356,38 +359,29 @@ fun Calculator(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Comple
     ConstraintLayout {
         val (screen, operators, edition) = createRefs()
 
-        Row(Modifier.constrainAs(screen) {
-            top.linkTo(parent.top)
-            start.linkTo(parent.start)
-            end.linkTo(parent.end)
-        },) {
+        Row(Modifier
+            .constrainAs(screen) {
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            },
+            ) {
             Screen(text = calculationText)
         }
 
         Row(
-            horizontalArrangement = Arrangement.SpaceAround,
             modifier = Modifier.constrainAs(operators) {
                 top.linkTo(screen.bottom)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
             },
         ) {
-            val operators = listOf("+", "-", "*", "/")
-
-            val updatedOperations = mutableListOf<String>()
-            updatedOperations.addAll(operations)
-            for (operator in operators) {
-                Button(
-                    onClick = {
-                        updatedOperations.add(operator)
-                        operations = updatedOperations },
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .weight(1f)
-                ) {
-                    Text(operator)
+            val setOperations = object : SetOperations {
+                override fun set(operators: List<String>) {
+                    operations = operators
                 }
             }
+            Operators(setOperations = setOperations, operations = operations, setComplexNumbers, complexNumbers)
         }
         Row(
             modifier = Modifier.constrainAs(edition) {
@@ -415,8 +409,71 @@ fun Screen(text: String) {
         Text(text,
             fontSize = 32.sp,
             color = Color.White,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(16.dp)
             )
     }
+}
 
+@Composable
+fun Operators(setOperations: SetOperations, operations: List<String>, setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>) {
+    val operators = listOf("+", "-", "*", "/")
+
+    val updatedOperations = mutableListOf<String>()
+    updatedOperations.addAll(operations)
+    Row(
+        horizontalArrangement = Arrangement.SpaceAround,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Yellow)
+            .padding(16.dp),
+    ) {
+        for (operator in operators) {
+            Button(
+                onClick = {
+                    updatedOperations.add(operator)
+                    setOperations.set(updatedOperations)
+                    },
+                modifier = Modifier
+                    .padding(8.dp)
+                    .weight(1f)
+            ) {
+                Text(operator,
+                    fontSize = 32.sp)
+            }
+        }
+
+        Row(
+            modifier = Modifier.weight(1f)
+        ) {
+            EnterButton(setComplexNumbers, complexNumbers, operations)
+        }
+
+
+    }
+}
+
+@Composable
+fun EnterButton(setComplexNumbers: SetComplexNumbers, complexNumbers: List<Complex>, operations: List<String>) {
+    Button(
+        onClick = {
+            if (complexNumbers.size > 1 && operations.isNotEmpty()) {
+                val first = complexNumbers[complexNumbers.lastIndex - 1]
+                val second = complexNumbers.last()
+
+                if (operations.last() == "+") {
+                    val updatedComplexNumbers = mutableListOf<Complex>()
+                    updatedComplexNumbers.addAll(complexNumbers)
+                    updatedComplexNumbers.add(first + second)
+                    setComplexNumbers.set(updatedComplexNumbers.toList())
+                }
+            }
+        },
+        modifier = Modifier
+            .padding(8.dp)
+    ) {
+        Text(
+            "=",
+            fontSize = 32.sp
+        )
+    }
 }
